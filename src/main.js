@@ -5,6 +5,13 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// 在Vue中使用JQuery
+import $ from 'jquery'
+Vue.prototype.$ = $;
+
+// 在Vue中使用SvgIcon组件，引入icon
+import './icons';
+
 new Vue({
   router,
   store,
