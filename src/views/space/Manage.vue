@@ -1,12 +1,14 @@
 <template>
-  <div class="setting">
-    <h1>setting</h1>
+  <div id="manage">
+    <div class="manage-wrap">
+      <h1>Manage</h1>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Setting",
+  name: "Manage",
 };
 </script>
 

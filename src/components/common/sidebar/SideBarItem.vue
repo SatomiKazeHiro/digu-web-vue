@@ -1,6 +1,6 @@
 <template>
   <li class="side-bar-item">
-    <a href="">
+    <a @click="$router.push(url ? url : '/')">
       <div class="nav-icon">
         <slot name="nav-icon"></slot>
       </div>
@@ -29,9 +29,7 @@ export default {
       },
     },
   },
-  mounted() {
-    console.log(this.url);
-  },
+  mounted() {},
 };
 </script>
 

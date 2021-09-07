@@ -1,7 +1,14 @@
 <template>
   <div class="space" id="space">
-    <main-side-bar :config="baseConfig"></main-side-bar>
-    <div class="content">
+    <main-side-bar :config="baseConfig" class="main-side-bar"></main-side-bar>
+    <!-- space背景 -->
+    <div class="space-bg"></div>
+    <img class="space-bg" src="~assets/img/space/bg.jpg" alt="" />
+    <!-- router内容 -->
+    <div class="content" v-if="$route.path == '/space'">
+    <space-ct></space-ct>
+    </div>
+    <div class="content" v-else>
       <router-view />
     </div>
   </div>
@@ -9,9 +16,13 @@
 
 <script>
 import MainSideBar from "components/MainSideBar";
-
+import SpaceCt from "views/space/SpaceCt.vue";
 export default {
   name: "Space",
+  components: {
+    MainSideBar,
+    SpaceCt,
+  },
   data() {
     return {
       baseConfig: {
@@ -22,39 +33,57 @@ export default {
           {
             label: "主页",
             icon: "user",
-            url: "",
+            url: "/space",
           },
           {
             label: "管理",
             icon: "manage",
-            url: "",
+            url: "/space/manage",
           },
           {
             label: "设置",
             icon: "setting",
-            url: "",
+            url: "/space/setting",
           },
         ],
       },
     };
   },
-  components: {
-    MainSideBar,
-  },
+  mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
 #space {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  position: relative;
   display: flex;
-  height: 100vh;
+  div.space-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.33);
+  }
+  img.space-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
   .content {
     flex: 1;
     color: #fff;
     padding: 30px;
+    z-index: 1;
   }
 }
 </style>

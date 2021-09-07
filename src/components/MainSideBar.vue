@@ -6,6 +6,7 @@
       <side-bar-item
         v-for="(item, index) in config.nav_items"
         :key="index"
+        :url="item.url"
         slot="nav-item"
       >
         <svg-icon
@@ -34,7 +35,7 @@ export default {
   },
   props: {
     config: {
-      type: Array,
+      type: Object,
       default() {
         return [];
       },
@@ -47,5 +48,6 @@ export default {
 <style lang="scss" scoped>
 .mian-side-bar {
   height: 100%;
+  z-index: 10;
 }
 </style>
