@@ -12,6 +12,10 @@ Vue.prototype.$ = $;
 // 在Vue中使用SvgIcon组件，引入icon
 import './icons';
 
+// 按需加载element ui组件
+import './plugins/element.js'
+import 'element-ui/lib/theme-chalk/index.css';
+
 new Vue({
   router,
   store,

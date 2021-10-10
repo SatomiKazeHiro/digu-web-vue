@@ -1,12 +1,14 @@
 <template>
-  <div class="error">
-    <h1>404 NotFind</h1>
+  <div class="media">
+    <h1>Media</h1>
+    <router-view />
+
   </div>
 </template>
 
 <script>
 export default {
-  name: "Error",
+  name: "Media",
 };
 </script>
 

@@ -39,17 +39,45 @@ a:focus {
   color: #333;
 }
 
-.fl{
-    float: left;
+.fl {
+  float: left;
 }
 
-.fr{
-    float: right;
+.fr {
+  float: right;
 }
 
-.box{
-    border-radius: 10px;
-    padding: 10px;
-    background: #fff;
-    // box-shadow: ;
+.box-r4x {
+  border-radius: 4px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.box-r10x {
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+[v-cloak] {
+  display: none !important;
+}
+
+.brs8fff{
+  border-radius: 8px;
+  background: #fff;
+}
+
+.dn{
+  display: none;
+}
+
+.df{
+  display: flex;
+}
+
+.flex-1{
+  flex: 1;
 }

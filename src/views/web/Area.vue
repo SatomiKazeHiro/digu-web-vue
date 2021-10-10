@@ -1,15 +1,16 @@
 <template>
-  <div class="error">
-    <h1>404 NotFind</h1>
+  <div class="area">
+    <h1>Area</h1>
+    <router-view />
+
   </div>
 </template>
 
 <script>
 export default {
-  name: "Error",
+  name: "Area",
 };
 </script>
 
 <style lang="scss" scoped>
-
 </style>

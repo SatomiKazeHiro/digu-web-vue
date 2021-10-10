@@ -6,7 +6,7 @@
     <img class="space-bg" src="~assets/img/space/bg.jpg" alt="" />
     <!-- router内容 -->
     <div class="content" v-if="$route.path == '/space'">
-    <space-ct></space-ct>
+      <space-ct></space-ct>
     </div>
     <div class="content" v-else>
       <router-view />
@@ -16,7 +16,7 @@
 
 <script>
 import MainSideBar from "components/MainSideBar";
-import SpaceCt from "views/space/SpaceCt.vue";
+import SpaceCt from "views/space/SpaceCt";
 export default {
   name: "Space",
   components: {
@@ -82,8 +82,9 @@ export default {
   .content {
     flex: 1;
     color: #fff;
-    padding: 30px;
     z-index: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 </style>

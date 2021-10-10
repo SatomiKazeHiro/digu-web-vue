@@ -7,10 +7,12 @@
 </template>
 
 <script>
-// import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: "Index",
   components: {},
 };
 </script>
+
+<style lang="scss" scoped>
+
+</style>
