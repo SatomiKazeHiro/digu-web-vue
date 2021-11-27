@@ -13,24 +13,24 @@ export default {
     };
   },
   mounted() {
-    const that = this;
+    const _this = this;
     window.addEventListener("resize", function () {
-      that.$nextTick(() => {
+      _this.$nextTick(() => {
         return (() => {
-          that.appWidth = that.calculateW() + "px";
-          that.appHeight = that.calculateH() + "px";
+          _this.appWidth = _this.calculateW() + "px";
+          _this.appHeight = _this.calculateH() + "px";
         })();
       });
     });
   },
   methods: {
     calculateW() {
-      if (window.innerWidth < 1280) return 1280;
-      else return window.innerWidth;
+      this.$store.commit("setAppWidth", window.innerWidth);
+      return window.innerWidth;
     },
     calculateH() {
-      if (window.innerWidth < 720) return 720;
-      else return window.innerHeight;
+      this.$store.commit("setAppHeight", window.innerHeight);
+      return window.innerHeight;
     },
   },
 };
@@ -38,9 +38,27 @@ export default {
 
 <style lang="scss">
 @import "@/styles/base.scss";
-#app{
+#app {
   overflow: hidden;
-  overflow-x: auto;
   overflow-y: auto;
+  position: relative;
+  // &::-webkit-scrollbar {
+  //   position: absolute;
+  //   right: 0;
+  //   width: 8px;
+  //   height: 8px;
+  // }
+  // /*滚动条里面小方块样式*/
+  // &::-webkit-scrollbar-thumb {
+  //   border-radius: 100px;
+  //   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  //   background: rgb(80, 80, 80);
+  // }
+  // /*滚动条里面轨道样式*/
+  // &::-webkit-scrollbar-track {
+  //   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  //   border-radius: 0;
+  //   background: rgba(0, 0, 0, 0.1);
+  // }
 }
 </style>

@@ -145,12 +145,8 @@
 </template>
 
 <script>
-import ManageItem from "components/common/boxs/ManageItem.vue";
 export default {
   name: "Manage",
-  components: {
-    ManageItem,
-  },
   data() {
     return {
       treeData: [

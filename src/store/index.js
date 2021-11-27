@@ -7,7 +7,7 @@ Vue.use(Vuex)
 // 用户模块
 let moduleUser = {
   state: {
-    username: "",
+    userHeaderPath: "assets/img/user/head.jpeg",
   },
   mutations: {
     updateUsername(state, val) {
@@ -30,6 +30,34 @@ let moduleSetting = {
   modules: {
   }
 }
+// 浏览器状态
+let moduleBrowserStatus = {
+  state: {
+    appWidth: null,
+    appHeight: null,
+    areaMobileScrollIsDrop: false,
+  },
+  mutations: {
+    // 获取应用宽度
+    setAppWidth(state, windowInnerWidth) {
+      state.appWidth = windowInnerWidth;
+    },
+    // 获取应用高度
+    setAppHeight(state, windowInnerHeight) {
+      state.appHeight = windowInnerHeight;
+    },
+    // 获取在移动端下用户是往上还是往下滑
+    setAreaScrollIsDrop(state, res, type = "mobile") {
+      if (type === "mobile") {
+        state.areaMobileScrollIsDrop = res;
+      }
+    }
+  },
+  actions: {
+  },
+  modules: {
+  }
+}
 
 // 导出/创建实例对象
 export default new Vuex.Store({
@@ -40,7 +68,8 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    MUser: moduleUser,
-    MSetting: moduleSetting
+    _user: moduleUser,
+    _setting: moduleSetting,
+    _browserStatus: moduleBrowserStatus
   }
 })
