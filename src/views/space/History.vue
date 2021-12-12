@@ -1,14 +1,15 @@
 <template>
-  <div id="setting">
-    <h1>设置</h1>
+  <div id="history">
+    <h1>历史记录</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Setting",
+  name: "History",
 };
 </script>
 
 <style lang="scss" scoped>
+
 </style>

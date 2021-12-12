@@ -113,3 +113,13 @@ li {
   opacity: 1;
   transition: 0.25s;
 }
+
+// 选中颜色
+::selection {
+  background: #00a1d6;
+  color: white; /* Safari */
+}
+::-moz-selection {
+  background: #00a1d6;
+  color: white; /* Firefox */
+}

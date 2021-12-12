@@ -1,12 +1,12 @@
 <template>
-  <div id="setting">
-    <h1>设置</h1>
+  <div id="watchlater">
+    <h1>稍后再看</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Setting",
+  name: "Watchlater",
 };
 </script>
 

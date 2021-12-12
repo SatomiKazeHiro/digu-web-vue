@@ -263,6 +263,8 @@ export default {
                 }
                 p {
                   padding: 5px 0;
+                  font-weight: 700;
+                  word-break: break-all;
                 }
               }
             }

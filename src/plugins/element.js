@@ -16,6 +16,12 @@ import {
   CarouselItem,
   Tabs,
   TabPane,
+  Message,
+  Loading,
+  MessageBox,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -34,3 +40,15 @@ Vue.use(Carousel);
 Vue.use(CarouselItem);
 Vue.use(Tabs);
 Vue.use(TabPane);
+Vue.use(Loading.directive);
+Vue.use(Dropdown);
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$loading = Loading.service;
+Vue.prototype.$message = Message;
+

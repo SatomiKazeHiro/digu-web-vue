@@ -49,5 +49,21 @@ export default {
 .mian-side-bar {
   height: 100%;
   z-index: 10;
+  &.fixed {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+}
+@media only screen and (width: 1024px) {
+  .mian-side-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+  }
 }
 </style>

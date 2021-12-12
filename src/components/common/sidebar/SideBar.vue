@@ -8,7 +8,7 @@
         <slot name="web-name"></slot>
       </div>
       <div class="menu-btn">
-        <svg-icon icon-class="menu" id="menu-btn"></svg-icon>
+        <svg-icon icon-class="space-menu" id="menu-btn"></svg-icon>
       </div>
     </div>
     <div class="nav-wrap">
@@ -22,14 +22,12 @@
           <slot name="head-img"></slot>
         </div>
         <div class="profile-decs">
-          <!-- <div class="decs-name">Tonas</div>
-          <div class="decs-desc">Web Test</div> -->
           <slot name="decs-name"></slot>
           <slot name="decs-maxim"></slot>
         </div>
       </div>
       <div class="log-out">
-        <svg-icon icon-class="logout" id="logout-btn"></svg-icon>
+        <svg-icon icon-class="space-logout" id="logout-btn"></svg-icon>
       </div>
     </div>
   </div>
@@ -53,25 +51,21 @@ export default {
 <style lang="scss" scoped>
 .side-bar {
   height: 100%;
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  height: 100%;
   width: 70px;
   background: #11101d;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   transition: all 0.5s ease;
   .logo-wrap {
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
     display: flex;
     color: #fff;
     position: relative;
     .logo-box {
+      width: 0;
       opacity: 0;
       display: flex;
-      width: 0;
       overflow: hidden;
       transition: all 0.5s ease;
       .web-logo {
@@ -91,6 +85,8 @@ export default {
         font-family: Helvetica;
         text-align: start;
         white-space: nowrap;
+        overflow: hidden;
+        // text-overflow: ellipsis;
       }
     }
     .menu-btn {
@@ -109,6 +105,7 @@ export default {
   }
   .nav-wrap {
     flex: 1;
+    padding: 0 10px;
     ul.nav-list {
       margin-top: 20px;
     }
@@ -117,6 +114,7 @@ export default {
     color: #fff;
     display: flex;
     margin-top: 10px;
+    padding: 10px;
     .profile-box {
       width: 0;
       opacity: 0;
@@ -132,36 +130,39 @@ export default {
           height: 50px;
           width: 50px;
           object-fit: cover;
-          border-radius: 12px;
+          border-radius: 6px;
         }
       }
       .profile-decs {
         flex: 1;
         margin: 0 10px;
         white-space: nowrap;
+        overflow: hidden;
         .decs-name {
-          font-size: 15px;
           font-weight: 400;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          margin-bottom: 5px;
         }
-        .decs-job {
+        .decs-maxim {
           font-size: 12px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
     }
     .log-out {
-      width: 40px;
-      font-size: 32px;
+      width: 50px;
+      height: 50px;
+      font-size: 34px;
       line-height: 50px;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-sizing: unset;
       padding: 0 5px;
-      // padding: 0 7px 0 3px;
-      // margin: 5px 0;
-      // cursor: pointer;
-      // border-radius: 5px;
-      // overflow: hidden;
+      transition: all 0.5s ease;
       svg {
         cursor: pointer;
       }
@@ -176,14 +177,8 @@ export default {
     width: 240px;
     .logo-wrap {
       .logo-box {
-        // 渐变出现
         opacity: 1;
-        // 内容层填充
         width: 100%;
-        transition: all 0.5s ease;
-      }
-      .menu-btn {
-        margin: 0 10px;
       }
     }
     .profile-wrap {
@@ -191,12 +186,10 @@ export default {
         flex: 1;
         width: 100%;
         opacity: 1;
-        transition: all 0.5s ease;
       }
       .log-out {
         box-sizing: border-box;
         padding-right: 5px;
-        transition: all 0.5s ease;
       }
     }
   }
@@ -205,16 +198,19 @@ export default {
   .nav-wrap {
     ul.nav-list {
       .side-bar-item {
-        .tooltip {
-          display: block;
-        }
+        overflow: hidden;
         a .nav-label {
           opacity: 0;
           width: 0;
-          overflow: hidden;
           transition: all 0.5s ease;
-          &:hover {
-            transition: unset;
+        }
+        .tooltip {
+          display: block;
+        }
+        &:hover {
+          overflow: unset;
+          .tooltip {
+            transition: all 0.3s ease;
           }
         }
       }

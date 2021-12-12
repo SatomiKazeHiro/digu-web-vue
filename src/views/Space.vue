@@ -1,14 +1,10 @@
 <template>
-  <div class="space" id="space">
-    <main-side-bar :config="baseConfig" class="main-side-bar"></main-side-bar>
+  <div id="space">
+    <main-side-bar :config="baseConfig"></main-side-bar>
     <!-- space背景 -->
-    <div class="space-bg"></div>
+    <div class="mask-bg"></div>
     <img class="space-bg" src="~assets/img/space/bg.jpg" alt="" />
-    <!-- router内容 -->
-    <div class="content" v-if="$route.path == '/space'">
-      <space-ct></space-ct>
-    </div>
-    <div class="content" v-else>
+    <div class="space-content">
       <router-view />
     </div>
   </div>
@@ -16,12 +12,10 @@
 
 <script>
 import MainSideBar from "components/MainSideBar";
-import SpaceCt from "views/space/SpaceCt";
 export default {
   name: "Space",
   components: {
     MainSideBar,
-    SpaceCt,
   },
   data() {
     return {
@@ -32,17 +26,37 @@ export default {
         nav_items: [
           {
             label: "主页",
-            icon: "user",
-            url: "/space",
+            icon: "space-play-hall",
+            url: "/",
           },
           {
-            label: "管理",
-            icon: "manage",
+            label: "个人空间",
+            icon: "space-user",
+            url: "/space/user",
+          },
+          {
+            label: "历史记录",
+            icon: "space-history",
+            url: "/space/history",
+          },
+          {
+            label: "我的收藏",
+            icon: "space-favlist",
+            url: "/space/favlist",
+          },
+          {
+            label: "稍后再看",
+            icon: "space-watchlater",
+            url: "/space/watchlater",
+          },
+          {
+            label: "项目管理",
+            icon: "space-manage",
             url: "/space/manage",
           },
           {
             label: "设置",
-            icon: "setting",
+            icon: "space-setting",
             url: "/space/setting",
           },
         ],
@@ -57,12 +71,13 @@ export default {
 #space {
   width: 100%;
   height: 100%;
+  min-width: 1280px;
+  min-height: 720px;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   position: relative;
   display: flex;
-  div.space-bg {
+  .mask-bg {
     position: absolute;
     left: 0;
     top: 0;
@@ -70,7 +85,7 @@ export default {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.33);
   }
-  img.space-bg {
+  .space-bg {
     position: absolute;
     left: 0;
     top: 0;
@@ -79,12 +94,18 @@ export default {
     object-fit: cover;
     z-index: -1;
   }
-  .content {
+  .space-content {
     flex: 1;
     color: #fff;
     z-index: 1;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: overlay;
+  }
+}
+@media only screen and (width: 1024px) {
+  #space {
+    min-width: 1024px;
+    min-height: unset;
   }
 }
 </style>

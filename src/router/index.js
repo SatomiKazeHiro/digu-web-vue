@@ -22,8 +22,12 @@ let Play = () => import('views/index/Play.vue');
 let Chapter = () => import('views/index/Chapter.vue');
 
 let Space = () => import('views/Space.vue');
-let Setting = () => import('views/space/Setting.vue');
+let User = () => import('views/space/User.vue');
+let History = () => import('views/space/History.vue');
+let Favlist = () => import('views/space/Favlist.vue');
+let Watchlater = () => import('views/space/Watchlater.vue');
 let Manage = () => import('views/space/Manage.vue');
+let Setting = () => import('views/space/Setting.vue');
 
 let ErrorPage = () => import('views/ErrorPage.vue');
 
@@ -38,6 +42,26 @@ const routes = [
     name: 'Space',
     component: Space,
     children: [
+      {
+        path: 'user',
+        name: 'User',
+        component: User,
+      },
+      {
+        path: 'history',
+        name: 'History',
+        component: History,
+      },
+      {
+        path: 'favlist',
+        name: 'Favlist',
+        component: Favlist,
+      },
+      {
+        path: 'watchlater',
+        name: 'Watchlater',
+        component: Watchlater,
+      },
       {
         path: 'manage',
         name: 'Manage',

@@ -1,5 +1,5 @@
 <template>
-  <li class="side-bar-item">
+  <li class="side-bar-item" :class="{ on: $route.path == url }">
     <a @click="$router.push(url ? url : '/')">
       <div class="nav-icon">
         <slot name="nav-icon"></slot>
@@ -36,35 +36,30 @@ export default {
 <style lang="scss" scoped>
 .side-bar-item {
   position: relative;
-  // display: flex;
-  // flex-wrap: nowrap;
-  // align-items: center;
-  padding-right: 10px;
   border-radius: 5px;
-  // overflow: hidden;
   cursor: pointer;
   margin-bottom: 10px;
+  &.on {
+    background: #fff;
+    a {
+      color: #11101d;
+    }
+  }
   a {
     display: flex;
+    color: #fff;
     .nav-icon {
-      // 限制大小
       min-width: 50px;
-      min-width: 50px;
-      min-height: 50px;
       min-height: 50px;
       font-size: 28px;
-      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .nav-label {
       flex: 1;
-      // background: red;
       line-height: 50px;
-      color: #fff;
       margin-left: 8px;
-      //超过一行省略号
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -86,7 +81,7 @@ export default {
     color: #11101d;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     opacity: 0;
-    transition: 0s;
+    transition: 0;
     text-align: center;
     font-weight: bold;
     //超过一行省略号
@@ -97,12 +92,7 @@ export default {
   &:hover {
     background: #fff;
     a {
-      .nav-icon {
-        color: #11101d;
-      }
-      .nav-label {
-        color: #11101d;
-      }
+      color: #11101d;
     }
     .tooltip {
       opacity: 1;
