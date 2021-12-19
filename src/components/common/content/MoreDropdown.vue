@@ -16,41 +16,27 @@
 <script>
 export default {
   name: "MoreDropdown",
+  data() {
+    return {
+      events: [],
+    };
+  },
   props: {
-    events: {
-      type: Array,
-      default: function () {
-        return [
-          {
-            label: "打开",
-            funcName: "openFolder",
-          },
-          {
-            label: "编辑",
-            funcName: "editNode",
-          },
-          {
-            label: "删除",
-            funcName: "deleteNode",
-          },
-        ];
-      },
-    },
     areaEvents: {
       type: Array,
       default: function () {
         return [
           {
-            label: "打开",
-            funcName: "openFolder",
+            label: "查看",
+            funcName: "getAreaItem",
           },
           {
             label: "编辑",
-            funcName: "editArea",
+            funcName: "editAreaConfig",
           },
           {
-            label: "删除",
-            funcName: "deleteAreaFolder",
+            label: "打开",
+            funcName: "openFolder",
           },
         ];
       },
@@ -60,37 +46,41 @@ export default {
       default: function () {
         return [
           {
-            label: "打开",
-            funcName: "openFolder",
+            label: "查看",
+            funcName: "getCategoryItem",
           },
           {
             label: "编辑",
-            funcName: "editCategory",
+            funcName: "editCategoryConfig",
           },
           {
-            label: "删除",
-            funcName: "deleteCategoryFolder",
+            label: "打开",
+            funcName: "openFolder",
           },
         ];
       },
     },
     // 注入数据
-    data: {
+    nodeData: {
       type: Object,
     },
   },
-
+  mounted() {
+    // console.log(this.nodeData);
+    if (!this.nodeData.node.parent.label) this.events = this.areaEvents;
+    else this.events = this.categoryEvents;
+  },
   methods: {
     clickMenu(item) {
-      console.log(1);
-      console.log(item);
-      // 判断是父目录（Area）还是子目录（Category）
-      // if (!item.parent.label) {
-
-      // }else{
-
-      // }
-      // this.$emit(item.funcName, this.data);
+      if (!this.nodeData.node.parent.label) {
+        this.$emit(item.funcName, this.nodeData.node.data.label);
+      } else {
+        this.$emit(
+          item.funcName,
+          this.nodeData.node.parent.data.label,
+          this.nodeData.node.data.label
+        );
+      }
     },
   },
 };
@@ -101,7 +91,5 @@ export default {
   cursor: pointer;
   transform: rotate(90deg);
   font-size: 14px;
-  // height: 26px;
-  // width: 26px;
 }
 </style>

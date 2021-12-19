@@ -24,10 +24,10 @@ export function getAreaRandom(area, limit, excludeID) {
 }
 
 // 获取域下的内容
-export function getAreaNormal(area, limit, page) {
+export function getAreaNormal(area, limit, page, msgType = "") {
   return request({
     url: "/api/get/areaNormal",
-    params: { area, limit, page }
+    params: { area, limit, page, msgType }
   })
 }
 
@@ -40,11 +40,11 @@ export function getCategories(area) {
 }
 
 // 获取域下指定的类的所有资源项目（Iitem）
-export function getCategoryNormal(area, category, limit, page) {
+export function getCategoryNormal(area, category, limit, page, msgType = "") {
   // console.log(area, category, limit, page);
   return request({
     url: "/api/get/categoryNormal",
-    params: { area, category, limit, page }
+    params: { area, category, limit, page, msgType }
   })
 }
 
