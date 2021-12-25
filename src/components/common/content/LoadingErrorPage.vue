@@ -3,7 +3,7 @@
     <div class="desc-box">
       <img src="~assets/img/web/no-tempalte.png" />
       <p>页面加载失败，请重试</p>
-      <div class="again-btn">
+      <div class="btn-box">
         <button>刷新一下</button>
       </div>
     </div>
@@ -40,7 +40,7 @@ export default {
       color: #666666;
       white-space: nowrap;
     }
-    .again-btn {
+    .btn-box {
       button {
         padding: 6px 15px;
         margin-top: 15px;
