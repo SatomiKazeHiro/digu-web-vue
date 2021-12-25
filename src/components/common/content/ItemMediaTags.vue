@@ -26,7 +26,7 @@
             <div class="sl-ep-list">
               <ul>
                 <li class="misl-ep-item" v-for="i in 24" :key="i">
-                  <div class="misl-ep-index">{{ i }}</div>
+                  <div class="misl-ep-index" @click="goToPlay">{{ i }}</div>
                 </li>
               </ul>
             </div>
@@ -70,9 +70,35 @@ export default {
     this.getRecommendItem();
   },
   methods: {
+    // 当前 tabs 的值
     setContent(id) {
       this.currentTagID = id;
     },
+    // 跳转到播放页 - 单体
+    goToPlay() {
+      if (
+        this.$route.params.area &&
+        this.$route.params.category &&
+        this.$route.params.item
+      )
+        this.$router.push(
+          `/${this.$route.params.area}/${this.$route.params.category}/${this.$route.params.item}/play`
+        );
+    },
+
+    // 跳转到播放页 - 连载
+    goToChapter(chapter) {
+      if (
+        this.$route.params.area &&
+        this.$route.params.category &&
+        this.$route.params.item
+      )
+        this.$router.push(
+          `/${this.$route.params.area}/${this.$route.params.category}/${this.$route.params.item}/s/${chapter}`
+        );
+    },
+
+    // 获取推荐的随机内容
     getRecommendItem() {
       getAreaRandom(this.$route.params.area, 6).then((res) => {
         console.log(res);
@@ -81,13 +107,13 @@ export default {
         }
       });
     },
-    // 生成 a 标签的连接
+    // 生成推荐的 a 标签的连接
     getAUrl(i) {
       // console.log(i);
       if (i) return `/${this.area}/${i.url.split("/")[3]}/${i.id}`;
       else return "";
     },
-    // 生成 img 标签的连接
+    // 生成推荐的 img 标签的连接
     getImgUrl(i) {
       if (i) return `/proxy${i.url}${i.title}/${i.cover}`;
       else return "";

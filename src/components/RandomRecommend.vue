@@ -130,7 +130,7 @@ img.el-banner-img {
         left: 0;
         width: 100%;
         height: 48px;
-        background-image: url("~assets/img/web/index/shadow.png");
+        background-image: url("~assets/img/web/area/shadow.png");
         background-repeat: repeat-x;
       }
       .info-box {

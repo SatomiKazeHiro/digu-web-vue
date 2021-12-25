@@ -1,14 +1,20 @@
 <template>
   <div class="chapter">
     <h1>Chapter</h1>
-    <router-view />
-
   </div>
 </template>
 
 <script>
+import { checkItem } from "network/checkDB";
 export default {
   name: "Chapter",
+  created() {
+    console.log(this.$route.params.item, this.$route.params.chapter);
+    if (this.$route.params.item)
+      checkItem(this.$route.params.item).then((res) => {
+        console.log(res);
+      });
+  },
 };
 </script>
 

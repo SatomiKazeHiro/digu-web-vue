@@ -49,10 +49,10 @@ export function getCategoryNormal(area, category, limit, page, msgType = "") {
 }
 
 // 获取资源项目的信息
-export function getItem(id) {
+export function getItem(area, category, id) {
   return request({
     url: "/api/get/item",
-    params: { id }
+    params: { area, category, id }
   })
 }
 

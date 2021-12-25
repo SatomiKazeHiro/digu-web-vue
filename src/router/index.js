@@ -15,11 +15,11 @@ VueRouter.prototype.replace = function replace(location) {
 Vue.use(VueRouter);
 
 let Index = () => import('views/Index.vue');
-let Area = () => import('views/index/Area.vue');
-let Category = () => import('views/index/Category.vue');
-let Media = () => import('views/index/Media.vue');
-let Play = () => import('views/index/Play.vue');
-let Chapter = () => import('views/index/Chapter.vue');
+let Area = () => import('views/web/Area.vue');
+let Category = () => import('views/web/Category.vue');
+let Media = () => import('views/web/Media.vue');
+let Play = () => import('views/web/Play.vue');
+let Chapter = () => import('views/web/Chapter.vue');
 
 let Space = () => import('views/Space.vue');
 let User = () => import('views/space/User.vue');

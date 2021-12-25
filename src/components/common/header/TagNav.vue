@@ -6,7 +6,7 @@
           <li>
             <a href="https://www.bilibili.com/" target="_blank">
               <div class="web-item" style="background: #73c9e5">
-                <img src="~assets/img/web/index/Bilibili.png" alt="" />
+                <img src="~assets/img/web/area/Bilibili.png" alt="" />
               </div>
               <span>BiliBili</span>
             </a>
@@ -14,7 +14,7 @@
           <li>
             <a href="https://www.iqiyi.com/dongman/" target="_blank">
               <div class="web-item" style="background: #00be06">
-                <img src="~assets/img/web/index/iQIYI.png" alt="" />
+                <img src="~assets/img/web/area/iQIYI.png" alt="" />
               </div>
               <span>爱奇艺</span>
             </a>
@@ -22,7 +22,7 @@
           <li>
             <a href="https://ac.qq.com/" target="_blank">
               <div class="web-item" style="background: #fa9144">
-                <img src="~assets/img/web/index/tencent.png" alt="" />
+                <img src="~assets/img/web/area/tencent.png" alt="" />
               </div>
               <span>腾讯动漫</span>
             </a>

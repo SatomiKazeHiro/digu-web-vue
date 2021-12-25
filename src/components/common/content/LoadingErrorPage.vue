@@ -1,26 +1,29 @@
 <template>
-  <div class="error">
+  <div class="loading-error">
     <div class="desc-box">
-      <img src="~assets/img/web/404.png" />
-      <p>页面未找到</p>
+      <img src="~assets/img/web/no-tempalte.png" />
+      <p>页面加载失败，请重试</p>
+      <div class="again-btn">
+        <button>刷新一下</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ErrorPage",
+  name: "NoTemplatePage",
 };
 </script>
 
 <style lang="scss" scoped>
-.error {
+.loading-error {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 1);
+  // background: rgba(0, 0, 0, 1);
   .desc-box {
     width: 25%;
     min-width: 200px;
@@ -34,21 +37,26 @@ export default {
     }
     p {
       margin-top: 15px;
-      color: #fff;
+      color: #666666;
       white-space: nowrap;
-      font-size: 3vw;
-      background-image: -webkit-linear-gradient(
-        225deg,
-        rgb(47, 47, 48),
-        rgb(143, 58, 92)
-      );
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    }
+    .again-btn {
+      button {
+        padding: 6px 15px;
+        margin-top: 15px;
+        font-size: 14px;
+        color: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        background-color: #2c7a9f;
+        border-radius: 4px;
+      }
     }
   }
 }
 @media only screen and (min-width: 1600px) {
-  .error {
+  .loading-error {
     .desc-box {
       p {
         font-size: 46px;
@@ -57,7 +65,7 @@ export default {
   }
 }
 @media only screen and (max-width: 600px) {
-  .error {
+  .loading-error {
     .desc-box {
       p {
         font-size: 16px;

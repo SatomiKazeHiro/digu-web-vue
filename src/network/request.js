@@ -10,17 +10,19 @@ export default function request(config) {
   instance.interceptors.request.use(config => {
     // console.log(config);
     // 拦截后（处理后）返回过去，否则请求失败
-    return config
+    return config;
   }, err => {
     console.log(err);
+    return config;
   })
 
   instance.interceptors.response.use(res => {
     // console.log(res);
     // 拦截后（处理后）返回过去，否则请求失败
-    return res.data
+    return res.data;
   }, err => {
     console.log(err);
+    return res.data;
   })
 
   return instance(config)
