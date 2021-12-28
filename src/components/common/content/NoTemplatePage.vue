@@ -24,12 +24,13 @@ export default {
   .desc-box {
     width: 25%;
     min-width: 200px;
-    max-width: 360px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     text-align: center;
     img {
       width: 100%;
+      max-width: 360px;
       display: block;
     }
     p {

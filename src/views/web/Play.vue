@@ -1,5 +1,5 @@
 <template>
-  <div class="play">
+  <div class="play" v-cloak>
     <div class="play-wrap" v-if="hasResource"></div>
     <div class="loading-error" v-if="loadingError">加载错误</div>
   </div>

@@ -143,12 +143,12 @@
                 label="资源展示模板"
                 :class="{
                   change:
-                    categoryForm.item_log_tempalte !==
-                    categoryFormCK.item_log_tempalte,
+                    categoryForm.item_log_template !==
+                    categoryFormCK.item_log_template,
                 }"
               >
                 <el-select
-                  v-model="categoryForm.item_log_tempalte"
+                  v-model="categoryForm.item_log_template"
                   style="width: 100%"
                   :size="handleSize()"
                 >

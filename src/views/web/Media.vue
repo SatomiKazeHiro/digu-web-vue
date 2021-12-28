@@ -1,5 +1,5 @@
 <template>
-  <div class="media">
+  <div class="media" v-cloak>
     <div
       class="media-wrap"
       :class="{ 'opacity-0': !isShow }"
@@ -108,8 +108,6 @@ export default {
         (res) => {
           console.log(res);
           if (res && res.code === 200 && res.data === true) {
-            // 有该资源项目时则显示页面
-            this.isShow = true;
             // 获取资源项目的详细数据
             getItem(
               this.$route.params.area,
@@ -123,17 +121,20 @@ export default {
                   this.coverBgImgStyle =
                     'background-image: url("' + this.coverPath + '");';
                   this.mediaInfo = res.data;
+                  this.isShow = true;
                 } else if (
                   res.code &&
                   res.code === 403 &&
                   res.data.type === "no-Template"
                 ) {
-                  // 没有设置模板
+                  // 显示没有设置模板
+                  this.isShow = true;
                   this.noTemplate = true;
                 }
               },
               (err) => {
                 // 数据获取失败
+                this.isShow = true;
                 this.loadingError = true;
               }
             );
@@ -145,7 +146,10 @@ export default {
           this.loadingError = true;
         }
       );
-    } else this.$router.push("/404");
+    } else {
+      // 路径参数不正确则跳转至404页面
+      this.$router.push("/404");
+    }
   },
   methods: {
     showImg(ref) {

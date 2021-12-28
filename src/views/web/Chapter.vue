@@ -1,5 +1,5 @@
 <template>
-  <div class="chapter">
+  <div class="chapter" v-cloak>
     <h1>Chapter</h1>
   </div>
 </template>
