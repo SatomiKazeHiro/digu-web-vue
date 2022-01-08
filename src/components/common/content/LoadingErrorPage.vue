@@ -1,7 +1,7 @@
 <template>
   <div class="loading-error">
     <div class="desc-box">
-      <img src="~assets/img/web/no-tempalte.png" />
+      <img src="~assets/img/web/loading-error.png" />
       <p>页面加载失败，请重试</p>
       <div class="btn-box">
         <button>刷新一下</button>
