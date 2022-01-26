@@ -10,7 +10,7 @@
         }"
       >
         <button>
-          <svg-icon icon-class="mainheader-search"></svg-icon>
+          <svg-icon icon-class="header-search"></svg-icon>
         </button>
       </div>
     </form>

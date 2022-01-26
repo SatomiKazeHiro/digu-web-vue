@@ -1,6 +1,11 @@
 <template>
   <div class="area">
-    <div class="m-header">
+    <div
+      class="m-header"
+      :class="{
+        hideHeaderNav: $store.state._browserStatus.areaMobileScrollIsDrop,
+      }"
+    >
       <normal-header pcBgColor="#000">
         <img
           :src="getHead($store.state._user.userHeaderPath)"
@@ -206,6 +211,10 @@ export default {
       top: 0;
       left: 0;
       width: 100%;
+      transition: top 0.2s linear;
+      &.hideHeaderNav{
+        top: -48px;
+      }
       .carousel-wrap {
         display: none;
       }

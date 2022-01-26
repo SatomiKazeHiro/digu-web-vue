@@ -19,6 +19,7 @@ module.exports = {
     },
   },
   devServer: {
+    port: 5910,
     proxy: {
       ["/proxy"]: {
         target: 'http://localhost:2233',

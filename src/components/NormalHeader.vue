@@ -6,39 +6,28 @@
       :mobileBgColor="mobileBgColor"
       :mobileColor="mobileColor"
     >
-      <div class="link-item" slot="link-item">
-        <a href="/" target="_blank">主站</a>
-      </div>
-      <div class="link-item" slot="link-item">
-        <a href="/anime" target="_blank">动画</a>
-      </div>
-      <div class="link-item" slot="link-item">
-        <a href="/manga" target="_blank">漫画</a>
+      <div
+        class="link-item"
+        slot="link-item"
+        v-for="i in linkItems"
+        :key="'header-' + i.label"
+      >
+        <a :href="i.url">{{ i.label }}</a>
       </div>
       <nav-search slot="search-item"></nav-search>
       <div class="user-head" slot="user-head">
         <slot name="user-img"></slot>
       </div>
-      <div class="user-item" slot="user-item">
-        <a href="javascript:void(0)" target="_blank" v-if="windowWidth > 1024"
-          >收藏</a
-        >
+      <div
+        slot="user-item"
+        class="user-item"
+        v-for="i in userItems"
+        :key="'header-' + i.label"
+      >
+        <a :href="i.url" v-if="windowWidth > 1024">{{ i.label }}</a>
         <button v-else>
-          <svg-icon icon-class="mainheader-collect"></svg-icon>
+          <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
-      </div>
-      <div class="user-item" slot="user-item">
-        <a href="javascript:void(0)" target="_blank" v-if="windowWidth > 1024"
-          >历史记录</a
-        >
-        <button v-else>
-          <svg-icon icon-class="mainheader-history"></svg-icon>
-        </button>
-      </div>
-      <div class="user-item" slot="user-item">
-        <a href="javascript:void(0)" target="_blank" v-if="windowWidth > 1024"
-          >设置</a
-        >
       </div>
     </base-header>
   </div>
@@ -62,6 +51,34 @@ export default {
   data() {
     return {
       windowWidth: null,
+      // 左侧站内链接内容
+      linkItems: [
+        {
+          label: "主站",
+          url: "/",
+        },
+        {
+          label: "动画",
+          url: "/anime",
+        },
+        {
+          label: "漫画",
+          url: "/manga",
+        },
+      ],
+      // 右侧用户链接内容
+      userItems: [
+        {
+          label: "收藏",
+          icon: "header-collect",
+          url: "/space/favlist",
+        },
+        {
+          label: "历史记录",
+          icon: "header-history",
+          url: "/space/history",
+        },
+      ],
     };
   },
   mounted() {
