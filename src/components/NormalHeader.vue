@@ -98,4 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.normal-header{
+  transition: opacity 0.25s linear;
+}
 </style>

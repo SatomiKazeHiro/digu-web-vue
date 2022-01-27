@@ -35,6 +35,7 @@ let moduleBrowserStatus = {
   state: {
     appWidth: null,
     appHeight: null,
+    // 域页面（移动端时有效）是否下拉状态
     areaMobileScrollIsDrop: false,
   },
   mutations: {
@@ -47,10 +48,8 @@ let moduleBrowserStatus = {
       state.appHeight = windowInnerHeight;
     },
     // 获取在移动端下用户是往上还是往下滑
-    setAreaScrollIsDrop(state, res, type = "mobile") {
-      if (type === "mobile") {
-        state.areaMobileScrollIsDrop = res;
-      }
+    setAreaScrollIsDrop(state, res) {
+      state.areaMobileScrollIsDrop = res;
     }
   },
   actions: {

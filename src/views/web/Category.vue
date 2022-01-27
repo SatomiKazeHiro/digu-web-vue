@@ -7,7 +7,7 @@
         :key="i.id"
         :ref="category + i.id"
       >
-        <a :href="getAUrl(i)">
+        <a :href="i.link_url">
           <img :src="getImgUrl(i)" @load="showImg(i.id)" />
           <span class="title">{{ i.title }}</span>
         </a>
@@ -50,6 +50,8 @@ export default {
   mounted() {
     // 加载数据
     this.getInitData();
+    // 初始化页面滚动值
+    this.$store.commit("setAreaScrollIsDrop", false);
     // 监听页面滚动
     this.$refs["category"].addEventListener(
       "scroll",
@@ -106,7 +108,7 @@ export default {
             if (this.category === "all") {
               getAreaNormal(this.area, this.limit, this.currentPage).then(
                 (res) => {
-                  // console.log(res);
+                  console.log(res);
                   if (res.code === 200) {
                     this.itemTotal = res.data.total;
                     this.currentPage = res.data.page;
@@ -125,7 +127,7 @@ export default {
                     this.limit,
                     this.currentPage
                   ).then((res) => {
-                    // console.log(res);
+                    console.log(res);
                     if (res.code === 200) {
                       this.itemTotal = res.data.total;
                       this.currentPage = res.data.page;
@@ -143,15 +145,9 @@ export default {
         });
       }
     },
-    // 生成 a 标签的连接
-    getAUrl(i) {
-      // console.log(i);
-      if (i) return `/${this.area}/${i.url.split("/")[3]}/${i.id}`;
-      else return "";
-    },
     // 生成 img 标签的连接
     getImgUrl(i) {
-      if (i) return `/proxy${i.url}${i.title}/${i.cover}`;
+      if (i) return `/proxy${i.sources_url}/${i.cover}`;
       else return "";
     },
     // 渐变加载拓扑，防拉伸
@@ -174,19 +170,14 @@ export default {
     // 移动端根据上下滑生成控制顶部导航栏显示的数据
     handleCategoriesNavShow(e) {
       // 对比之前的高度，输出用户动作
-      if (this.$refs["category"].scrollTop - this.scrollToTop > 0) {
+      if (
+        this.$refs["category"].scrollTop > 48 &&
+        this.$refs["category"].scrollTop - this.scrollToTop > 0
+      ) {
         this.$store.commit("setAreaScrollIsDrop", true);
       } else this.$store.commit("setAreaScrollIsDrop", false);
       // 存入新的高度
       this.scrollToTop = this.$refs["category"].scrollTop;
-      // 判断预案
-      // if (
-      //   this.$refs["item-wrap"].scrollHeight -
-      //     (this.$refs["category"].clientHeight +
-      //       this.$refs["category"].scrollTop) >=
-      //   48
-      // ) {
-      // }
     },
     // 当前页码改变时发起请求
     handleCurrentChange(val) {
@@ -207,7 +198,7 @@ export default {
 <style lang="scss" scoped>
 .category {
   padding-top: 15px;
-  overflow: hidden;
+  overflow-x: hidden;
   overflow-y: auto;
   .items-wrap {
     width: 1280px;
@@ -295,6 +286,7 @@ export default {
     height: 100%;
     padding: 2.33vw 1.166vw;
     transition: 0.4s;
+    padding-top: calc(2.33vw + 48px);
     &.hd {
       padding: 1.4vw 0.7vw;
       .items-wrap {

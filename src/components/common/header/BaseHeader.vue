@@ -175,12 +175,4 @@ export default {
     }
   }
 }
-// // 电脑端全屏 1280+
-// @media only screen and (min-width: 1300px) {
-//   .base-header {
-//     .nav__content {
-//       // background: teal;
-//     }
-//   }
-// }
 </style>

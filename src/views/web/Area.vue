@@ -6,7 +6,7 @@
         hideHeaderNav: $store.state._browserStatus.areaMobileScrollIsDrop,
       }"
     >
-      <normal-header pcBgColor="#000">
+      <normal-header pcBgColor="#333" mobileBgColor="transparent">
         <img
           :src="getHead($store.state._user.userHeaderPath)"
           slot="user-img"
@@ -54,9 +54,6 @@
     </div>
     <div
       class="category-wrap"
-      :class="{
-        drop: $store.state._browserStatus.areaMobileScrollIsDrop,
-      }"
     >
       <Category></Category>
     </div>
@@ -127,6 +124,7 @@ export default {
 <style lang="scss" scoped>
 .area {
   .m-header {
+    background: #fff;
     .carousel-wrap {
       padding-top: 8px;
       background: #000;
@@ -182,6 +180,9 @@ export default {
             }
           }
         }
+        ::v-deep .el-tabs__item {
+          height: 39px;
+        }
       }
     }
   }
@@ -205,15 +206,20 @@ export default {
 @media only screen and (max-width: 1024px) {
   .area {
     height: 100%;
+    overflow: hidden;
     position: relative;
     .m-header {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      transition: top 0.2s linear;
-      &.hideHeaderNav{
-        top: -48px;
+      transition: transform 0.25s;
+      z-index: 50;
+      &.hideHeaderNav {
+        transform: translateY(-48px);
+        .normal-header {
+          opacity: 0;
+        }
       }
       .carousel-wrap {
         display: none;
@@ -234,18 +240,19 @@ export default {
       }
     }
     .category-wrap {
-      height: 100%;
+      position: absolute;
       // nav 48 + tag 40
-      padding-top: 88px;
-      transition: 0.4s;
-      &.drop {
-        padding-top: 40px;
-        // padding-bottom: 48px;
-      }
+      top: 40px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding-bottom: 40px;
+      transition: transform 0.25s;
+      z-index: 4;
     }
   }
 }
-// el 走马灯样式
+// element-ui走马灯样式
 ::v-deep li.el-carousel__indicator {
   &.is-active button.el-carousel__button {
     background-color: #00a1d6;
