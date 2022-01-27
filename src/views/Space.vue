@@ -55,6 +55,11 @@ export default {
             url: "/space/manage",
           },
           {
+            label: "项目管理（修改版）",
+            icon: "space-manage",
+            url: "/space/manage2",
+          },
+          {
             label: "设置",
             icon: "space-setting",
             url: "/space/setting",
@@ -71,8 +76,8 @@ export default {
 #space {
   width: 100%;
   height: 100%;
-  min-width: 1280px;
-  min-height: 720px;
+  // min-width: 1280px;
+  // min-height: 720px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -102,10 +107,10 @@ export default {
     overflow-y: overlay;
   }
 }
-@media only screen and (width: 1024px) {
-  #space {
-    min-width: 1024px;
-    min-height: unset;
-  }
-}
+// @media only screen and (width: 1024px) {
+//   #space {
+//     min-width: 1024px;
+//     min-height: unset;
+//   }
+// }
 </style>

@@ -27,6 +27,7 @@ let History = () => import('views/space/History.vue');
 let Favlist = () => import('views/space/Favlist.vue');
 let Watchlater = () => import('views/space/Watchlater.vue');
 let Manage = () => import('views/space/Manage.vue');
+let ManageNew = () => import('views/space/ManageNew.vue');
 let Setting = () => import('views/space/Setting.vue');
 
 let ErrorPage = () => import('views/ErrorPage.vue');
@@ -66,6 +67,11 @@ const routes = [
         path: 'manage',
         name: 'Manage',
         component: Manage,
+      },
+      {
+        path: 'manage2',
+        name: 'ManageNew',
+        component: ManageNew,
       },
       {
         path: 'setting',

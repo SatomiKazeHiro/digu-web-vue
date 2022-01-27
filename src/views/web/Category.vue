@@ -289,6 +289,7 @@ export default {
     padding-top: calc(2.33vw + 48px);
     &.hd {
       padding: 1.4vw 0.7vw;
+      padding-top: calc(1.4vw + 48px);
       .items-wrap {
         .item-cell {
           width: 20%;
