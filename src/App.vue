@@ -38,6 +38,7 @@ export default {
 
 <style lang="scss">
 @import "@/styles/base.scss";
+@import "@/styles/color.scss";
 #app {
   overflow: hidden;
   overflow-y: auto;

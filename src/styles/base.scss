@@ -124,10 +124,18 @@ li {
   color: white; /* Firefox */
 }
 
-
 // -------------------------------新的通用样式-----------------------------
-button.transparent{
+button.transparent {
   outline: none;
   cursor: pointer;
 }
 
+// 遮罩之上的元素使用
+.z-100 {
+  z-index: 100 !important;
+}
+
+// 遮罩使用
+.z-50 {
+  z-index: 50 !important;
+}

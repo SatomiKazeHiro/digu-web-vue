@@ -36,14 +36,37 @@
 <script>
 export default {
   name: "SideBar",
+  data() {
+    return {
+      // 默认折叠
+      isCollapse: true,
+    };
+  },
   mounted() {
+    // 点击事件
     let menuBtn = document.querySelector("#menu-btn");
     let sideBar = document.querySelector(".side-bar");
     let logoutBtn = document.querySelector("#logout-btn");
-
     menuBtn.onclick = () => {
-      sideBar.classList.toggle("active");
+      if (this.isCollapse) {
+        sideBar.classList.add("active");
+        // 控制侧边栏的展开
+        this.$EventBus.$emit("sideStateChange", "active");
+      } else {
+        sideBar.classList.remove("active");
+        this.$EventBus.$emit("sideStateChange", "collapse");
+      }
+      setTimeout(() => {
+        this.isCollapse = !this.isCollapse;
+      }, 500);
     };
+    // 监听点击打开侧边栏时的遮罩
+    this.$EventBus.$on("shrinkSide", () => {
+      sideBar.classList.remove("active");
+      setTimeout(() => {
+        this.isCollapse = !this.isCollapse;
+      }, 500);
+    });
   },
 };
 </script>

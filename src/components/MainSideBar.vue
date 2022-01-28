@@ -1,7 +1,7 @@
 <template>
   <div class="mian-side-bar">
     <side-bar>
-      <img src="~assets/img/space/logo.png" alt="" slot="web-logo" />
+      <img src="~assets/img/space/logo.png" slot="web-logo" />
       <div class="web-name" slot="web-name">{{ config.web_name }}</div>
       <side-bar-item
         v-for="(item, index) in config.nav_items"
@@ -17,7 +17,7 @@
         <span slot="nav-label">{{ item.label }}</span>
         <span slot="tooltip" class="tooltip">{{ item.label }}</span>
       </side-bar-item>
-      <img src="~assets/img/user/head.jpeg" alt="" slot="head-img" />
+      <img src="~assets/img/user/head.jpeg" slot="head-img" />
       <div class="decs-name" slot="decs-name">{{ config.user_name }}</div>
       <div class="decs-maxim" slot="decs-maxim">{{ config.user_maxim }}</div>
     </side-bar>
@@ -41,7 +41,6 @@ export default {
       },
     },
   },
-  mounted() {},
 };
 </script>
 
@@ -49,21 +48,13 @@ export default {
 .mian-side-bar {
   height: 100%;
   z-index: 10;
+  transition: all 0.3s linear;
   &.fixed {
     height: 100%;
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-  }
-}
-@media only screen and (width: 1024px) {
-  .mian-side-bar {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    height: 100%;
   }
 }
 </style>

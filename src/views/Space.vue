@@ -1,8 +1,9 @@
 <template>
   <div id="space">
-    <main-side-bar :config="baseConfig"></main-side-bar>
+    <main-side-bar class="main-side-bar" :config="baseConfig"></main-side-bar>
     <!-- space背景 -->
-    <div class="mask-bg"></div>
+    <div class="side-mask" @click="handleShrinkSide"></div>
+    <div class="space-bg-mask"></div>
     <img class="space-bg" src="~assets/img/space/bg.jpg" alt="" />
     <div class="space-content">
       <router-view />
@@ -68,7 +69,25 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    // 监听侧边栏的状态
+    this.$EventBus.$on("sideStateChange", (state) => {
+      if (state === "active") {
+        document.querySelector(".main-side-bar").classList.add("z-100");
+        document.querySelector(".side-mask").classList.add("show");
+      } else if (state === "collapse") {
+        document.querySelector(".main-side-bar").classList.remove("z-100");
+        document.querySelector(".side-mask").classList.remove("show");
+      }
+    });
+  },
+  methods: {
+    // 点击遮罩收缩侧边栏和关闭遮罩
+    handleShrinkSide() {
+      this.$EventBus.$emit("shrinkSide");
+      document.querySelector(".side-mask").classList.remove("show");
+    },
+  },
 };
 </script>
 
@@ -76,13 +95,26 @@ export default {
 #space {
   width: 100%;
   height: 100%;
-  // min-width: 1280px;
-  // min-height: 720px;
   margin: 0;
   padding: 0;
   position: relative;
   display: flex;
-  .mask-bg {
+  .side-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: all 0.3s linear;
+    &.show {
+      opacity: 1;
+      z-index: 50;
+    }
+  }
+  .space-bg-mask {
     position: absolute;
     left: 0;
     top: 0;
@@ -107,10 +139,19 @@ export default {
     overflow-y: overlay;
   }
 }
-// @media only screen and (width: 1024px) {
-//   #space {
-//     min-width: 1024px;
-//     min-height: unset;
-//   }
-// }
+@media only screen and (max-width: 1024px) {
+  #space {
+    min-width: 1024px;
+    .mian-side-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+    }
+  }
+  .space-content {
+    padding-left: 70px;
+  }
+}
 </style>

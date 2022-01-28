@@ -16,6 +16,9 @@ import './icons';
 import './plugins/element.js'
 import 'element-ui/lib/theme-chalk/index.css';
 
+// 使用事件总线
+Vue.prototype.$EventBus = new Vue()
+
 new Vue({
   router,
   store,

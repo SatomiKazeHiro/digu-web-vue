@@ -35,7 +35,41 @@
             <div class="preview-box"></div>
             <div class="items-table-box">
               <div class="items-nav"></div>
-              <div class="table-box"></div>
+              <div class="table-box">
+                <el-table
+                  :data="tableData"
+                  border
+                  :header-cell-style="{ textAlign: 'center' }"
+                >
+                  <el-table-column prop="cover" label="封面" align="center">
+                    <template slot-scope="scope">
+                      <img
+                        :src="
+                          '/proxy' +
+                          scope.row.url +
+                          scope.row.title +
+                          '/' +
+                          scope.row.cover
+                        "
+                        class="el-table-img"
+                      />
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="title" label="名称"> </el-table-column>
+                  <el-table-column prop="intro" label="简介">
+                    <template slot-scope="scope">
+                      {{ scope.row.intro ? scope.row.intro : "" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="type" label="类型" align="center">
+                    <template slot-scope="scope">
+                      {{ scope.row.type === "normal" ? "单体" : "" }}
+                      {{ scope.row.type === "serial" ? "连载" : "" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作" width="120"> </el-table-column>
+                </el-table>
+              </div>
             </div>
           </div>
         </div>
@@ -51,10 +85,19 @@ export default {
   components: {
     SpaceManageSearch,
   },
+  data() {
+    return {
+      tableData: [],
+    };
+  },
+  mounted() {
+    document.body.style.setProperty("--test-name", 0.8);
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+$spaceBgColorAlpha: var(--test-name);
 #manage {
   width: 100%;
   height: 100%;
@@ -64,7 +107,8 @@ export default {
     display: flex;
     .warehouse-wrap {
       width: 320px;
-      background: #454545;
+      min-width: 320px;
+      background: rgba(69, 69, 69, $spaceBgColorAlpha);
       display: flex;
       flex-direction: column;
       .log-tree-box {
@@ -90,10 +134,12 @@ export default {
     }
     .content-wrap {
       flex: 1;
-      background: #f0f0f0;
       display: flex;
+      overflow: hidden;
+      border-left: 1px solid #787878;
+      border-right: 1px solid #787878;
       .preview-panel {
-        flex: 1;
+        width: 100%;
         display: flex;
         flex-direction: column;
         .tools-nav {
@@ -103,16 +149,18 @@ export default {
           align-items: center;
           justify-content: space-between;
           padding: 0 10px;
+          background: rgba(240, 240, 240, $spaceBgColorAlpha);
           .item-title {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            max-width: 40%;
+            max-width: 20%;
             color: #202020;
             font-weight: 600;
             white-space: nowrap;
             text-overflow: ellipsis;
+            overflow: hidden;
           }
           .others-box {
             display: flex;
@@ -126,14 +174,18 @@ export default {
           flex-direction: column;
           .preview-box {
             height: 50%;
-            background: #0c0c0c;
+            background: rgba(12, 12, 12, $spaceBgColorAlpha);
           }
           .items-table-box {
             height: 50%;
+            width: 100%;
             display: flex;
             flex-direction: column;
+            background: rgba(240, 240, 240, $spaceBgColorAlpha);
             .items-nav {
               height: 40px;
+              min-height: 40px;
+              border-bottom: 1px solid #ebeef5;
             }
             .table-box {
               flex: 1;
@@ -163,7 +215,8 @@ export default {
   #manage {
     .manage-wrap {
       .warehouse-wrap {
-        width: 300px;
+        width: 280px;
+        min-width: 280px;
         ._title-cell {
           font-size: 15px;
           height: 43px;
@@ -178,14 +231,30 @@ export default {
   #manage {
     .manage-wrap {
       .warehouse-wrap {
-        width: 280px;
-        ._title-cell {
-          font-size: 13px;
-          height: 39px;
-        }
+        width: 240px;
+        min-width: 240px;
       }
     }
   }
+}
+
+::v-deep .el-table,
+.el-table__expanded-cell {
+  background-color: transparent;
+}
+::v-deep .el-table th {
+  background-color: transparent !important;
+}
+::v-deep .el-table tr {
+  background-color: transparent !important;
+}
+::v-deep .el-table--enable-row-transition .el-table__body td,
+::v-deep.el-table .cell {
+  background-color: transparent;
+  border: none;
+}
+::v-deep.el-table th > .cell {
+  font-weight: 700;
 }
 
 // // PC x<=1920px

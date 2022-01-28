@@ -57,14 +57,14 @@ export default {
     }
     .nav-search-btn {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: 1px;
+      right: 5px;
       margin: 0;
       padding: 0;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border: none;
-      line-height: 26px;
+      line-height: 30px;
       cursor: pointer;
       display: flex;
       align-items: center;
