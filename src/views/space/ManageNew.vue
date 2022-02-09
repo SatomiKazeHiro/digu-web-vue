@@ -6,7 +6,9 @@
           <div class="_title-cell">
             <span>目录</span>
           </div>
-          <div class="log-tree-content"></div>
+          <div class="log-tree-container">
+            <manage-log-tree :treeData="treeData"></manage-log-tree>
+          </div>
         </div>
         <div class="tags-box">
           <div class="_title-cell">
@@ -38,6 +40,7 @@
               <div class="table-box">
                 <el-table
                   :data="tableData"
+                  height="100%"
                   border
                   :header-cell-style="{ textAlign: 'center' }"
                 >
@@ -81,23 +84,54 @@
 
 <script>
 import SpaceManageSearch from "components/common/header/SpaceManageSearch";
+import ManageLogTree from "components/common/content/ManageLogTree";
+import {
+  getLogTree,
+  getAreaConfig,
+  getCategoryConfig,
+  settAreaConfig,
+  setCategoryConfig,
+  getAreaNormal,
+  getCategoryNormal,
+} from "network/getDB";
 export default {
   components: {
     SpaceManageSearch,
+    ManageLogTree,
   },
   data() {
     return {
+      treeData: [],
       tableData: [],
     };
   },
   mounted() {
-    document.body.style.setProperty("--test-name", 0.8);
+    document.body.style.setProperty("--manage-global-transparency", 0.8);
+    this.initLogTree();
+  },
+  methods: {
+    // 初始化节点树
+    initLogTree() {
+      getLogTree()
+        .then((res) => {
+          console.log(res);
+          if (res.code && res.code === 200) {
+            this.treeData = res.data;
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            message: "目录获取失败：" + err,
+            type: "error",
+          });
+        });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-$spaceBgColorAlpha: var(--test-name);
+$spaceBgColorAlpha: var(--manage-global-transparency);
 #manage {
   width: 100%;
   height: 100%;
@@ -111,12 +145,13 @@ $spaceBgColorAlpha: var(--test-name);
       background: rgba(69, 69, 69, $spaceBgColorAlpha);
       display: flex;
       flex-direction: column;
+      transition: all 0.2s linear;
       .log-tree-box {
         flex: 1.15;
         border-bottom: 1px solid #787878;
         display: flex;
         flex-direction: column;
-        .log-tree-content {
+        .log-tree-container {
           flex: 1;
         }
       }
@@ -237,7 +272,7 @@ $spaceBgColorAlpha: var(--test-name);
     }
   }
 }
-
+// 表格背景透明
 ::v-deep .el-table,
 .el-table__expanded-cell {
   background-color: transparent;
@@ -255,6 +290,10 @@ $spaceBgColorAlpha: var(--test-name);
 }
 ::v-deep.el-table th > .cell {
   font-weight: 700;
+}
+// 分隔符颜色
+::v-deep .el-breadcrumb__separator {
+  color: #606266;
 }
 
 // // PC x<=1920px

@@ -125,9 +125,19 @@ li {
 }
 
 // -------------------------------新的通用样式-----------------------------
-button.transparent {
+button.base {
   outline: none;
   cursor: pointer;
+}
+
+button.normal {
+  @extend button.base;
+}
+
+button.transparent {
+  @extend button.base;
+  border: none;
+  background: transparent;
 }
 
 // 遮罩之上的元素使用

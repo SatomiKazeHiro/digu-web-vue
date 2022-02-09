@@ -39,6 +39,8 @@ export default {
 <style lang="scss">
 @import "@/styles/base.scss";
 @import "@/styles/color.scss";
+@import url("styles/myFont.css");
+
 #app {
   overflow: hidden;
   overflow-y: auto;
