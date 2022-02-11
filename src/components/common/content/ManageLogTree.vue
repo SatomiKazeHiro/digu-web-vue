@@ -70,6 +70,7 @@ export default {
   // 节点间距
   .el-tree-node__content {
     margin-bottom: 5px;
+    line-height: 26px;
   }
   // 鼠标悬浮样式
   .el-tree-node:focus > .el-tree-node__content {
@@ -97,12 +98,12 @@ export default {
     button {
       color: #c1c1c1;
     }
-    button{
+    button {
       opacity: 0;
       transition: opacity 0.1s linear;
     }
-    &:hover{
-      button{
+    &:hover {
+      button {
         opacity: 1;
       }
     }
