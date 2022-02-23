@@ -39,21 +39,25 @@
               <div class="items-nav"></div>
               <div class="table-box">
                 <el-table
+                  ref="table"
                   :data="tableData"
                   height="100%"
                   border
-                  :header-cell-style="{ textAlign: 'center' }"
+                  :cell-style="{ borderColor: '#787878' }"
+                  :header-cell-style="{
+                    padding: '3px 0',
+                    borderColor: '#787878',
+                    color: '#787878',
+                  }"
                 >
-                  <el-table-column prop="cover" label="封面" align="center">
+                  <el-table-column
+                    prop="cover"
+                    label="封面"
+                    :width="isWidthLE1024() ? 120 : 200"
+                  >
                     <template slot-scope="scope">
                       <img
-                        :src="
-                          '/proxy' +
-                          scope.row.url +
-                          scope.row.title +
-                          '/' +
-                          scope.row.cover
-                        "
+                        :src="'/proxy' + scope.row.cover"
                         class="el-table-img"
                       />
                     </template>
@@ -64,7 +68,11 @@
                       {{ scope.row.intro ? scope.row.intro : "" }}
                     </template>
                   </el-table-column>
-                  <el-table-column prop="type" label="类型" align="center">
+                  <el-table-column prop="files" label="文件" min-width="40">
+                  </el-table-column>
+                  <el-table-column prop="size" label="大小" min-width="40">
+                  </el-table-column>
+                  <el-table-column prop="type" label="类型">
                     <template slot-scope="scope">
                       {{ scope.row.type === "normal" ? "单体" : "" }}
                       {{ scope.row.type === "serial" ? "连载" : "" }}
@@ -102,12 +110,37 @@ export default {
   data() {
     return {
       treeData: [],
-      tableData: [],
+      tableData: [
+        {
+          cover:
+            "/sources/anime/ova/クロスロード (2014)/クロスロード (2014).jpg",
+          title: "クロスロード (2014)",
+          intro: "",
+          size: "",
+          files: "",
+          type: "normal",
+        },
+        {
+          cover:
+            "/sources/anime/bangumi/無彩限のファントム・ワールド (2016)/無彩限のファントム・ワールド (2016).jpg",
+          title: "無彩限のファントム・ワールド (2016)",
+          intro: "",
+          size: "",
+          files: "",
+          type: "normal",
+        },
+      ],
     };
   },
   mounted() {
     document.body.style.setProperty("--manage-global-transparency", 0.8);
     this.initLogTree();
+  },
+  beforeUpdate() {
+    // 解决只有一二条记录时，在加载完封面的情况下，滚动条不出现
+    this.$nextTick(() => {
+      this.$refs.table.doLayout();
+    });
   },
   methods: {
     // 初始化节点树
@@ -125,6 +158,10 @@ export default {
             type: "error",
           });
         });
+    },
+    // 判断是否是平板模式下操作（1024px）
+    isWidthLE1024() {
+      return this.$store.state._browserStatus.appWidth <= 1024;
     },
   },
 };
@@ -214,13 +251,13 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
           .items-table-box {
             height: 50%;
             width: 100%;
+            padding: 5px;
             display: flex;
             flex-direction: column;
             background: rgba(240, 240, 240, $spaceBgColorAlpha);
             .items-nav {
               height: 40px;
               min-height: 40px;
-              border-bottom: 1px solid #ebeef5;
             }
             .table-box {
               flex: 1;
@@ -250,8 +287,8 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
   #manage {
     .manage-wrap {
       .warehouse-wrap {
-        width: 280px;
-        min-width: 280px;
+        width: 260px;
+        min-width: 260px;
         ._title-cell {
           font-size: 15px;
           height: 43px;
@@ -266,12 +303,13 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
   #manage {
     .manage-wrap {
       .warehouse-wrap {
-        width: 240px;
-        min-width: 240px;
+        width: 200px;
+        min-width: 200px;
       }
     }
   }
 }
+
 // 表格背景透明
 ::v-deep .el-table,
 .el-table__expanded-cell {
@@ -291,10 +329,59 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 ::v-deep.el-table th > .cell {
   font-weight: 700;
 }
+
 // 分隔符颜色
 ::v-deep .el-breadcrumb__separator {
   color: #606266;
 }
+
+// 表格边框
+::v-deep .el-table--border:after,
+::v-deep .el-table--group:after,
+::v-deep .el-table:before {
+  background-color: #787878;
+}
+
+::v-deep .el-table--border,
+::v-deep .el-table--group {
+  border-color: #787878;
+}
+
+::v-deep .el-table td,
+::v-deep .el-table th.is-leaf {
+  border-bottom: 1px solid #787878 !important;
+}
+
+::v-deep .el-table--border th,
+::v-deep .el-table--border th.gutter:last-of-type {
+  border-bottom: 1px solid #787878;
+}
+
+// ::v-deep .el-table--border td:first-child,
+// ::v-deep .el-table--border th:first-child {
+//   border-right: 1px solid #787878 !important;
+// }
+
+// ::v-deep .el-table--border td:last-child,
+// ::v-deep .el-table--border th:last-child {
+//   border-right: 1px solid #787878 !important;
+// }
+
+::v-deep .el-table--border td,
+::v-deep .el-table--border th {
+  border-right: 1px solid #787878;
+}
+
+// 资源表格中图片的宽度
+.el-table-img {
+  width: 100%;
+}
+
+// 表格斑马线条纹
+// ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td {
+//   background: #fafafa;
+//   background: rgba(250, 250, 250, $spaceBgColorAlpha);
+// }
 
 // // PC x<=1920px
 // @media only screen and (max-width: 1920px) {}

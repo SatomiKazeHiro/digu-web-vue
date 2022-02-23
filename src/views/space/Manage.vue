@@ -197,8 +197,7 @@
                   <img
                     :src="
                       '/proxy' +
-                      scope.row.url +
-                      scope.row.title +
+                      scope.row.sources_url +
                       '/' +
                       scope.row.cover
                     "

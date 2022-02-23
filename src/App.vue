@@ -43,7 +43,7 @@ export default {
 
 #app {
   overflow: hidden;
-  overflow-y: auto;
+  // overflow-y: auto;
   position: relative;
   // &::-webkit-scrollbar {
   //   position: absolute;
