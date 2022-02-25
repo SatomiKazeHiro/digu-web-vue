@@ -32,9 +32,9 @@ export function getAreaNormal(area, limit, page, msgType = "") {
 }
 
 // 获取域下所有的类（category）
-export function getCategories(area) {
+export function getCategoryAllName(area) {
   return request({
-    url: "/api/get/getCategories",
+    url: "/api/get/categoriesAllName",
     params: { area }
   })
 }
@@ -66,7 +66,7 @@ export function getLogTree() {
 // 获取 area 配置信息
 export function getAreaConfig(area) {
   return request({
-    url: "/api/get/aeraIndex",
+    url: "/api/get/areaIndex",
     params: { area }
   })
 }

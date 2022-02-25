@@ -36,7 +36,32 @@
           <div class="preview-nav">
             <div class="preview-box"></div>
             <div class="items-table-box">
-              <div class="items-nav"></div>
+              <div class="items-nav">
+                <div class="item-single-operation">
+                  <svg-icon icon-class="space-manage-bookmark-plus"></svg-icon>
+                  <svg-icon
+                    icon-class="space-manage-archive-dwonload"
+                  ></svg-icon>
+                  <svg-icon icon-class="space-manage-delete"></svg-icon>
+                  <el-divider direction="vertical"></el-divider>
+                  <svg-icon icon-class="space-manage-link-external"></svg-icon>
+                  <svg-icon icon-class="space-manage-calendar-plus"></svg-icon>
+                  <svg-icon icon-class="space-manage-time-five"></svg-icon>
+                  <svg-icon icon-class="space-manage-heart"></svg-icon>
+                  <svg-icon icon-class="space-manage-image"></svg-icon>
+                  <svg-icon icon-class="space-manage-purchase-tag"></svg-icon>
+                  <svg-icon icon-class="space-manage-bookmark-heart"></svg-icon>
+                  <svg-icon icon-class="space-manage-trash"></svg-icon>
+                  <svg-icon icon-class="space-manage-bookmark"></svg-icon>
+                  <svg-icon icon-class="space-manage-s-trash"></svg-icon>
+                  <svg-icon icon-class="space-manage-s-trash-alt"></svg-icon>
+                </div>
+                <div class="item-multi-operation">
+                  <svg-icon icon-class="space-manage-book-alt"></svg-icon>
+                  <svg-icon icon-class="space-manage-grid-alt"></svg-icon>
+                  <svg-icon icon-class="space-manage-archive-upload"></svg-icon>
+                </div>
+              </div>
               <div class="table-box">
                 <el-table
                   ref="table"
@@ -115,6 +140,15 @@ export default {
           cover:
             "/sources/anime/ova/クロスロード (2014)/クロスロード (2014).jpg",
           title: "クロスロード (2014)",
+          intro: "",
+          size: "",
+          files: "",
+          type: "normal",
+        },
+        {
+          cover:
+            "/sources/anime/bangumi/無彩限のファントム・ワールド (2016)/無彩限のファントム・ワールド (2016).jpg",
+          title: "無彩限のファントム・ワールド (2016)",
           intro: "",
           size: "",
           files: "",
@@ -258,6 +292,23 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             .items-nav {
               height: 40px;
               min-height: 40px;
+              font-size: 24px;
+              color: #606266;
+              display: flex;
+              align-items: center;
+              padding: 0 3px;
+              .item-single-operation {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 6px;
+              }
+              .item-multi-operation {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+              }
             }
             .table-box {
               flex: 1;
@@ -333,6 +384,9 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 // 分隔符颜色
 ::v-deep .el-breadcrumb__separator {
   color: #606266;
+}
+.el-divider {
+  background: #606266;
 }
 
 // 表格边框

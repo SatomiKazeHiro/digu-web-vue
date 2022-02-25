@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { getCategories, getAreaRandom } from "network/getDB";
+import { getCategoryAllName, getAreaRandom } from "network/getDB";
 import NormalHeader from "components/NormalHeader";
 import Category from "./Category";
 export default {
@@ -88,7 +88,7 @@ export default {
       }
     });
     // 获取域下所有分类的名字
-    getCategories(this.$route.params.area).then((res) => {
+    getCategoryAllName(this.$route.params.area).then((res) => {
       if (res.code === 200) this.categoryList = res.data;
     });
   },

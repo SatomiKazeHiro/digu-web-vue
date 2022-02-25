@@ -22,6 +22,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Divider,
 } from 'element-ui';
 
 Vue.use(Button);
@@ -44,6 +45,7 @@ Vue.use(Loading.directive);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(Divider);
 
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
