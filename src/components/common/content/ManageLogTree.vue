@@ -33,8 +33,17 @@ export default {
     };
   },
   methods: {
-    handleNodeClick(data) {
-      console.log(data);
+    handleNodeClick(data, node) {
+      // 父节点判断
+      let parentNodeData = {};
+      if (node.parent.data.label) {
+        // 如果父节点存在，则赋值
+        parentNodeData = node.parent.data;
+        // parentNodeData.label = node.parent.data.label;
+        // parentNodeData.web_name = node.parent.data.web_name;
+      } else parentNodeData = null;
+      // 默认父节点为 null
+      this.$emit("selectNode", node.data, parentNodeData);
     },
   },
 };

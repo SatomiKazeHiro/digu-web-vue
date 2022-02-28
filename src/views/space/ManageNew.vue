@@ -7,7 +7,10 @@
             <span>目录</span>
           </div>
           <div class="log-tree-container">
-            <manage-log-tree :treeData="treeData"></manage-log-tree>
+            <manage-log-tree
+              :treeData="treeData"
+              @selectNode="setTreeNode"
+            ></manage-log-tree>
           </div>
         </div>
         <div class="tags-box">
@@ -22,8 +25,20 @@
             <div class="item-path">
               <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item>目录</el-breadcrumb-item>
-                <el-breadcrumb-item> currentArea </el-breadcrumb-item>
-                <el-breadcrumb-item> currentCategory </el-breadcrumb-item>
+                <el-breadcrumb-item
+                  v-if="currentAreaNode.web_name || currentAreaNode.label"
+                >
+                  {{ currentAreaNode.web_name || currentAreaNode.label }}
+                </el-breadcrumb-item>
+                <el-breadcrumb-item
+                  v-if="
+                    currentCategoryNode.web_name || currentCategoryNode.label
+                  "
+                >
+                  {{
+                    currentCategoryNode.web_name || currentCategoryNode.label
+                  }}
+                </el-breadcrumb-item>
               </el-breadcrumb>
             </div>
             <div class="item-title">测试名字</div>
@@ -38,28 +53,27 @@
             <div class="items-table-box">
               <div class="items-nav">
                 <div class="item-single-operation">
-                  <svg-icon icon-class="space-manage-bookmark-plus"></svg-icon>
-                  <svg-icon
-                    icon-class="space-manage-archive-dwonload"
-                  ></svg-icon>
-                  <svg-icon icon-class="space-manage-delete"></svg-icon>
-                  <el-divider direction="vertical"></el-divider>
-                  <svg-icon icon-class="space-manage-link-external"></svg-icon>
-                  <svg-icon icon-class="space-manage-calendar-plus"></svg-icon>
+                  <!-- <svg-icon icon-class="space-manage-bookmark-plus"></svg-icon> -->
+                  <!-- <svg-icon icon-class="space-manage-calendar-plus"></svg-icon> -->
                   <svg-icon icon-class="space-manage-time-five"></svg-icon>
                   <svg-icon icon-class="space-manage-heart"></svg-icon>
                   <svg-icon icon-class="space-manage-image"></svg-icon>
                   <svg-icon icon-class="space-manage-purchase-tag"></svg-icon>
-                  <svg-icon icon-class="space-manage-bookmark-heart"></svg-icon>
+                  <!-- <svg-icon icon-class="space-manage-bookmark-heart"></svg-icon>
                   <svg-icon icon-class="space-manage-trash"></svg-icon>
-                  <svg-icon icon-class="space-manage-bookmark"></svg-icon>
-                  <svg-icon icon-class="space-manage-s-trash"></svg-icon>
+                  <svg-icon icon-class="space-manage-bookmark"></svg-icon> -->
+                  <el-divider direction="vertical"></el-divider>
+                  <svg-icon
+                    icon-class="space-manage-archive-dwonload"
+                  ></svg-icon>
+                  <svg-icon icon-class="space-manage-link-external"></svg-icon>
+                  <el-divider direction="vertical"></el-divider>
+                  <!-- <svg-icon icon-class="space-manage-s-trash"></svg-icon> -->
                   <svg-icon icon-class="space-manage-s-trash-alt"></svg-icon>
                 </div>
                 <div class="item-multi-operation">
-                  <svg-icon icon-class="space-manage-book-alt"></svg-icon>
-                  <svg-icon icon-class="space-manage-grid-alt"></svg-icon>
                   <svg-icon icon-class="space-manage-archive-upload"></svg-icon>
+                  <svg-icon icon-class="space-manage-grid-alt"></svg-icon>
                 </div>
               </div>
               <div class="table-box">
@@ -74,6 +88,7 @@
                     borderColor: '#787878',
                     color: '#787878',
                   }"
+                  @row-click="clickTableRow"
                 >
                   <el-table-column
                     prop="cover"
@@ -97,7 +112,12 @@
                   </el-table-column>
                   <el-table-column prop="size" label="大小" min-width="40">
                   </el-table-column>
-                  <el-table-column prop="type" label="类型">
+                  <el-table-column
+                    prop="type"
+                    label="类型"
+                    min-width="30"
+                    align="center"
+                  >
                     <template slot-scope="scope">
                       {{ scope.row.type === "normal" ? "单体" : "" }}
                       {{ scope.row.type === "serial" ? "连载" : "" }}
@@ -135,34 +155,27 @@ export default {
   data() {
     return {
       treeData: [],
+      currentAreaNode: {
+        label: "",
+        web_name: "",
+      },
+      currentCategoryNode: {
+        label: "",
+        web_name: "",
+      },
+      currentPage: 1,
+      limitPage: 30,
       tableData: [
-        {
-          cover:
-            "/sources/anime/ova/クロスロード (2014)/クロスロード (2014).jpg",
-          title: "クロスロード (2014)",
-          intro: "",
-          size: "",
-          files: "",
-          type: "normal",
-        },
-        {
-          cover:
-            "/sources/anime/bangumi/無彩限のファントム・ワールド (2016)/無彩限のファントム・ワールド (2016).jpg",
-          title: "無彩限のファントム・ワールド (2016)",
-          intro: "",
-          size: "",
-          files: "",
-          type: "normal",
-        },
-        {
-          cover:
-            "/sources/anime/bangumi/無彩限のファントム・ワールド (2016)/無彩限のファントム・ワールド (2016).jpg",
-          title: "無彩限のファントム・ワールド (2016)",
-          intro: "",
-          size: "",
-          files: "",
-          type: "normal",
-        },
+        // {
+        //   id:"",
+        //   cover:
+        //     "/sources/anime/ova/クロスロード (2014)/クロスロード (2014).jpg",
+        //   title: "クロスロード (2014)",
+        //   intro: "",
+        //   size: "",
+        //   files: "",
+        //   type: "normal",
+        // },
       ],
     };
   },
@@ -196,6 +209,65 @@ export default {
     // 判断是否是平板模式下操作（1024px）
     isWidthLE1024() {
       return this.$store.state._browserStatus.appWidth <= 1024;
+    },
+    // 点击表格行
+    clickTableRow(row, column, event) {
+      console.log(row, column, event);
+    },
+    // 设置当前节点信息
+    setTreeNode(currentNode, parentNode) {
+      let isCategoryNode = true;
+      if (!parentNode) {
+        // 父元素不存在的时候，认为是一级（area）目录
+        isCategoryNode = false;
+        this.currentCategoryNode = {
+          label: "",
+          web_name: "",
+        };
+        this.currentAreaNode = currentNode;
+      } else {
+        this.currentAreaNode = parentNode;
+        this.currentCategoryNode = currentNode;
+      }
+      if (isCategoryNode) {
+        getCategoryNormal(
+          this.currentAreaNode.label,
+          this.currentCategoryNode.label,
+          this.limitPage,
+          this.currentPage,
+          "all"
+        ).then(
+          (res) => {
+            console.log(res);
+            if (res.code && res.code === 200) {
+              this.tableData = res.data.resArr;
+              this.tableData.forEach((i) => {
+                i.cover = i.sources_url + "/" + i.cover;
+              });
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } else {
+        getAreaNormal(
+          this.currentAreaNode.label,
+          this.limitPage,
+          this.currentPage,
+          "all"
+        ).then(
+          (res) => {
+            console.log(res);
+            if (res.code && res.code === 200) {
+              this.tableData = res.data.resArr;
+            }
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
     },
   },
 };
@@ -416,10 +488,10 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 //   border-right: 1px solid #787878 !important;
 // }
 
-// ::v-deep .el-table--border td:last-child,
-// ::v-deep .el-table--border th:last-child {
-//   border-right: 1px solid #787878 !important;
-// }
+::v-deep .el-table--border td:last-child,
+::v-deep .el-table--border th:last-child {
+  border-right: 1px solid #787878 !important;
+}
 
 ::v-deep .el-table--border td,
 ::v-deep .el-table--border th {
