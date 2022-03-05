@@ -69,9 +69,9 @@
 import { checkItem } from "network/checkDB";
 import { getItem } from "network/getDB";
 import NormalHeader from "components/NormalHeader";
-import ItemMediaTags from "components/common/content/ItemMediaTags";
-import NoTemplatePage from "components/common/content/NoTemplatePage";
-import LoadingErrorPage from "components/common/content/LoadingErrorPage";
+import ItemMediaTags from "components/content/ItemMediaTags";
+import NoTemplatePage from "components/content/NoTemplatePage";
+import LoadingErrorPage from "components/content/LoadingErrorPage";
 export default {
   name: "Media",
   components: {

@@ -5,8 +5,15 @@
         <div class="log-tree-box">
           <div class="_title-cell">
             <span>目录</span>
+            <button
+              class="addFoler"
+              v-if="isSelectTreeNode"
+              @click="plusFolder"
+            >
+              <svg-icon icon-class="space-manage-folder-plus"></svg-icon>
+            </button>
           </div>
-          <div class="log-tree-container">
+          <div class="log-tree-container" @click="selectRootNode">
             <manage-log-tree
               :treeData="treeData"
               @selectNode="setTreeNode"
@@ -41,7 +48,9 @@
                 </el-breadcrumb-item>
               </el-breadcrumb>
             </div>
-            <div class="item-title">测试名字</div>
+            <!-- <div class="item-title" :title="currentItem.title">
+              {{ currentItem.title }}
+            </div> -->
             <div class="others-box">
               <div class="serach-box">
                 <space-manage-search></space-manage-search>
@@ -49,82 +58,75 @@
             </div>
           </div>
           <div class="preview-nav">
-            <div class="preview-box"></div>
+            <div class="preview-box">
+              <manage-preview :itemObj="currentItem"></manage-preview>
+            </div>
             <div class="items-table-box">
               <div class="items-nav">
                 <div class="item-single-operation">
-                  <!-- <svg-icon icon-class="space-manage-bookmark-plus"></svg-icon> -->
-                  <!-- <svg-icon icon-class="space-manage-calendar-plus"></svg-icon> -->
-                  <svg-icon icon-class="space-manage-time-five"></svg-icon>
-                  <svg-icon icon-class="space-manage-heart"></svg-icon>
-                  <svg-icon icon-class="space-manage-image"></svg-icon>
-                  <svg-icon icon-class="space-manage-purchase-tag"></svg-icon>
-                  <!-- <svg-icon icon-class="space-manage-bookmark-heart"></svg-icon>
-                  <svg-icon icon-class="space-manage-trash"></svg-icon>
-                  <svg-icon icon-class="space-manage-bookmark"></svg-icon> -->
-                  <el-divider direction="vertical"></el-divider>
-                  <svg-icon
-                    icon-class="space-manage-archive-dwonload"
-                  ></svg-icon>
-                  <svg-icon icon-class="space-manage-link-external"></svg-icon>
-                  <el-divider direction="vertical"></el-divider>
-                  <!-- <svg-icon icon-class="space-manage-s-trash"></svg-icon> -->
-                  <svg-icon icon-class="space-manage-s-trash-alt"></svg-icon>
+                  <button
+                    class="item-btn"
+                    :class="{ on: showCover }"
+                    @click="showCover = !showCover"
+                  >
+                    <svg-icon icon-class="space-manage-cover"></svg-icon>
+                  </button>
+                  <el-divider
+                    direction="vertical"
+                    v-if="currentItem.id"
+                  ></el-divider>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-laterTime"></svg-icon>
+                  </button>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-star"></svg-icon>
+                  </button>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-tag"></svg-icon>
+                  </button>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-dwonload"></svg-icon>
+                  </button>
+                  <el-divider
+                    direction="vertical"
+                    v-if="currentItem.id"
+                  ></el-divider>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-delete"></svg-icon>
+                  </button>
+                  <el-divider
+                    direction="vertical"
+                    v-if="currentItem.id"
+                  ></el-divider>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-edit"></svg-icon>
+                  </button>
+                  <button class="item-btn" v-if="currentItem.id">
+                    <svg-icon icon-class="space-manage-external"></svg-icon>
+                  </button>
                 </div>
                 <div class="item-multi-operation">
-                  <svg-icon icon-class="space-manage-archive-upload"></svg-icon>
-                  <svg-icon icon-class="space-manage-grid-alt"></svg-icon>
+                  <button
+                    class="item-btn"
+                    v-if="currentAreaNode.label && currentCategoryNode.label"
+                  >
+                    <svg-icon icon-class="space-manage-upload"></svg-icon>
+                  </button>
+                  <el-divider
+                    direction="vertical"
+                    v-if="currentAreaNode.label && currentCategoryNode.label"
+                  ></el-divider>
+                  <button class="item-btn">
+                    <svg-icon icon-class="space-manage-grid"></svg-icon>
+                  </button>
                 </div>
               </div>
               <div class="table-box">
-                <el-table
-                  ref="table"
-                  :data="tableData"
-                  height="100%"
-                  border
-                  :cell-style="{ borderColor: '#787878' }"
-                  :header-cell-style="{
-                    padding: '3px 0',
-                    borderColor: '#787878',
-                    color: '#787878',
-                  }"
-                  @row-click="clickTableRow"
-                >
-                  <el-table-column
-                    prop="cover"
-                    label="封面"
-                    :width="isWidthLE1024() ? 120 : 200"
-                  >
-                    <template slot-scope="scope">
-                      <img
-                        :src="'/proxy' + scope.row.cover"
-                        class="el-table-img"
-                      />
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="title" label="名称"> </el-table-column>
-                  <el-table-column prop="intro" label="简介">
-                    <template slot-scope="scope">
-                      {{ scope.row.intro ? scope.row.intro : "" }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="files" label="文件" min-width="40">
-                  </el-table-column>
-                  <el-table-column prop="size" label="大小" min-width="40">
-                  </el-table-column>
-                  <el-table-column
-                    prop="type"
-                    label="类型"
-                    min-width="30"
-                    align="center"
-                  >
-                    <template slot-scope="scope">
-                      {{ scope.row.type === "normal" ? "单体" : "" }}
-                      {{ scope.row.type === "serial" ? "连载" : "" }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="操作" width="120"> </el-table-column>
-                </el-table>
+                <manage-table
+                  :tableData="tableData"
+                  :showCover="showCover"
+                  @selectChange="selectChange"
+                ></manage-table>
               </div>
             </div>
           </div>
@@ -137,7 +139,9 @@
 
 <script>
 import SpaceManageSearch from "components/common/header/SpaceManageSearch";
-import ManageLogTree from "components/common/content/ManageLogTree";
+import ManageLogTree from "components/content/ManageLogTree";
+import ManageTable from "components/content/ManageTable";
+import ManagePreview from "components/content/ManagePreview";
 import {
   getLogTree,
   getAreaConfig,
@@ -151,6 +155,8 @@ export default {
   components: {
     SpaceManageSearch,
     ManageLogTree,
+    ManageTable,
+    ManagePreview,
   },
   data() {
     return {
@@ -163,31 +169,28 @@ export default {
         label: "",
         web_name: "",
       },
+      isSelectTreeNode: false,
+      // 假想根目录（用于区分是创建一级还是二级目录）
+      assumeRoot: "",
+
       currentPage: 1,
       limitPage: 30,
-      tableData: [
-        // {
-        //   id:"",
-        //   cover:
-        //     "/sources/anime/ova/クロスロード (2014)/クロスロード (2014).jpg",
-        //   title: "クロスロード (2014)",
-        //   intro: "",
-        //   size: "",
-        //   files: "",
-        //   type: "normal",
-        // },
-      ],
+      tableData: [],
+      showCover: true,
+      currentItem: {
+        id: "",
+        title: "",
+        cover: "",
+        intro: "",
+        link_url: "",
+        sources_url: "",
+        type: "",
+      },
     };
   },
   mounted() {
     document.body.style.setProperty("--manage-global-transparency", 0.8);
     this.initLogTree();
-  },
-  beforeUpdate() {
-    // 解决只有一二条记录时，在加载完封面的情况下，滚动条不出现
-    this.$nextTick(() => {
-      this.$refs.table.doLayout();
-    });
   },
   methods: {
     // 初始化节点树
@@ -206,14 +209,6 @@ export default {
           });
         });
     },
-    // 判断是否是平板模式下操作（1024px）
-    isWidthLE1024() {
-      return this.$store.state._browserStatus.appWidth <= 1024;
-    },
-    // 点击表格行
-    clickTableRow(row, column, event) {
-      console.log(row, column, event);
-    },
     // 设置当前节点信息
     setTreeNode(currentNode, parentNode) {
       let isCategoryNode = true;
@@ -225,9 +220,14 @@ export default {
           web_name: "",
         };
         this.currentAreaNode = currentNode;
+        // 只有一级目录（area）才能创建子目录，同时标记根目录为假
+        this.isSelectTreeNode = true;
+        this.assumeRoot = false;
       } else {
         this.currentAreaNode = parentNode;
         this.currentCategoryNode = currentNode;
+        // 二级目录（category）不能创建子目录
+        this.isSelectTreeNode = false;
       }
       if (isCategoryNode) {
         getCategoryNormal(
@@ -261,11 +261,37 @@ export default {
             console.log(res);
             if (res.code && res.code === 200) {
               this.tableData = res.data.resArr;
+              this.tableData.forEach((i) => {
+                i.cover = i.sources_url + "/" + i.cover;
+              });
             }
           },
           (err) => {
             console.log(err);
           }
+        );
+      }
+    },
+    // 监听表格选择
+    selectChange(rowObj) {
+      Object.keys(this.currentItem).forEach((key) => {
+        this.currentItem[key] = rowObj[key];
+      });
+    },
+    // 选中假想根目录
+    selectRootNode() {
+      console.log("假设是根目录");
+      this.isSelectTreeNode = true;
+      this.assumeRoot = true;
+    },
+    // 创建目录
+    plusFolder() {
+      if (this.assumeRoot) {
+        console.log("创建一级目录");
+      } else {
+        console.log(
+          "创建二级目录 <- ",
+          this.currentAreaNode.web_name || this.currentAreaNode.label
         );
       }
     },
@@ -302,12 +328,30 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
         flex: 1;
       }
       ._title-cell {
-        height: 45px;
+        height: 44px;
+        line-height: 44px;
         font-size: 17px;
         padding: 0 10px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         border-bottom: 1px solid #787878;
+        button {
+          width: 28px;
+          height: 28px;
+          line-height: 28px;
+          border-radius: 3px;
+          font-size: 22px;
+          color: #c1c1c1;
+          background: transparent;
+          outline: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s linear;
+          &:hover {
+            background: #747474;
+          }
+        }
       }
     }
     .content-wrap {
@@ -333,7 +377,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            max-width: 20%;
+            max-width: 25%;
             color: #202020;
             font-weight: 600;
             white-space: nowrap;
@@ -364,22 +408,42 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             .items-nav {
               height: 40px;
               min-height: 40px;
-              font-size: 24px;
-              color: #606266;
               display: flex;
               align-items: center;
-              padding: 0 3px;
               .item-single-operation {
                 flex: 1;
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
-                gap: 6px;
+                gap: 5px;
               }
               .item-multi-operation {
                 display: flex;
                 align-items: center;
-                gap: 6px;
+                gap: 5px;
+              }
+              button.item-btn {
+                width: 28px;
+                height: 28px;
+                line-height: 28px;
+                border-radius: 3px;
+                font-size: 22px;
+                color: #525252;
+                border: 1px solid transparent;
+                outline: none;
+                background: transparent;
+                transition: all 0.3s linear;
+                cursor: pointer;
+                &:hover {
+                  border: 1px solid #999999;
+                }
+                &.on {
+                  background: #999999;
+                  border: 1px solid #999999;
+                }
+                &.none-border {
+                  border: 1px solid transparent !important;
+                }
               }
             }
             .table-box {
@@ -433,26 +497,6 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
   }
 }
 
-// 表格背景透明
-::v-deep .el-table,
-.el-table__expanded-cell {
-  background-color: transparent;
-}
-::v-deep .el-table th {
-  background-color: transparent !important;
-}
-::v-deep .el-table tr {
-  background-color: transparent !important;
-}
-::v-deep .el-table--enable-row-transition .el-table__body td,
-::v-deep.el-table .cell {
-  background-color: transparent;
-  border: none;
-}
-::v-deep.el-table th > .cell {
-  font-weight: 700;
-}
-
 // 分隔符颜色
 ::v-deep .el-breadcrumb__separator {
   color: #606266;
@@ -460,54 +504,6 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 .el-divider {
   background: #606266;
 }
-
-// 表格边框
-::v-deep .el-table--border:after,
-::v-deep .el-table--group:after,
-::v-deep .el-table:before {
-  background-color: #787878;
-}
-
-::v-deep .el-table--border,
-::v-deep .el-table--group {
-  border-color: #787878;
-}
-
-::v-deep .el-table td,
-::v-deep .el-table th.is-leaf {
-  border-bottom: 1px solid #787878 !important;
-}
-
-::v-deep .el-table--border th,
-::v-deep .el-table--border th.gutter:last-of-type {
-  border-bottom: 1px solid #787878;
-}
-
-// ::v-deep .el-table--border td:first-child,
-// ::v-deep .el-table--border th:first-child {
-//   border-right: 1px solid #787878 !important;
-// }
-
-::v-deep .el-table--border td:last-child,
-::v-deep .el-table--border th:last-child {
-  border-right: 1px solid #787878 !important;
-}
-
-::v-deep .el-table--border td,
-::v-deep .el-table--border th {
-  border-right: 1px solid #787878;
-}
-
-// 资源表格中图片的宽度
-.el-table-img {
-  width: 100%;
-}
-
-// 表格斑马线条纹
-// ::v-deep .el-table--striped .el-table__body tr.el-table__row--striped td {
-//   background: #fafafa;
-//   background: rgba(250, 250, 250, $spaceBgColorAlpha);
-// }
 
 // // PC x<=1920px
 // @media only screen and (max-width: 1920px) {}

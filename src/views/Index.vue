@@ -23,7 +23,7 @@
 import { getItemRandom, getAreaAllName, getAreaRandom } from "network/getDB";
 import MainHeader from "components/MainHeader";
 import RandomRecommend from "components/RandomRecommend";
-import IndexAreaPanel from "components/common/content/IndexAreaPanel";
+import IndexAreaPanel from "components/content/IndexAreaPanel";
 export default {
   name: "Index",
   components: {

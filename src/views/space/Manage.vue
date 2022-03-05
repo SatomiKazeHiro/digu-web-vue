@@ -260,8 +260,8 @@ import {
   getAreaNormal,
   getCategoryNormal,
 } from "network/getDB";
-import Collapse from "components/common/content/Collapse";
-import MoreDropdown from "components/common/content/MoreDropdown";
+import Collapse from "components/content/Collapse";
+import MoreDropdown from "components/content/MoreDropdown";
 export default {
   name: "Manage",
   components: {
