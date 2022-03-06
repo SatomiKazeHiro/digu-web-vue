@@ -31,9 +31,17 @@
           {{ scope.row.intro ? scope.row.intro : "" }}
         </template>
       </el-table-column>
-      <el-table-column prop="files" label="文件" width="60"> </el-table-column>
-      <el-table-column prop="size" label="大小" width="60"> </el-table-column>
-      <el-table-column prop="type" label="类型" min-width="30" align="center">
+      <el-table-column label="文件" width="64" align="center">
+        <template slot-scope="scope">
+          <div style="text-align: right">{{ scope.row.amount }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="大小" width="92" align="center">
+        <template slot-scope="scope">
+          <div style="text-align: right">{{ scope.row.size }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="type" label="类型" width="80" align="center">
         <template slot-scope="scope">
           {{ scope.row.type === "normal" ? "单体" : "" }}
           {{ scope.row.type === "serial" ? "连载" : "" }}
@@ -95,6 +103,8 @@ export default {
         link_url: "",
         sources_url: "",
         type: "",
+        amount: "",
+        size: "",
       });
     },
   },

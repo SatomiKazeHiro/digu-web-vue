@@ -1,8 +1,8 @@
 <template>
   <div class="manage-preview" v-if="itemObj.cover">
     <div class="preview-wrap">
-      <div class="img-cover">
-        <img :src="'/proxy' + itemObj.cover" />
+      <div class="img-cover" align="center">
+        <img ref="cover" :src="'/proxy' + itemObj.cover" @load="showImg" />
       </div>
     </div>
     <div class="info-wrap">
@@ -23,11 +23,11 @@
         </div>
         <div class="info-block">
           <div class="info-label">文件数量</div>
-          <div class="info-content">{{ itemObj.intro || "无" }}</div>
+          <div class="info-content">{{ itemObj.amount || "/" }}</div>
         </div>
         <div class="info-block">
           <div class="info-label">空间大小</div>
-          <div class="info-content">{{ itemObj.intro || "无" }}</div>
+          <div class="info-content">{{ itemObj.size || "/" }}</div>
         </div>
       </div>
       <div class="item-cell">
@@ -63,6 +63,13 @@ export default {
       let str = date.toISOString().replace("T", " ");
       return str.substr(0, str.lastIndexOf("."));
     },
+    // 图片适应容器
+    showImg() {
+      if (this.$refs.cover) {
+        if (this.$refs.cover.naturalWidth > this.$refs.cover.naturalHeight)
+          this.$refs.cover.classList.add("horizontal");
+      }
+    },
   },
 };
 </script>
@@ -85,10 +92,14 @@ export default {
       overflow: hidden;
       border-radius: 4px;
       img {
-        width: 100%;
-        // height: 100%;
+        width: auto;
+        height: 100%;
         object-fit: cover;
         border-radius: 4px;
+        &.horizontal {
+          width: 100%;
+          height: auto;
+        }
       }
     }
   }

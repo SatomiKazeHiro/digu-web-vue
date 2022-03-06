@@ -9,7 +9,7 @@
       >
         <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ data.web_name || node.label }}</span>
-          <button class="transparent">Delete</button>
+          <button class="transparent" @click="handleConfigClick(node, data)">配置</button>
         </span>
       </el-tree>
     </div>
@@ -33,6 +33,7 @@ export default {
     };
   },
   methods: {
+    // 点击任意节点
     handleNodeClick(data, node) {
       // 父节点判断
       let parentNodeData = {};
@@ -44,6 +45,11 @@ export default {
       } else parentNodeData = null;
       // 默认父节点为 null
       this.$emit("selectNode", node.data, parentNodeData);
+    },
+    // 点击配置
+    handleConfigClick(node, data) {
+      console.log("配置");
+      console.log(node, data);
     },
   },
 };

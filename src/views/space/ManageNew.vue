@@ -7,7 +7,7 @@
             <span>目录</span>
             <button
               class="addFoler"
-              v-if="isSelectTreeNode"
+              v-if="isSelectRootOrAreaNode"
               @click="plusFolder"
             >
               <svg-icon icon-class="space-manage-folder-plus"></svg-icon>
@@ -58,7 +58,7 @@
             </div>
           </div>
           <div class="preview-nav">
-            <div class="preview-box">
+            <div class="item-preview-box">
               <manage-preview :itemObj="currentItem"></manage-preview>
             </div>
             <div class="items-table-box">
@@ -68,6 +68,7 @@
                     class="item-btn"
                     :class="{ on: showCover }"
                     @click="showCover = !showCover"
+                    title="显示封面"
                   >
                     <svg-icon icon-class="space-manage-cover"></svg-icon>
                   </button>
@@ -75,33 +76,35 @@
                     direction="vertical"
                     v-if="currentItem.id"
                   ></el-divider>
-                  <button class="item-btn" v-if="currentItem.id">
+                  <button
+                    class="item-btn"
+                    v-if="currentItem.id"
+                    title="稍后再看"
+                  >
                     <svg-icon icon-class="space-manage-laterTime"></svg-icon>
                   </button>
-                  <button class="item-btn" v-if="currentItem.id">
+                  <button class="item-btn" v-if="currentItem.id" title="收藏">
                     <svg-icon icon-class="space-manage-star"></svg-icon>
                   </button>
-                  <button class="item-btn" v-if="currentItem.id">
-                    <svg-icon icon-class="space-manage-tag"></svg-icon>
-                  </button>
-                  <button class="item-btn" v-if="currentItem.id">
+                  <button class="item-btn" v-if="currentItem.id" title="下载">
                     <svg-icon icon-class="space-manage-dwonload"></svg-icon>
                   </button>
-                  <el-divider
-                    direction="vertical"
-                    v-if="currentItem.id"
-                  ></el-divider>
-                  <button class="item-btn" v-if="currentItem.id">
+                  <button class="item-btn" v-if="currentItem.id" title="删除">
                     <svg-icon icon-class="space-manage-delete"></svg-icon>
                   </button>
                   <el-divider
                     direction="vertical"
                     v-if="currentItem.id"
                   ></el-divider>
-                  <button class="item-btn" v-if="currentItem.id">
+                  <button class="item-btn" v-if="currentItem.id" title="编辑">
                     <svg-icon icon-class="space-manage-edit"></svg-icon>
                   </button>
-                  <button class="item-btn" v-if="currentItem.id">
+                  <button
+                    class="item-btn"
+                    v-if="currentItem.id"
+                    title="跳转到展示页面"
+                    @click="handleOpenPage"
+                  >
                     <svg-icon icon-class="space-manage-external"></svg-icon>
                   </button>
                 </div>
@@ -109,6 +112,7 @@
                   <button
                     class="item-btn"
                     v-if="currentAreaNode.label && currentCategoryNode.label"
+                    title="上传"
                   >
                     <svg-icon icon-class="space-manage-upload"></svg-icon>
                   </button>
@@ -116,7 +120,7 @@
                     direction="vertical"
                     v-if="currentAreaNode.label && currentCategoryNode.label"
                   ></el-divider>
-                  <button class="item-btn">
+                  <button class="item-btn" title="切换视图">
                     <svg-icon icon-class="space-manage-grid"></svg-icon>
                   </button>
                 </div>
@@ -127,6 +131,22 @@
                   :showCover="showCover"
                   @selectChange="selectChange"
                 ></manage-table>
+              </div>
+              <div class="pagination-box">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  :page-size="30"
+                  :total="total"
+                  layout="total, ->, prev, pager, next"
+                >
+                </el-pagination>
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :current-page="currentPage"
+                  layout="jumper"
+                >
+                </el-pagination>
               </div>
             </div>
           </div>
@@ -169,13 +189,15 @@ export default {
         label: "",
         web_name: "",
       },
-      isSelectTreeNode: false,
+      isSelectRootOrAreaNode: false,
       // 假想根目录（用于区分是创建一级还是二级目录）
       assumeRoot: "",
 
       currentPage: 1,
       limitPage: 30,
       tableData: [],
+      total: 0,
+
       showCover: true,
       currentItem: {
         id: "",
@@ -185,6 +207,8 @@ export default {
         link_url: "",
         sources_url: "",
         type: "",
+        amount: "",
+        size: "",
       },
     };
   },
@@ -209,68 +233,85 @@ export default {
           });
         });
     },
+    // 获取数据
+    getData() {
+      return new Promise((resolve, reject) => {
+        if (
+          this.currentAreaNode.label !== "" &&
+          this.currentCategoryNode.label === ""
+        ) {
+          getAreaNormal(
+            this.currentAreaNode.label,
+            this.limitPage,
+            this.currentPage,
+            "all"
+          ).then(
+            (res) => {
+              console.log(res);
+              if (res.code && res.code === 200) {
+                this.tableData = res.data.resArr;
+                this.total = res.data.total;
+                this.tableData.forEach((i) => {
+                  i.cover = i.sources_url + "/" + i.cover;
+                });
+                resolve();
+              } else reject();
+            },
+            (err) => {
+              console.log(err);
+              reject();
+            }
+          );
+        } else if (
+          this.currentAreaNode.label !== "" &&
+          this.currentCategoryNode.label !== ""
+        ) {
+          getCategoryNormal(
+            this.currentAreaNode.label,
+            this.currentCategoryNode.label,
+            this.limitPage,
+            this.currentPage,
+            "all"
+          ).then(
+            (res) => {
+              console.log(res);
+              if (res.code && res.code === 200) {
+                this.tableData = res.data.resArr;
+                this.total = res.data.total;
+                this.tableData.forEach((i) => {
+                  i.cover = i.sources_url + "/" + i.cover;
+                });
+                resolve();
+              } else reject();
+            },
+            (err) => {
+              console.log(err);
+              reject();
+            }
+          );
+        }
+      });
+    },
     // 设置当前节点信息
     setTreeNode(currentNode, parentNode) {
-      let isCategoryNode = true;
+      this.currentPage = 1;
       if (!parentNode) {
         // 父元素不存在的时候，认为是一级（area）目录
-        isCategoryNode = false;
         this.currentCategoryNode = {
           label: "",
           web_name: "",
         };
         this.currentAreaNode = currentNode;
         // 只有一级目录（area）才能创建子目录，同时标记根目录为假
-        this.isSelectTreeNode = true;
+        this.isSelectRootOrAreaNode = true;
         this.assumeRoot = false;
       } else {
         this.currentAreaNode = parentNode;
         this.currentCategoryNode = currentNode;
         // 二级目录（category）不能创建子目录
-        this.isSelectTreeNode = false;
+        this.isSelectRootOrAreaNode = false;
       }
-      if (isCategoryNode) {
-        getCategoryNormal(
-          this.currentAreaNode.label,
-          this.currentCategoryNode.label,
-          this.limitPage,
-          this.currentPage,
-          "all"
-        ).then(
-          (res) => {
-            console.log(res);
-            if (res.code && res.code === 200) {
-              this.tableData = res.data.resArr;
-              this.tableData.forEach((i) => {
-                i.cover = i.sources_url + "/" + i.cover;
-              });
-            }
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
-      } else {
-        getAreaNormal(
-          this.currentAreaNode.label,
-          this.limitPage,
-          this.currentPage,
-          "all"
-        ).then(
-          (res) => {
-            console.log(res);
-            if (res.code && res.code === 200) {
-              this.tableData = res.data.resArr;
-              this.tableData.forEach((i) => {
-                i.cover = i.sources_url + "/" + i.cover;
-              });
-            }
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
-      }
+      this.getData();
     },
     // 监听表格选择
     selectChange(rowObj) {
@@ -281,7 +322,7 @@ export default {
     // 选中假想根目录
     selectRootNode() {
       console.log("假设是根目录");
-      this.isSelectTreeNode = true;
+      this.isSelectRootOrAreaNode = true;
       this.assumeRoot = true;
     },
     // 创建目录
@@ -294,6 +335,18 @@ export default {
           this.currentAreaNode.web_name || this.currentAreaNode.label
         );
       }
+    },
+    // 切换表格分页
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getData();
+    },
+    // 打开展示页面
+    handleOpenPage() {
+      let url = this.$router.resolve({
+        path: this.currentItem.link_url,
+      });
+      window.open(url.href, "_blank");
     },
   },
 };
@@ -394,12 +447,12 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
           flex: 1;
           display: flex;
           flex-direction: column;
-          .preview-box {
-            height: 50%;
+          .item-preview-box {
+            height: 44%;
             background: rgba(12, 12, 12, $spaceBgColorAlpha);
           }
           .items-table-box {
-            height: 50%;
+            height: 56%;
             width: 100%;
             padding: 5px;
             display: flex;
@@ -448,6 +501,13 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             }
             .table-box {
               flex: 1;
+            }
+            .pagination-box {
+              height: 40px;
+              display: flex;
+              align-items: flex-end;
+              justify-content: space-between;
+              padding-bottom: 1px;
             }
           }
         }
@@ -503,6 +563,29 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 }
 .el-divider {
   background: #606266;
+}
+// 分页
+::v-deep .el-pagination {
+  padding-left: 0px;
+  padding-right: 2px;
+  .btn-next,
+  .btn-prev {
+    color: #787878;
+    background: transparent;
+  }
+  .el-pager li {
+    color: #787878;
+    background: transparent;
+    &.active {
+      color: #409eff;
+    }
+  }
+  .el-pagination__jump {
+    .el-input__inner {
+      background-color: transparent;
+      border: 1px solid #787878;
+    }
+  }
 }
 
 // // PC x<=1920px

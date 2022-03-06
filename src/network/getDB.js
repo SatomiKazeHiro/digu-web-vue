@@ -34,7 +34,7 @@ export function getAreaNormal(area, limit, page, msgType = "") {
 // 获取域下所有的类（category）
 export function getCategoryAllName(area) {
   return request({
-    url: "/api/get/categoriesAllName",
+    url: "/api/get/categoryAllName",
     params: { area }
   })
 }
