@@ -120,13 +120,19 @@
                     direction="vertical"
                     v-if="currentAreaNode.label && currentCategoryNode.label"
                   ></el-divider>
-                  <button class="item-btn" title="切换视图">
+                  <button
+                    class="item-btn"
+                    title="切换视图"
+                    :class="{ on: isGridView }"
+                    @click="isGridView = !isGridView"
+                  >
                     <svg-icon icon-class="space-manage-grid"></svg-icon>
                   </button>
                 </div>
               </div>
               <div class="table-box">
                 <manage-table
+                  :isGridView="isGridView"
                   :tableData="tableData"
                   :showCover="showCover"
                   @selectChange="selectChange"
@@ -198,6 +204,8 @@ export default {
       tableData: [],
       total: 0,
 
+      isGridView: false,
+
       showCover: true,
       currentItem: {
         id: "",
@@ -213,6 +221,7 @@ export default {
     };
   },
   mounted() {
+    document.body.style.setProperty("--manage-preview-height", 380);
     document.body.style.setProperty("--manage-global-transparency", 0.8);
     this.initLogTree();
   },
@@ -419,6 +428,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
         flex-direction: column;
         .tools-nav {
           height: 48px;
+          min-height: 48px;
           display: flex;
           position: relative;
           align-items: center;
@@ -448,11 +458,12 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
           display: flex;
           flex-direction: column;
           .item-preview-box {
-            height: 44%;
+            height: calc(var(--manage-preview-height) * 1px);
             background: rgba(12, 12, 12, $spaceBgColorAlpha);
           }
           .items-table-box {
-            height: 56%;
+            height: calc(100vh - var(--manage-preview-height) * 1px - 48px);
+            // flex: 1;
             width: 100%;
             padding: 5px;
             display: flex;
@@ -500,7 +511,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
               }
             }
             .table-box {
-              flex: 1;
+              height: calc(100vh - var(--manage-preview-height) * 1px - 128px);
             }
             .pagination-box {
               height: 40px;

@@ -1,6 +1,17 @@
 <template>
   <div class="manage-table">
+    <div class="grid-view-wrap" v-if="isGridView">
+      <div class="grid-item" v-for="i in tableData" :key="i.id">
+        <div class="item-content" @click="clickGridItem(i)">
+          <div class="img-box">
+            <img :src="'/proxy' + i.cover" />
+          </div>
+          <div class="title-box">{{ i.title }}</div>
+        </div>
+      </div>
+    </div>
     <el-table
+      v-else
       ref="table"
       :data="tableData"
       height="100%"
@@ -62,6 +73,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    isGridView: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -71,7 +86,7 @@ export default {
   beforeUpdate() {
     // 解决只有一二条记录时，在加载完封面的情况下，滚动条不出现
     this.$nextTick(() => {
-      this.$refs.table.doLayout();
+      if (this.$refs.table) this.$refs.table.doLayout();
     });
   },
   methods: {
@@ -85,10 +100,14 @@ export default {
       if (rowIndex === this.selectIndex) return "current-select";
       else return "";
     },
-    // 点击表格行
+    // 点击表格的一行
     clickTableRow(row) {
       this.selectIndex = row.index;
       this.$emit("selectChange", row);
+    },
+    // 点击网格的一个
+    clickGridItem(item) {
+      this.$emit("selectChange", item);
     },
   },
   watch: {
@@ -114,6 +133,91 @@ export default {
 <style lang="scss" scoped>
 .manage-table {
   height: 100%;
+  .grid-view-wrap {
+    height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    align-content: flex-start;
+    flex-flow: row wrap;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #787878;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track-piece {
+      background: transparent;
+    }
+    .grid-item {
+      flex: 0 0 10%;
+      overflow: hidden;
+      margin-bottom: 5px;
+      white-space: normal;
+      padding: 5px;
+      .item-content {
+        height: 100%;
+        color: #555555;
+        background-color: #ffffff;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 3px 3px 6px;
+        transition: box-shadow 0.2s;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        &:hover {
+          box-shadow: rgba(0, 173, 236, 0.6) 0px 1px 4px;
+        }
+        .img-box {
+          width: 100%;
+          height: 0;
+          overflow: hidden;
+          padding-bottom: 140%;
+          position: relative;
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            border-radius: 3px;
+            overflow: hidden;
+            display: block;
+          }
+        }
+        .title-box {
+          overflow: hidden;
+          -webkit-line-clamp: 2;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          font-weight: bold;
+          padding: 4px 2px 2px;
+          font-size: 13px;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1680px) {
+  .manage-table {
+    .grid-view-wrap {
+      .grid-item {
+        flex: 0 0 16.6%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .manage-table {
+    .grid-view-wrap {
+      .grid-item {
+        flex: 0 0 20%;
+      }
+    }
+  }
 }
 
 // 资源表格中图片的宽度
