@@ -19,7 +19,9 @@
         v-for="i in userItems"
         :key="'header-' + i.label"
       >
-        <a :href="i.url" v-if="windowWidth > 1024">{{ i.label }}</a>
+        <a :href="i.url" v-if="$store.state._browserStatus.appWidth > 1024">{{
+          i.label
+        }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
@@ -53,7 +55,6 @@ export default {
   },
   data() {
     return {
-      windowWidth: null,
       // 左侧站内链接内容
       linkItems: [
         {
@@ -84,13 +85,6 @@ export default {
       ],
     };
   },
-  mounted() {
-    this.windowWidth = window.innerWidth;
-    window.onresize = () => {
-      this.windowWidth = window.innerWidth;
-    };
-  },
-  methods: {},
 };
 </script>
 
@@ -106,11 +100,11 @@ export default {
   }
 }
 // 手机 平板 <1000
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1044px) {
   #main-header {
     border-bottom: 1px solid #ccc;
-    .m-header {
-    }
+    height: 48px;
+    .m-header {}
     .m-banner {
       display: none;
     }

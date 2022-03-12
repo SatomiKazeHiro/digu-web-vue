@@ -9,9 +9,10 @@ export function getItemRandom(limit) {
 }
 
 // 获取所有域（area）的名字
-export function getAreaAllName() {
+export function getAreaAllName(isOnlyArea = true) {
   return request({
     url: '/api/get/areaAllName',
+    params: { isOnlyArea }
   })
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div id="web">
     <main-header>
-      <img :src="getHead($store.state._user.userHeaderPath)" slot="user-img" />
+      <img :src="$store.state._user.header" slot="user-img" />
     </main-header>
     <div class="index-content-wrap">
       <random-recommend :RRItem="itemRandomArr"></random-recommend>
@@ -9,8 +9,8 @@
         <index-area-panel
           v-for="i in areaList"
           :key="i.area"
+          :title="i.title"
           :areaList="i.list"
-          :title="i.area"
           :area="i.area"
         ></index-area-panel>
       </div>
@@ -20,7 +20,11 @@
 </template>
 
 <script>
-import { getItemRandom, getAreaAllName, getAreaRandom } from "network/getWebData";
+import {
+  getItemRandom,
+  getAreaAllName,
+  getAreaRandom,
+} from "network/getWebData";
 import MainHeader from "components/MainHeader";
 import RandomRecommend from "components/RandomRecommend";
 import IndexAreaPanel from "components/content/IndexAreaPanel";
@@ -33,13 +37,15 @@ export default {
   },
   data() {
     return {
+      itemRandomLimit: 8,
       itemRandomArr: [],
       areaList: [],
+      areaRandomLimit: 12,
     };
   },
   mounted() {
     // 获取所有资源项目中的随机8个
-    getItemRandom(8).then((res) => {
+    getItemRandom(this.itemRandomLimit).then((res) => {
       if (res.code === 200) {
         this.itemRandomArr = res.data;
         this.itemRandomArr.forEach((i) => {
@@ -48,13 +54,15 @@ export default {
       }
     });
     // 获取所有的域名
-    getAreaAllName().then((res) => {
+    getAreaAllName(false).then((res) => {
       if (res.code === 200) {
-        res.data.forEach((i) => {
-          getAreaRandom(i, 12).then((res) => {
+        res.data.forEach(async (i) => {
+          // 每个栏目获取随机12个
+          await getAreaRandom(i.area, this.areaRandomLimit).then((res) => {
             if (res.code === 200) {
               this.areaList.push({
-                area: i,
+                title: i.web_name || i.area,
+                area: i.area,
                 list: res.data,
               });
             }
@@ -63,11 +71,7 @@ export default {
       }
     });
   },
-  methods: {
-    getHead(path) {
-      return require("../" + path);
-    },
-  },
+  methods: {},
 };
 </script>
 

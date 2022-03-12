@@ -1,5 +1,5 @@
 <template>
-  <div class="area">
+  <div id="area">
     <div
       class="m-header"
       :class="{
@@ -7,23 +7,10 @@
       }"
     >
       <normal-header pcBgColor="#333" mobileBgColor="transparent">
-        <img
-          :src="getHead($store.state._user.userHeaderPath)"
-          slot="user-img"
-        />
+        <img :src="$store.state._user.userHeaderPath" slot="user-img" />
       </normal-header>
       <div class="carousel-wrap" v-cloak>
-        <el-carousel
-          :interval="4000"
-          type="card"
-          :height="
-            getAppWidth() > 1000
-              ? getAppWidth() > 1280
-                ? '480px'
-                : '380px'
-              : ''
-          "
-        >
+        <el-carousel :interval="4000" type="card" :height="getAppWidth()">
           <el-carousel-item v-for="i in carouselList" :key="'cl' + i.id">
             <div class="item-cover">
               <a :href="'/proxy' + i.url + i.id">
@@ -52,9 +39,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="category-wrap"
-    >
+    <div class="category-wrap">
       <Category></Category>
     </div>
     <div class="footer-wrap"></div>
@@ -82,7 +67,7 @@ export default {
   mounted() {
     // 获取域下所有分类的随机内容
     getAreaRandom(this.$route.params.area, 6).then((res) => {
-      // console.log(res);
+      console.log(res);
       if (res.code === 200) {
         this.carouselList = res.data;
       }
@@ -109,20 +94,21 @@ export default {
     showImg(id) {
       this.$refs["area_cl" + id][0].classList.toggle("opacity-0");
     },
-    // 获取头像
-    getHead(path) {
-      return require("../../" + path);
-    },
     // 获取应用窗口宽度
     getAppWidth() {
-      return this.$store.state._browserStatus.appWidth;
+      if (this.$store.state._browserStatus.appWidth > 1300) return "480px";
+      else if (this.$store.state._browserStatus.appWidth > 960) return "380px";
+      else return "";
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.area {
+#area {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
   .m-header {
     background: #fff;
     .carousel-wrap {
@@ -192,7 +178,7 @@ export default {
 }
 // 平板 宽屏 1000~1280
 @media only screen and (max-width: 1300px) {
-  .area {
+  #area {
     .m-header {
       .categories-nav {
         .nav-content {
@@ -204,7 +190,7 @@ export default {
 }
 // 手机 平板 <1000
 @media only screen and (max-width: 1024px) {
-  .area {
+  #area {
     height: 100%;
     overflow: hidden;
     position: relative;
@@ -246,7 +232,7 @@ export default {
       left: 0;
       width: 100%;
       height: 100%;
-      padding-bottom: 40px;
+      // padding-bottom: 40px;
       transition: transform 0.25s;
       z-index: 4;
     }

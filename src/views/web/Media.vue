@@ -1,15 +1,12 @@
 <template>
-  <div class="media" v-cloak>
+  <div id="media" v-cloak>
     <div
       class="media-wrap"
       :class="{ 'opacity-0': !isShow }"
       v-if="isShow && !noTemplate && !loadingError"
     >
       <normal-header>
-        <img
-          :src="getHead($store.state._user.userHeaderPath)"
-          slot="user-img"
-        />
+        <img :src="$store.state._user.userHeaderPath" slot="user-img" />
       </normal-header>
       <div class="media-info-wrap">
         <div class="info-bg-wrap">
@@ -156,17 +153,15 @@ export default {
       this.$refs[ref].classList.toggle("opacity-0");
     },
     handleTabClick() {},
-    // 获取头像
-    getHead(path) {
-      return require("../../" + path);
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.media {
+#media {
   height: 100%;
+  width: 100%;
+  overflow-y: auto;
   background: #f4f5f7;
   .media-wrap {
     height: 100%;
@@ -292,7 +287,7 @@ export default {
 }
 // 平板 宽屏 1000~1280
 @media only screen and (max-width: 1300px) {
-  .media {
+  #media {
     .media-wrap {
       .media-info-wrap {
         .info-bg-wrap {
@@ -334,8 +329,8 @@ export default {
   }
 }
 // 手机 平板 <1000
-@media only screen and (max-width: 1024px) {
-  .media {
+@media only screen and (max-width: 1044px) {
+  #media {
     .media-wrap {
       .media-info-wrap {
         .info-bg-wrap {

@@ -56,10 +56,8 @@ export default {
   data() {
     return {
       navTags: [
-        {
-          label: "作品详情",
-          tagID: 1,
-        },
+        { label: "作品详情", tagID: 1 },
+        { label: "作品关联", tagID: 2 },
       ],
       currentTagID: 1,
       recommendItems: [],
@@ -125,6 +123,7 @@ export default {
 <style lang="scss" scoped>
 .media-tab-wrap {
   width: 100%;
+  padding-bottom: 25px;
   .media-tab-nav {
     position: relative;
     height: 60px;
@@ -375,8 +374,9 @@ export default {
   }
 }
 // 手机 平板 <1000
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1044px) {
   .media-tab-wrap {
+    padding-bottom: 0;
     .media-tab-nav {
       height: 46px;
       margin-bottom: 5px;

@@ -13,7 +13,7 @@ export default function request(config) {
     return config;
   }, err => {
     console.log(err);
-    return config;
+    return Promise.reject(err);
   })
 
   instance.interceptors.response.use(res => {
@@ -22,7 +22,7 @@ export default function request(config) {
     return res.data;
   }, err => {
     console.log(err);
-    return res.data;
+    return Promise.reject(err);
   })
 
   return instance(config)

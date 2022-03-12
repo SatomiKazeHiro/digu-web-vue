@@ -7,7 +7,7 @@ Vue.use(Vuex)
 // 用户模块
 let moduleUser = {
   state: {
-    userHeaderPath: "assets/img/user/head.jpeg",
+    header: "https://img0.baidu.com/it/u=2859944020,1774086333&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400",
   },
   mutations: {
     updateUsername(state, val) {

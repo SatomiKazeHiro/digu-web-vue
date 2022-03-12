@@ -72,6 +72,10 @@ const routes = [
         name: 'Setting',
         component: Setting,
       },
+      {
+        path: "*",
+        redirect: '/404',
+      }
     ]
   },
   {
