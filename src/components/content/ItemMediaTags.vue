@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getAreaRandom } from "network/getDB";
+import { getAreaRandom } from "network/getWebData";
 export default {
   name: "ItemMediaTags",
   data() {

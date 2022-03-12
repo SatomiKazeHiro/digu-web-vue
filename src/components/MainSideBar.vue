@@ -1,5 +1,5 @@
 <template>
-  <div class="mian-side-bar">
+  <div id="mian-side-bar">
     <side-bar>
       <img src="~assets/img/space/logo.png" slot="web-logo" />
       <div class="web-name" slot="web-name">{{ config.web_name }}</div>
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mian-side-bar {
+#mian-side-bar {
   height: 100%;
   z-index: 10;
   transition: all 0.3s linear;

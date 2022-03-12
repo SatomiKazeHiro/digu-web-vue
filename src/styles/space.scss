@@ -1,0 +1,345 @@
+$spaceBgColorAlpha: var(--manage-global-transparency);
+
+#space {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  #space-side-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: all 0.3s linear;
+    &.show {
+      opacity: 1;
+      z-index: 50;
+    }
+  }
+  #space-bg-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.33);
+  }
+  #space-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  #space-content {
+    flex: 1;
+    color: #fff;
+    // 高于 space-bg-mask
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: overlay;
+  }
+}
+
+#manage {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .manage-wrap {
+    height: 100%;
+    display: flex;
+    .warehouse-wrap {
+      width: 320px;
+      min-width: 320px;
+      background: rgba(69, 69, 69, $spaceBgColorAlpha);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s linear;
+      .log-tree-box {
+        flex: 1.15;
+        border-bottom: 1px solid #787878;
+        display: flex;
+        flex-direction: column;
+        .log-tree-container {
+          flex: 1;
+        }
+      }
+      .tags-box {
+        flex: 1;
+      }
+      ._title-cell {
+        height: 44px;
+        line-height: 44px;
+        font-size: 17px;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #787878;
+        button {
+          width: 28px;
+          height: 28px;
+          line-height: 28px;
+          border-radius: 3px;
+          font-size: 22px;
+          color: #c1c1c1;
+          background: transparent;
+          outline: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s linear;
+          &:hover {
+            background: #747474;
+          }
+        }
+      }
+    }
+    .content-wrap {
+      flex: 1;
+      position: relative;
+      border-left: 1px solid #787878;
+      border-right: 1px solid #787878;
+      overflow: hidden;
+      .content-inner {
+        display: flex;
+        flex-wrap: nowrap;
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        transition: left 0.33s linear;
+        &.config-on {
+          left: 0;
+        }
+        .preview-panel {
+          width: 100%;
+          min-width: 100%;
+          display: flex;
+          flex-direction: column;
+          .header-nav {
+            height: 48px;
+            min-height: 48px;
+            display: flex;
+            position: relative;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            .others-box {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+          }
+          .preview-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            .item-preview-box {
+              height: calc(var(--manage-preview-height) * 1px);
+              background: rgba(12, 12, 12, $spaceBgColorAlpha);
+            }
+            .items-table-box {
+              height: calc(100vh - var(--manage-preview-height) * 1px - 48px);
+              // flex: 1;
+              width: 100%;
+              padding: 5px;
+              display: flex;
+              flex-direction: column;
+              background: rgba(240, 240, 240, $spaceBgColorAlpha);
+              .items-nav {
+                height: 40px;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+                .item-single-operation {
+                  flex: 1;
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-start;
+                  gap: 5px;
+                }
+                .item-multi-operation {
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                }
+                button.item-btn {
+                  width: 28px;
+                  height: 28px;
+                  line-height: 28px;
+                  border-radius: 3px;
+                  font-size: 22px;
+                  color: #525252;
+                  border: 1px solid transparent;
+                  outline: none;
+                  background: transparent;
+                  transition: all 0.3s linear;
+                  cursor: pointer;
+                  &:hover {
+                    border: 1px solid #999999;
+                  }
+                  &.on {
+                    background: #999999;
+                    border: 1px solid #999999;
+                  }
+                  &.none-border {
+                    border: 1px solid transparent !important;
+                  }
+                }
+              }
+              .table-box {
+                height: calc(100vh - var(--manage-preview-height) * 1px - 128px);
+              }
+              .pagination-box {
+                height: 40px;
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                padding-bottom: 1px;
+              }
+            }
+          }
+        }
+        .config-panel {
+          width: 100%;
+          min-width: 100%;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          .header-nav {
+            height: 48px;
+            min-height: 48px;
+            display: flex;
+            position: relative;
+            align-items: center;
+            padding: 0 10px;
+            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            position: relative;
+            justify-content: flex-end;
+            .return-btn {
+              color: #525252;
+              font-size: 28px;
+              margin-right: 5px;
+            }
+            .title {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              font-size: 20px;
+              color: #525252;
+              font-weight: bold;
+            }
+          }
+          .config-content {
+            flex: 1;
+            padding: 15px 20px;
+            color: #525252;
+            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            .config-item-box {
+              display: flex;
+              flex-wrap: wrap;
+              .c-item {
+                width: 33.3%;
+                padding: 0 20px;
+                .c-label {
+                  font-size: 16px;
+                  margin-bottom: 8px;
+                  font-weight: bold;
+                  &.change {
+                    color: #00a1d6;
+                  }
+                }
+                .c-cont {
+                  margin-bottom: 23px;
+                }
+              }
+            }
+          }
+          .submit-btn {
+            position: absolute;
+            right: 44px;
+            bottom: 44px;
+            width: 46px;
+            height: 46px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+            button {
+              width: 100%;
+              height: 100%;
+              font-size: 33px;
+              color: #525252;
+              transition: color 0.2s linear;
+              &:hover {
+                color: #00a1d6;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// PC x>1920px
+@media only screen and (min-width: 1921px) {
+  #manage {
+    .manage-wrap {
+      width: 1920px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// PC x<=1280px
+@media only screen and (max-width: 1280px) {
+  #manage {
+    .manage-wrap {
+      .warehouse-wrap {
+        width: 260px;
+        min-width: 260px;
+        ._title-cell {
+          font-size: 15px;
+          height: 43px;
+        }
+      }
+    }
+  }
+}
+
+// 手机、平板 x<=1024px
+@media only screen and (max-width: 1024px) {
+  #space {
+    min-width: 1024px;
+    .mian-side-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+    }
+    #space-content {
+      padding-left: 70px;
+    }
+  }
+
+  #manage {
+    .manage-wrap {
+      .warehouse-wrap {
+        width: 200px;
+        min-width: 200px;
+      }
+    }
+  }
+}

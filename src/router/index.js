@@ -14,7 +14,7 @@ VueRouter.prototype.replace = function replace(location) {
 
 Vue.use(VueRouter);
 
-let Index = () => import('views/Index.vue');
+let Web = () => import('views/Web.vue');
 let Area = () => import('views/web/Area.vue');
 let Category = () => import('views/web/Category.vue');
 let Media = () => import('views/web/Media.vue');
@@ -27,7 +27,6 @@ let History = () => import('views/space/History.vue');
 let Favlist = () => import('views/space/Favlist.vue');
 let Watchlater = () => import('views/space/Watchlater.vue');
 let Manage = () => import('views/space/Manage.vue');
-let ManageNew = () => import('views/space/ManageNew.vue');
 let Setting = () => import('views/space/Setting.vue');
 
 let ErrorPage = () => import('views/ErrorPage.vue');
@@ -35,8 +34,8 @@ let ErrorPage = () => import('views/ErrorPage.vue');
 const routes = [
   {
     path: '/',
-    name: 'Index',
-    component: Index
+    name: 'Web',
+    component: Web
   },
   {
     path: '/space',
@@ -67,11 +66,6 @@ const routes = [
         path: 'manage',
         name: 'Manage',
         component: Manage,
-      },
-      {
-        path: 'manage2',
-        name: 'ManageNew',
-        component: ManageNew,
       },
       {
         path: 'setting',

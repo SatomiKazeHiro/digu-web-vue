@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import { getAreaNormal, getCategoryNormal } from "network/getDB";
-import { checkArea, checkCategory } from "network/checkDB";
+import { getAreaNormal, getCategoryNormal } from "network/getWebData";
+import { checkArea, checkCategory } from "network/checkResource";
 export default {
   name: "Category",
   data() {

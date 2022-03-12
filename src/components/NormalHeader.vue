@@ -1,5 +1,5 @@
 <template>
-  <div class="normal-header">
+  <div id="normal-header">
     <base-header
       :pcBgColor="pcBgColor"
       :pcColor="pcColor"
@@ -98,7 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.normal-header{
+#normal-header{
   transition: opacity 0.25s linear;
 }
 </style>

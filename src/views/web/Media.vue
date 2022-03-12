@@ -66,8 +66,8 @@
 </template>
 
 <script>
-import { checkItem } from "network/checkDB";
-import { getItem } from "network/getDB";
+import { checkItem } from "network/checkResource";
+import { getItem } from "network/getWebData";
 import NormalHeader from "components/NormalHeader";
 import ItemMediaTags from "components/content/ItemMediaTags";
 import NoTemplatePage from "components/content/NoTemplatePage";

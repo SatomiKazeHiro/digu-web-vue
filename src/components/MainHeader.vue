@@ -1,5 +1,5 @@
 <template>
-  <div id="mainHeader" :style="{ 'background-color': bgcolor }">
+  <div id="main-header" :style="{ 'background-color': bgcolor }">
     <base-header class="m-header">
       <div
         slot="link-item"
@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#mainHeader {
+#main-header {
   position: relative;
   .m-header {
     width: 100%;
@@ -107,7 +107,7 @@ export default {
 }
 // 手机 平板 <1000
 @media only screen and (max-width: 1024px) {
-  #mainHeader {
+  #main-header {
     border-bottom: 1px solid #ccc;
     .m-header {
     }

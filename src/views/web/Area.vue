@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { getCategoryAllName, getAreaRandom } from "network/getDB";
+import { getCategoryAllName, getAreaRandom } from "network/getWebData";
 import NormalHeader from "components/NormalHeader";
 import Category from "./Category";
 export default {

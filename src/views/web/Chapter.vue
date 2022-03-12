@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { checkItem } from "network/checkDB";
+import { checkItem } from "network/checkResource";
 export default {
   name: "Chapter",
   created() {

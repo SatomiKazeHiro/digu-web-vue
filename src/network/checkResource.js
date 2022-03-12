@@ -8,7 +8,6 @@ export function checkArea(area) {
 }
 
 export function checkCategory(area, category) {
-  // console.log(area, category);
   return request({
     url: "/api/check/category",
     params: { area, category }

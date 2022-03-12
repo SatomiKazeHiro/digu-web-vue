@@ -9,7 +9,12 @@
       >
         <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ data.web_name || node.label }}</span>
-          <button class="transparent" @click="handleConfigClick(node, data)">配置</button>
+          <button
+            class="transparent"
+            @click.stop="handleConfigClick(node, data)"
+          >
+            配置
+          </button>
         </span>
       </el-tree>
     </div>
@@ -35,6 +40,7 @@ export default {
   methods: {
     // 点击任意节点
     handleNodeClick(data, node) {
+      console.log("点击节点");
       // 父节点判断
       let parentNodeData = {};
       if (node.parent.data.label) {
@@ -48,8 +54,14 @@ export default {
     },
     // 点击配置
     handleConfigClick(node, data) {
-      console.log("配置");
-      console.log(node, data);
+      console.log("点击配置配置");
+      // console.log(node, data);
+      if (node.parent.data.label)
+        this.$emit("openConfigPanel", {
+          area: node.parent.data.label,
+          category: data.label,
+        });
+      else this.$emit("openConfigPanel", { area: data.label });
     },
   },
 };

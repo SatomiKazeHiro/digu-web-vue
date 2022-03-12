@@ -1,0 +1,36 @@
+#web {
+  // background: #f4f5f7;
+  .index-content-wrap {
+    width: 1280px;
+    margin: 0 auto;
+    // margin-bottom: 40px;
+  }
+}
+
+// PC x>1920px
+@media only screen and (min-width: 1921px) {}
+
+// PC x<=1280px
+@media only screen and (max-width: 1280px) {
+  #web {
+    .index-content-wrap {
+      width: 1000px;
+    }
+  }
+}
+
+// 手机、平板 x<=1024px
+@media only screen and (max-width: 1024px) {
+  #web {
+    .index-content-wrap {
+      width: 100%;
+      // nav + tag 高度
+      height: calc(100vh - 80px);
+      overflow: hidden;
+      overflow-y: auto;
+      .inner {
+        display: none;
+      }
+    }
+  }
+}

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import { checkItem } from "network/checkDB";
-import { getItem } from "network/getDB";
+import { checkItem } from "network/checkResource";
+import { getItem } from "network/getWebData";
 export default {
   name: "Play",
   data() {

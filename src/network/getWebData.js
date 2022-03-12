@@ -41,7 +41,6 @@ export function getCategoryAllName(area) {
 
 // 获取域下指定的类的所有资源项目（Iitem）
 export function getCategoryNormal(area, category, limit, page, msgType = "") {
-  // console.log(area, category, limit, page);
   return request({
     url: "/api/get/categoryNormal",
     params: { area, category, limit, page, msgType }
@@ -56,41 +55,3 @@ export function getItem(area, category, id) {
   })
 }
 
-// 获取目录树
-export function getLogTree() {
-  return request({
-    url: "/api/get/logtree",
-  })
-}
-
-// 获取 area 配置信息
-export function getAreaConfig(area) {
-  return request({
-    url: "/api/get/areaIndex",
-    params: { area }
-  })
-}
-
-// 获取 category 配置信息
-export function getCategoryConfig(area, category) {
-  return request({
-    url: "/api/get/categoryIndex",
-    params: { area, category }
-  })
-}
-
-// 设置 area 配置
-export function settAreaConfig(areaObj) {
-  return request({
-    url: "/api/set/areaIndex",
-    params: { areaObj }
-  })
-}
-
-// 设置 category 配置
-export function setCategoryConfig(categoryObj) {
-  return request({
-    url: "/api/set/categoryIndex",
-    params: { categoryObj }
-  })
-}
