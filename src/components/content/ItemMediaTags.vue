@@ -53,6 +53,11 @@
 import { getAreaRandom } from "network/getWebData";
 export default {
   name: "ItemMediaTags",
+  props: {
+    link_url:"",
+    sources_url: "",
+    files: [],
+  },
   data() {
     return {
       navTags: [
@@ -66,6 +71,7 @@ export default {
   },
   mounted() {
     this.getRecommendItem();
+    console.log(this.sources_url, this.files);
   },
   methods: {
     // 当前 tabs 的值
@@ -107,7 +113,6 @@ export default {
     },
     // 生成推荐的 a 标签的连接
     getAUrl(i) {
-      // console.log(i);
       if (i) return `/${this.area}/${i.url.split("/")[3]}/${i.id}`;
       else return "";
     },

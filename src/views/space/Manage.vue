@@ -204,12 +204,26 @@
                       style="width: 100%"
                       size="medium"
                     >
+                      <el-option label="番剧模板" value="bangumi"></el-option>
+                      <el-option
+                        label="漫画模板"
+                        value="manga"
+                        :disabled="true"
+                      ></el-option>
                       <el-option
                         label="插画模板"
                         value="illustration"
+                        :disabled="true"
                       ></el-option>
-                      <el-option label="视频模板" value="video"></el-option>
-                      <el-option label="混合模板" value="hybrid"></el-option>
+                      <el-option
+                        label="视频模板"
+                        value="video"
+                      ></el-option>
+                      <el-option
+                        label="混合模板"
+                        value="hybrid"
+                        :disabled="true"
+                      ></el-option>
                     </el-select>
                   </div>
                 </div>
@@ -343,6 +357,7 @@
                 </div>
                 <div class="table-box">
                   <manage-table
+                    ref="manage-table"
                     :isGridView="isGridView"
                     :tableData="tableData"
                     :showCover="showCover"
@@ -416,7 +431,7 @@ export default {
 
       isGridView: false,
 
-      showCover: true,
+      showCover: false,
       currentItem: {
         id: "",
         title: "",
@@ -568,6 +583,9 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
+      this.$nextTick(() => {
+        this.$refs["manage-table"].$refs.table.bodyWrapper.scrollTop = 0;
+      });
     },
     // 打开具体展示页面
     handleOpenPage() {
