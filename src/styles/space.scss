@@ -322,7 +322,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 @media only screen and (max-width: 1024px) {
   #space {
     min-width: 1024px;
-    .mian-side-bar {
+    #mian-side-bar {
       position: absolute;
       left: 0;
       top: 0;

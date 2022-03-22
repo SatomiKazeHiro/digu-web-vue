@@ -6,7 +6,7 @@
       v-if="isShow && !noTemplate && !loadingError"
     >
       <normal-header>
-        <img :src="$store.state._user.userHeaderPath" slot="user-img" />
+        <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="media-content">
         <bangumi-template
@@ -26,15 +26,13 @@
 import { checkItem } from "network/checkResource";
 import { getItem } from "network/getWebData";
 import NormalHeader from "components/NormalHeader";
-import ItemMediaTags from "components/content/ItemMediaTags";
-import NoTemplatePage from "components/content/page/NoTemplatePage";
-import LoadingErrorPage from "components/content/page/LoadingErrorPage";
-import bangumiTemplate from "components/content/template/bangumiTemplate";
+import NoTemplatePage from "./page/NoTemplatePage";
+import LoadingErrorPage from "./page/LoadingErrorPage";
+import bangumiTemplate from "./mediaTemplate/bangumiTemplate";
 export default {
   name: "Media",
   components: {
     NormalHeader,
-    ItemMediaTags,
     NoTemplatePage,
     LoadingErrorPage,
     bangumiTemplate,
@@ -127,7 +125,6 @@ export default {
     flex-direction: column;
     .media-content {
       flex: 1;
-      overflow-y: auto;
     }
   }
 }
@@ -137,5 +134,12 @@ export default {
 
 // 手机 平板 <1000
 @media only screen and (max-width: 1044px) {
+#media {
+  .media-wrap {
+    .media-content {
+      overflow-y: auto;
+    }
+  }
+}
 }
 </style>

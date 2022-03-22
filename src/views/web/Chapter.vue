@@ -1,6 +1,7 @@
 <template>
   <div class="chapter" v-cloak>
     <h1>Chapter</h1>
+    <h2>{{ $route.params }}</h2>
   </div>
 </template>
 

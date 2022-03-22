@@ -215,10 +215,7 @@
                         value="illustration"
                         :disabled="true"
                       ></el-option>
-                      <el-option
-                        label="视频模板"
-                        value="video"
-                      ></el-option>
+                      <el-option label="视频模板" value="video"></el-option>
                       <el-option
                         label="混合模板"
                         value="hybrid"
@@ -583,9 +580,6 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
-      this.$nextTick(() => {
-        this.$refs["manage-table"].$refs.table.bodyWrapper.scrollTop = 0;
-      });
     },
     // 打开具体展示页面
     handleOpenPage() {

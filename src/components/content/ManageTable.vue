@@ -1,6 +1,6 @@
 <template>
   <div class="manage-table">
-    <div class="grid-view-wrap" v-if="isGridView">
+    <div class="grid-view-wrap" v-if="isGridView" ref="gridView">
       <div class="grid-item" v-for="i in tableData" :key="i.id">
         <div class="item-content" @click="clickGridItem(i)">
           <div class="img-box">
@@ -125,6 +125,8 @@ export default {
         amount: "",
         size: "",
       });
+      if (this.$refs.table) this.$refs.table.bodyWrapper.scrollTop = 0;
+      if (this.$refs.gridView) this.$refs.gridView.scrollTop = 0;
     },
   },
 };
@@ -179,9 +181,15 @@ export default {
             top: 0;
             left: 0;
             width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 3px;
             overflow: hidden;
             display: block;
+            &.horizontal {
+              width: 100%;
+              height: auto;
+            }
           }
         }
         .title-box {

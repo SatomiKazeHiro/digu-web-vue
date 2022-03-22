@@ -33,10 +33,15 @@ let moduleSetting = {
 // 浏览器状态
 let moduleBrowserStatus = {
   state: {
-    appWidth: null,
-    appHeight: null,
+    appWidth: 0,
+    appHeight: 0,
     // 域页面（移动端时有效）是否下拉状态
     areaMobileScrollIsDrop: false,
+  },
+  getters: {
+    isHd: (state) => {
+      return state.appWidth > state.appHeight;
+    }
   },
   mutations: {
     // 获取应用宽度
@@ -47,7 +52,7 @@ let moduleBrowserStatus = {
     setAppHeight(state, windowInnerHeight) {
       state.appHeight = windowInnerHeight;
     },
-    // 获取在移动端下用户是往上还是往下滑
+    // 设置在移动端下用户是往上还是往下滑的状态
     setAreaScrollIsDrop(state, res) {
       state.areaMobileScrollIsDrop = res;
     }
