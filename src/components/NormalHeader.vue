@@ -50,7 +50,7 @@ export default {
   },
   data() {
     return {
-      windowWidth: null,
+      windowWidth: 0,
       // 左侧站内链接内容
       linkItems: [
         {
@@ -83,17 +83,12 @@ export default {
   },
   mounted() {
     this.windowWidth = window.innerWidth;
-    // window.onresize = () => {
-    //   this.windowWidth = window.innerWidth;
-    //   console.log(this.windowWidth);
-    // };
     window.addEventListener(
       "resize",
       () => (this.windowWidth = window.innerWidth),
       false
     );
   },
-  methods: {},
 };
 </script>
 

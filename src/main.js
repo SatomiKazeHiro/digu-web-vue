@@ -3,6 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+
+// import VueDPlayer from 'vue-dplayer';
+// import 'vue-dplayer/dist/vue-dplayer.css';
+// Vue.use(VueDPlayer);
+
 Vue.config.productionTip = false
 
 // 在Vue中使用JQuery

@@ -76,9 +76,9 @@
                   >
                     <div
                       class="misl-ep-index"
-                      @click="handleChapterPlay(i.url)"
+                      @click="handleChapterPlay(i.link_url)"
                     >
-                      {{ i.value }}
+                      {{ i.label }}
                     </div>
                   </li>
                 </ul>
@@ -117,6 +117,7 @@
 
 <script>
 import { getAreaRandom } from "network/getWebData";
+import handleBangumi from "@/utils/handleBangumi";
 export default {
   props: {
     coverPath: "",
@@ -130,7 +131,6 @@ export default {
   },
   data() {
     return {
-      supportedVideoFormats: ["mp4", "webm", "ogg"],
       navTags: [
         { label: "作品详情", tagID: 1 },
         { label: "作品关联", tagID: 2 },
@@ -142,44 +142,28 @@ export default {
   },
   mounted() {
     this.getRecommendItem();
-    console.log(this.$store.state._browserStatus.appWidth);
   },
   methods: {
     // 渐变显示图片
     showImg(ref) {
       this.$refs[ref].classList.toggle("opacity-0");
     },
+
     // 处理显示可观看的内容
     handleVideos() {
-      // 遍历出视频文件
-      let supportedArr = this.mediaInfo.files.filter((f) => {
-        return (
-          this.supportedVideoFormats.indexOf(f.split(".").pop().toLowerCase()) >
-          -1
-        );
-      });
-      // 封装数据
-      let videos = supportedArr.map((m) => {
-        // 正则表达式提取视频文件名称的第一个整数或小数
-        let reRes = m.match(/(\d+\.\d+|\d+)/g) || [];
-        // 名称符合的情况下封装数据
-        if (reRes[0]) {
-          reRes[0] = Number(reRes[0]);
-          return {
-            value: reRes[0],
-            label: `第${reRes[0]}话`,
-            url: `${this.mediaInfo.link_url}/s/${reRes[0]}`,
-          };
-        }
-      });
-      // 排序
-      videos.sort((a, b) => a.value - b.value);
-      return videos;
+      return handleBangumi(this.mediaInfo);
     },
-    // 内容跳转
+
+    // 番剧资源播放跳转
     handleChapterPlay(url) {
       window.open(url, "_blank");
     },
+
+    // 随机资源项目的跳转事件
+    itemTransfer(i) {
+      window.open(i.link_url, "_blank");
+    },
+
     // 获取推荐的随机内容
     getRecommendItem() {
       getAreaRandom(this.$route.params.area, 6, this.$route.params.item).then(
@@ -189,7 +173,7 @@ export default {
             this.recommendLoadErr = false;
             this.recommendItems = res.data;
             this.recommendItems.forEach((i) => {
-              i.cover = `/proxy${i.url}${i.cover}`;
+              i.cover = `/proxy${i.source_url}${i.cover}`;
             });
           }
         },
@@ -199,10 +183,7 @@ export default {
         }
       );
     },
-    // 随机资源项目的跳转事件
-    itemTransfer(i) {
-      window.open(i.link_url, "_blank");
-    },
+
     // 判断是否是平板或者大屏的情况下
     isHd() {
       return (
@@ -353,9 +334,9 @@ export default {
           padding: 0 6px;
           line-height: 57px;
           color: #222;
-          -webkit-transition: all 0.1s linear;
-          -o-transition: 0.1s all linear;
-          transition: all 0.1s linear;
+          -webkit-transition: color, border-bottom-color 0.3s linear;
+          -o-transition: color, border-bottom-color 0.3s linear;
+          transition: color, border-bottom-color 0.3s linear;
           border-bottom: 3px solid rgba(0, 0, 0, 0);
           &:hover,
           &.on {
@@ -415,9 +396,9 @@ export default {
                     border-top: 0;
                     border-left: 3px solid rgba(0, 0, 0, 0);
                     border-right: 3px solid rgba(0, 0, 0, 0);
-                    -webkit-transition: all 0.1s linear;
-                    -o-transition: 0.1s all linear;
-                    transition: all 0.1s linear;
+                    -webkit-transition: color, border-bottom-color 0.1s linear;
+                    -o-transition: color, border-bottom-color 0.1s linear;
+                    transition: color, border-bottom-color 0.1s linear;
                   }
                 }
               }
@@ -434,14 +415,13 @@ export default {
                   width: 85px;
                   margin-right: 20px;
                   margin-bottom: 15px;
-                  transition: all 0.3s linear;
                   &:nth-child(12n + 12) {
                     margin-right: 0px;
                   }
                   .misl-ep-index {
                     height: 38px;
                     padding: 0 4px;
-                    line-height: 38px;
+                    line-height: 36px;
                     font-size: 14px;
                     background-color: #f4f5f7;
                     border: 1px solid #f4f5f7;
@@ -451,7 +431,7 @@ export default {
                     overflow: hidden;
                     -o-text-overflow: ellipsis;
                     text-overflow: ellipsis;
-                    transition: all 0.3s linear;
+                    transition: background 0.3s linear;
                     cursor: pointer;
                     &:hover {
                       background: #00a1d6;
@@ -546,7 +526,7 @@ export default {
   }
 }
 
-// 平板 宽屏 1000~1280
+// 平板 宽屏 1024~1280
 @media only screen and (max-width: 1300px) {
   .bangumi-template {
     .media-info-wrap {
@@ -653,7 +633,7 @@ export default {
   }
 }
 
-// 手机 平板 <1000
+// 手机 平板 <1024
 @media only screen and (max-width: 1044px) {
   .bangumi-template {
     .media-info-wrap {
@@ -740,8 +720,11 @@ export default {
                     margin-right: 0;
                     padding: 0 1.1666vw;
                     width: unset;
-                    height: 32px;
-                    line-height: 32px;
+                    .misl-ep-index {
+                      height: 32px;
+                      line-height: 30px;
+                      font-size: 12px;
+                    }
                   }
                 }
               }

@@ -68,6 +68,7 @@ export default {
       if (this.$refs.cover) {
         if (this.$refs.cover.naturalWidth > this.$refs.cover.naturalHeight)
           this.$refs.cover.classList.add("horizontal");
+        else this.$refs.cover.classList.remove("horizontal");
       }
     },
   },
@@ -92,7 +93,8 @@ export default {
       overflow: hidden;
       border-radius: 4px;
       img {
-        width: 100%;
+        // width: 100%;
+        width: auto;
         height: 100%;
         object-fit: cover;
         border-radius: 4px;

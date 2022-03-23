@@ -15,6 +15,7 @@ module.exports = {
         'utils': '@/utils',
         'views': '@/views',
         'styles': '@/styles',
+        'utils': '@/utils',
       }
     },
   },

@@ -56,3 +56,11 @@ export function getItem(area, category, id) {
   })
 }
 
+// 获取资源项目所属的网页名（web_name）路径
+export function getACPath(area, category) {
+  return request({
+    url: "/api/get/acPath",
+    params: { area, category }
+  })
+}
+

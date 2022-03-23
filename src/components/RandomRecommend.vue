@@ -12,8 +12,8 @@
         <div class="info-box">
           <a href="#" target="_blank">
             <img
-              :src="item.cover"
               class="opacity-0"
+              :src="item.cover"
               :ref="'rr' + item.id"
               @load="showImg(item.id)"
             />
@@ -31,8 +31,8 @@
         <div class="v-card" v-for="item in RRItem" :key="item.id">
           <div class="card">
             <img
-              :src="item.cover"
               class="opacity-0"
+              :src="item.cover"
               :ref="'mobile' + item.id"
               @load="showImgMobile(item.id)"
             />
@@ -69,10 +69,10 @@ export default {
   },
   methods: {
     showImg(id) {
-      this.$refs["rr" + id][0].classList.toggle("opacity-0");
+      this.$refs["rr" + id][0].classList.remove("opacity-0");
     },
     showImgMobile(id) {
-      this.$refs["mobile" + id][0].classList.toggle("opacity-0");
+      this.$refs["mobile" + id][0].classList.remove("opacity-0");
     },
   },
   watch: {

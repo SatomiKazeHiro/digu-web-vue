@@ -13,9 +13,9 @@
         <div class="item-type">
           <span>{{ i.type }}</span>
         </div>
-        <a :href="createAUrl(i.url, i.id)">
+        <a :href="i.link_url">
           <img
-            :src="`/proxy${i.url}${i.title}/${i.cover}`"
+            :src="`/proxy${i.source_url}/${i.cover}`"
             class="opacity-0"
             :ref="'a' + i.id"
             @load="showImg(i.id)"
@@ -66,7 +66,8 @@ export default {
       this.$refs["a" + id][0].classList.toggle("opacity-0");
     },
     createAUrl(url, id) {
-      return `/${url.split("/")[2]}/${url.split("/")[3]}/${id}`;
+      console.log();
+      // return `/${url.split("/")[2]}/${url.split("/")[3]}/${id}`;
     },
   },
 };

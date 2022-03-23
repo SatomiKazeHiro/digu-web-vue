@@ -7,17 +7,17 @@
       }"
     >
       <normal-header pcBgColor="#333" mobileBgColor="transparent">
-        <img :src="$store.state._user.userHeaderPath" slot="user-img" />
+        <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="carousel-wrap" v-cloak>
         <el-carousel :interval="4000" type="card" :height="getAppWidth()">
           <el-carousel-item v-for="i in carouselList" :key="'cl' + i.id">
             <div class="item-cover">
-              <a :href="'/proxy' + i.url + i.id">
+              <a :href="i.link_url">
                 <img
                   :ref="'area_cl' + i.id"
                   class="opacity-0"
-                  :src="'/proxy' + i.url + i.title + '/' + i.cover"
+                  :src="`/proxy${i.source_url}${i.cover}`"
                   @load="showImg(i.id)"
                 />
               </a>

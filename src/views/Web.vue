@@ -49,7 +49,7 @@ export default {
       if (res.code === 200) {
         this.itemRandomArr = res.data;
         this.itemRandomArr.forEach((i) => {
-          i.cover = `/proxy${i.url}${i.cover}`;
+          i.cover = `/proxy${i.source_url}${i.cover}`;
         });
       }
     });
