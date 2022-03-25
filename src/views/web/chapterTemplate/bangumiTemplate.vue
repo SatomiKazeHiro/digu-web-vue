@@ -6,21 +6,24 @@
           <h1 class="title">{{ mediaInfo.title }}</h1>
           <div class="path-breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item @click.native="openClick('/')"
+              <el-breadcrumb-item @click.native="handleBreadcrumbClick('/')"
                 >主站</el-breadcrumb-item
               >
-              <el-breadcrumb-item @click.native="openClick(`/${path.area}`)">{{
-                path.area_web_name || path.area
-              }}</el-breadcrumb-item>
               <el-breadcrumb-item
-                @click.native="openClick(`/${path.area}/${path.category}`)"
+                @click.native="handleBreadcrumbClick(`/${path.area}`)"
+                >{{ path.area_web_name || path.area }}</el-breadcrumb-item
+              >
+              <el-breadcrumb-item
+                @click.native="
+                  handleBreadcrumbClick(`/${path.area}/${path.category}`)
+                "
                 >{{
                   path.category_web_name || path.category
                 }}</el-breadcrumb-item
               >
               <el-breadcrumb-item
                 @click.native="
-                  openClick(
+                  handleBreadcrumbClick(
                     `/${path.area}/${path.category}/${$route.params.item}`
                   )
                 "
@@ -31,17 +34,29 @@
           </div>
         </div>
         <div class="play-content">
-          <div id="dplayer" class="player"></div>
-          <!-- <d-player ref="player" class="player" :options="options"></d-player> -->
+          <div id="mui-player" class="player"></div>
         </div>
       </div>
     </div>
-    <div class="media-wrap"></div>
+    <div class="media-wrap">
+      <div class="media-tab-detail-content">
+        <div class="sl-ep-list">
+          <ul>
+            <li class="misl-ep-item" v-for="i in playList" :key="i.value">
+              <div class="misl-ep-index" @click="handleChapterPlay(i.link_url)">
+                {{ i.label }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import DPlayer from "dplayer";
+import "mui-player/dist/mui-player.min.css";
+import MuiPlayer from "mui-player";
 import { getACPath } from "@/network/getWebData";
 import handleBangumi from "@/utils/handleBangumi";
 export default {
@@ -59,50 +74,44 @@ export default {
       playList: [],
       currentPlay: {},
       path: {},
-      options: {
-        container: document.getElementById("dplayer"),
-        // 开启热键，支持快进、快退、音量控制、播放暂停
-        hotkey: true,
-        // 默认音量
-        volume: 1,
-        // 可选的播放速率
-        playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2],
-        video: {
-          url: "",
-        },
-      },
+      options: {},
     };
   },
   mounted() {
+    // 处理获取视频列表
+    this.playList = handleBangumi(this.mediaInfo);
+    // 如果没有播放内容则跳转至404
+    if (!this.playList[this.$route.params.chapter - 1])
+      this.$router.push("/404");
+    else {
+      this.currentPlay = this.playList[this.$route.params.chapter - 1];
+      console.log(this.currentPlay);
 
-    // 处理视频列表
-    this.handleVideos();
+      // 获取导航路径
+      getACPath(this.mediaInfo.area, this.mediaInfo.category).then((res) => {
+        console.log(res);
+        if (res.code && res.code === 200) this.path = res.data;
+      });
 
-
-    this.options.container = document.getElementById("dplayer");
-    // 播放器设置
-    this.player = new DPlayer(this.options);
-    this.currentPlay = this.playList[this.$route.params.chapter - 1];
-    // 切换源
-    this.player.switchVideo({
-      url: encodeURI("/proxy" + this.currentPlay.source_url),
-    });
-
-    // 获取导航路径
-    getACPath(this.mediaInfo.area, this.mediaInfo.category).then((res) => {
-      console.log(res);
-      if (res.code && res.code === 200) this.path = res.data;
-    });
+      // 播放器配置
+      this.player = new MuiPlayer({
+        container: "#mui-player",
+        title: this.currentPlay.label,
+        src: `/proxy${this.currentPlay.source_url}`,
+      });
+    }
   },
   methods: {
-    // 处理显示可观看的内容
-    handleVideos() {
-      this.playList = handleBangumi(this.mediaInfo);
-    },
     // 跳转
-    openClick(url) {
+    handleBreadcrumbClick(url) {
       console.log(url);
       window.open(url, "_blank");
+    },
+    // 番剧资源播放跳转
+    handleChapterPlay(url) {
+      // window.open(url, "_blank");
+      console.log(url);
+      this.$router.push(url);
     },
   },
 };
@@ -152,6 +161,91 @@ export default {
         .play-content {
           // height/width=0.56
           height: 537.6px;
+        }
+      }
+    }
+    .media-wrap {
+      .media-tab-detail-content {
+        .sl-ep-nav {
+          height: 25px;
+          white-space: nowrap;
+          -webkit-transition: -webkit-transform 0.3s ease;
+          transition: -webkit-transform 0.3s ease;
+          -o-transition: transform 0.3s ease;
+          transition: transform 0.3s ease;
+          transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+          .sl-ep-nav-item {
+            position: relative;
+            display: inline-block;
+            margin-right: 30px;
+            line-height: 26px;
+            height: 26px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0);
+            font-size: 12px;
+            cursor: pointer;
+            &:last-child {
+              margin-right: 0;
+            }
+            &:hover,
+            &.on {
+              color: #00a1d6;
+              border-bottom-color: #00a1d6;
+              &:after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                -webkit-transform: translateX(-3px);
+                -ms-transform: translateX(-3px);
+                transform: translateX(-3px);
+                border-bottom: 3px solid #00a1d6;
+                border-top: 0;
+                border-left: 3px solid rgba(0, 0, 0, 0);
+                border-right: 3px solid rgba(0, 0, 0, 0);
+                -webkit-transition: color, border-bottom-color 0.1s linear;
+                -o-transition: color, border-bottom-color 0.1s linear;
+                transition: color, border-bottom-color 0.1s linear;
+              }
+            }
+          }
+        }
+        .sl-ep-list {
+          clear: both;
+          ul {
+            padding-top: 10px;
+            margin: 10px 0px 0 0;
+            height: auto;
+            overflow: hidden;
+            .misl-ep-item {
+              display: inline-block;
+              width: 85px;
+              margin-right: 20px;
+              margin-bottom: 15px;
+              &:nth-child(12n + 12) {
+                margin-right: 0px;
+              }
+              .misl-ep-index {
+                height: 38px;
+                padding: 0 4px;
+                line-height: 36px;
+                font-size: 14px;
+                background-color: #f4f5f7;
+                border: 1px solid #f4f5f7;
+                color: #6d757a;
+                border-radius: 4px;
+                text-align: center;
+                overflow: hidden;
+                -o-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                transition: background 0.3s linear;
+                cursor: pointer;
+                &:hover {
+                  background: #00a1d6;
+                  color: #fff;
+                }
+              }
+            }
+          }
         }
       }
     }
