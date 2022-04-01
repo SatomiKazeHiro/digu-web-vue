@@ -60,53 +60,8 @@
       <div class="media-tab-content" v-if="currentTagID === 1">
         <div class="media-tab-detail-wrap">
           <div class="media-tab-detail">
-            <div class="media-tab-detail-content">
-              <!-- <div class="sl-ep-nav">
-                <ul class="sl-ep-nav-list">
-                  <li class="sl-ep-nav-item on">第1话-第12话</li>
-                  <li class="sl-ep-nav-item">第13话-第24话</li>
-                </ul>
-              </div> -->
-              <div class="sl-ep-list">
-                <ul>
-                  <li
-                    class="misl-ep-item"
-                    v-for="i in handleVideos()"
-                    :key="i.value"
-                  >
-                    <div
-                      class="misl-ep-index"
-                      @click="handleChapterPlay(i.link_url)"
-                    >
-                      {{ i.label }}
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="media-tab-module-wrap">
-              <div class="media-tab-module-title">更多推荐</div>
-              <div class="media-tab-module-more">更多</div>
-              <div class="media-tab-module-content" :class="{ hd: isHd() }">
-                <div class="none-content" v-if="recommendItems.length === 0">
-                  <span v-if="recommendLoadErr">加载失败</span>
-                </div>
-                <div
-                  class="slide-item"
-                  v-else
-                  v-for="i in recommendItems"
-                  :key="i.id"
-                  @click="itemTransfer(i)"
-                >
-                  <div class="img-box">
-                    <div class="img-inner">
-                      <img :src="i.cover" />
-                    </div>
-                  </div>
-                  <p>{{ i.title }}</p>
-                </div>
-              </div>
-            </div>
+            <item-play-list :mediaInfo="mediaInfo"></item-play-list>
+            <item-random></item-random>
           </div>
         </div>
       </div>
@@ -116,9 +71,13 @@
 </template>
 
 <script>
-import { getAreaRandom } from "network/getWebData";
-import handleBangumi from "@/utils/handleBangumi";
+import ItemPlayList from "components/content/ItemPlayList";
+import ItemRandom from "components/content/ItemRandom";
 export default {
+  components: {
+    ItemPlayList,
+    ItemRandom,
+  },
   props: {
     coverPath: "",
     coverBgImgStyle: "",
@@ -136,61 +95,15 @@ export default {
         { label: "作品关联", tagID: 2 },
       ],
       currentTagID: 1,
-      recommendItems: [],
-      recommendLoadErr: false,
     };
   },
   mounted() {
-    this.getRecommendItem();
+    console.log("mediaInfo", this.mediaInfo);
   },
   methods: {
     // 渐变显示图片
     showImg(ref) {
       this.$refs[ref].classList.toggle("opacity-0");
-    },
-
-    // 处理显示可观看的内容
-    handleVideos() {
-      return handleBangumi(this.mediaInfo);
-    },
-
-    // 番剧资源播放跳转
-    handleChapterPlay(url) {
-      window.open(url, "_blank");
-    },
-
-    // 随机资源项目的跳转事件
-    itemTransfer(i) {
-      window.open(i.link_url, "_blank");
-    },
-
-    // 获取推荐的随机内容
-    getRecommendItem() {
-      getAreaRandom(this.$route.params.area, 6, this.$route.params.item).then(
-        (res) => {
-          console.log(res);
-          if (res.code === 200) {
-            this.recommendLoadErr = false;
-            this.recommendItems = res.data;
-            this.recommendItems.forEach((i) => {
-              i.cover = `/proxy${i.source_url}${i.cover}`;
-            });
-          }
-        },
-        (err) => {
-          console.log(err);
-          this.recommendLoadErr = true;
-        }
-      );
-    },
-
-    // 判断是否是平板或者大屏的情况下
-    isHd() {
-      return (
-        this.$store.getters.isHd ||
-        (this.$store.state._browserStatus.appWidth < 1024 &&
-          this.$store.state._browserStatus.appWidth / 135.3 >= 4.5)
-      );
     },
   },
 };
@@ -359,167 +272,6 @@ export default {
           background-color: #fff;
           -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
-          .media-tab-detail-content {
-            .sl-ep-nav {
-              height: 25px;
-              white-space: nowrap;
-              -webkit-transition: -webkit-transform 0.3s ease;
-              transition: -webkit-transform 0.3s ease;
-              -o-transition: transform 0.3s ease;
-              transition: transform 0.3s ease;
-              transition: transform 0.3s ease, -webkit-transform 0.3s ease;
-              .sl-ep-nav-item {
-                position: relative;
-                display: inline-block;
-                margin-right: 30px;
-                line-height: 26px;
-                height: 26px;
-                border-bottom: 1px solid rgba(0, 0, 0, 0);
-                font-size: 12px;
-                cursor: pointer;
-                &:last-child {
-                  margin-right: 0;
-                }
-                &:hover,
-                &.on {
-                  color: #00a1d6;
-                  border-bottom-color: #00a1d6;
-                  &:after {
-                    content: "";
-                    position: absolute;
-                    left: 50%;
-                    bottom: 0;
-                    -webkit-transform: translateX(-3px);
-                    -ms-transform: translateX(-3px);
-                    transform: translateX(-3px);
-                    border-bottom: 3px solid #00a1d6;
-                    border-top: 0;
-                    border-left: 3px solid rgba(0, 0, 0, 0);
-                    border-right: 3px solid rgba(0, 0, 0, 0);
-                    -webkit-transition: color, border-bottom-color 0.1s linear;
-                    -o-transition: color, border-bottom-color 0.1s linear;
-                    transition: color, border-bottom-color 0.1s linear;
-                  }
-                }
-              }
-            }
-            .sl-ep-list {
-              clear: both;
-              ul {
-                padding-top: 10px;
-                margin: 10px 0px 0 0;
-                height: auto;
-                overflow: hidden;
-                .misl-ep-item {
-                  display: inline-block;
-                  width: 85px;
-                  margin-right: 20px;
-                  margin-bottom: 15px;
-                  &:nth-child(12n + 12) {
-                    margin-right: 0px;
-                  }
-                  .misl-ep-index {
-                    height: 38px;
-                    padding: 0 4px;
-                    line-height: 36px;
-                    font-size: 14px;
-                    background-color: #f4f5f7;
-                    border: 1px solid #f4f5f7;
-                    color: #6d757a;
-                    border-radius: 4px;
-                    text-align: center;
-                    overflow: hidden;
-                    -o-text-overflow: ellipsis;
-                    text-overflow: ellipsis;
-                    transition: background 0.3s linear;
-                    cursor: pointer;
-                    &:hover {
-                      background: #00a1d6;
-                      color: #fff;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          .media-tab-module-wrap {
-            vertical-align: top;
-            border-top: 1px solid #e5e9ef;
-            padding-top: 20px;
-            margin-top: 20px;
-            .media-tab-module-title {
-              display: inline-block;
-              font-size: 18px;
-              font-weight: 700;
-              color: #222;
-              height: 24px;
-              line-height: 24px;
-            }
-            .media-tab-module-more {
-              float: right;
-              line-height: 22px;
-              border: 1px solid #b7c0cc;
-              border-radius: 4px;
-              padding: 0 10px;
-              font-size: 12px;
-              color: #6e7579;
-              cursor: pointer;
-            }
-            .media-tab-module-content {
-              display: flex;
-              gap: 20px;
-              margin-top: 20px;
-              .slide-item {
-                flex: 1;
-                cursor: pointer;
-                .img-box {
-                  width: 100%;
-                  padding-bottom: 140%;
-                  height: 0;
-                  // overflow: hidden;
-                  position: relative;
-                  .img-inner {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    img {
-                      width: 100%;
-                      height: 100%;
-                      overflow: hidden;
-                      object-fit: cover;
-                      border-radius: 4px;
-                      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-                      &.horizontal {
-                        width: 100%;
-                        height: auto;
-                      }
-                    }
-                  }
-                }
-                p {
-                  margin: 5px 0;
-                  font-weight: 700;
-                  word-break: break-all;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 2;
-                  -webkit-box-orient: vertical;
-                }
-              }
-              .none-content {
-                width: 100%;
-                height: 200px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #999999;
-                font-size: 14px;
-              }
-            }
-          }
         }
       }
     }
@@ -588,44 +340,6 @@ export default {
           .media-tab-detail {
             padding: 15px;
             border-radius: 2px;
-            .media-tab-detail-content {
-              .sl-ep-nav {
-                .sl-ep-nav-item {
-                  margin-right: 20px;
-                }
-              }
-              .sl-ep-list {
-                ul {
-                  .misl-ep-item {
-                    width: 65.8333px;
-                    margin-right: 15px;
-                  }
-                }
-              }
-            }
-            .media-tab-module-wrap {
-              margin-top: 15px;
-              .media-tab-module-title {
-                font-size: 16px;
-                height: 22px;
-                line-height: 22px;
-              }
-              .media-tab-module-more {
-                float: right;
-                line-height: 20px;
-                border-radius: 3px;
-                padding: 0 1em;
-              }
-              .media-tab-module-content {
-                gap: 15px;
-                margin-top: 15px;
-                .slide-item {
-                  p {
-                    font-size: 14px;
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -701,70 +415,6 @@ export default {
             padding: 2.33vw 0;
             border-radius: 0;
             box-shadow: none;
-            .media-tab-detail-content {
-              .sl-ep-nav {
-                padding: 0 2.33vw;
-                .sl-ep-nav-item {
-                  margin-right: 10px;
-                }
-              }
-              .sl-ep-list {
-                ul {
-                  display: flex;
-                  flex-wrap: wrap;
-                  align-items: center;
-                  justify-content: flex-start;
-                  padding: 1.1666vw;
-                  .misl-ep-item {
-                    flex: 0 0 20%;
-                    margin-right: 0;
-                    padding: 0 1.1666vw;
-                    width: unset;
-                    .misl-ep-index {
-                      height: 32px;
-                      line-height: 30px;
-                      font-size: 12px;
-                    }
-                  }
-                }
-              }
-            }
-            .media-tab-module-wrap {
-              margin-top: 10px;
-              padding: 2.33vw 0;
-              .media-tab-module-title {
-                font-size: 14px;
-                height: 20px;
-                line-height: 20px;
-                margin-left: 2.33vw;
-              }
-              .media-tab-module-more {
-                float: right;
-                line-height: 18px;
-                border-radius: 2px;
-                padding: 0 0.5em;
-                margin-right: 2.33vw;
-              }
-              .media-tab-module-content {
-                margin-top: 1.6666vw;
-                flex-wrap: wrap;
-                padding: 0 1.1666vw;
-                gap: 0;
-                &.hd {
-                  flex-wrap: nowrap;
-                  .slide-item {
-                    flex: 1;
-                  }
-                }
-                .slide-item {
-                  flex: 0 0 33.33%;
-                  padding: 0 1.1666vw;
-                  p {
-                    font-size: 12px;
-                  }
-                }
-              }
-            }
           }
         }
       }

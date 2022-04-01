@@ -33,21 +33,22 @@
             </el-breadcrumb>
           </div>
         </div>
-        <div class="play-content">
-          <div id="mui-player" class="player"></div>
+        <div class="player-wrap">
+          <div class="player-content">
+            <div id="mui-player" class="player"></div>
+          </div>
+          <div class="play-list">
+            <div class="play-list-box"></div>
+          </div>
         </div>
       </div>
     </div>
     <div class="media-wrap">
-      <div class="media-tab-detail-content">
-        <div class="sl-ep-list">
-          <ul>
-            <li class="misl-ep-item" v-for="i in playList" :key="i.value">
-              <div class="misl-ep-index" @click="handleChapterPlay(i.link_url)">
-                {{ i.label }}
-              </div>
-            </li>
-          </ul>
+      <div class="tab"></div>
+      <div class="tab-inner">
+        <div class="media-content">
+          <item-play-list :mediaInfo="mediaInfo"></item-play-list>
+          <item-random></item-random>
         </div>
       </div>
     </div>
@@ -57,9 +58,18 @@
 <script>
 import "mui-player/dist/mui-player.min.css";
 import MuiPlayer from "mui-player";
+import MuiPlayerDesktopPlugin from "mui-player-desktop-plugin";
+
 import { getACPath } from "@/network/getWebData";
 import handleBangumi from "@/utils/handleBangumi";
+
+import ItemPlayList from "components/content/ItemPlayList";
+import ItemRandom from "components/content/ItemRandom";
 export default {
+  components: {
+    ItemPlayList,
+    ItemRandom,
+  },
   props: {
     mediaInfo: {
       type: Object,
@@ -70,11 +80,14 @@ export default {
   },
   data() {
     return {
+      // 播放器
       player: "",
+      // 播放列表
       playList: [],
+      // 当前播放
       currentPlay: {},
+      // 导航面包屑
       path: {},
-      options: {},
     };
   },
   mounted() {
@@ -98,6 +111,7 @@ export default {
         container: "#mui-player",
         title: this.currentPlay.label,
         src: `/proxy${this.currentPlay.source_url}`,
+        plugins: [new MuiPlayerDesktopPlugin({})],
       });
     }
   },
@@ -107,12 +121,12 @@ export default {
       console.log(url);
       window.open(url, "_blank");
     },
-    // 番剧资源播放跳转
-    handleChapterPlay(url) {
-      // window.open(url, "_blank");
-      console.log(url);
-      this.$router.push(url);
-    },
+    // // 番剧资源播放跳转
+    // handleChapterPlay(url) {
+    //   // window.open(url, "_blank");
+    //   console.log(url);
+    //   this.$router.push(url);
+    // },
   },
 };
 </script>
@@ -120,11 +134,11 @@ export default {
 <style lang="scss" scoped>
 .bangumi-template {
   .play-wrap {
-    padding: 20px 0 30px;
+    padding: 15px 0 30px;
     background: #181818;
     .play-inner {
       margin: 0 auto;
-      width: 1024px;
+      width: 1280px;
       .play-info {
         .title {
           color: #f0f0f0;
@@ -135,13 +149,40 @@ export default {
       .path-breadcrumb {
         margin-bottom: 23px;
       }
-      .play-content {
-        // height/width=0.56
-        height: 573.5px;
-        .player {
-          width: 100%;
-          height: 100%;
+      .player-wrap {
+        display: flex;
+        .player-content {
+          width: 1024px;
+          // height/width=0.56
+          height: 573.5px;
+          .player {
+            width: 100% !important;
+            height: 100% !important;
+          }
         }
+        .play-list {
+          flex: 1;
+          padding-left: 5px;
+          .play-list-box {
+            width: 100%;
+            height: 100%;
+            background: #252525;
+          }
+        }
+      }
+    }
+  }
+  .media-wrap {
+    .tab-inner {
+      width: 1280px;
+      margin: 0 auto;
+      padding-top: 15px;
+      padding-bottom: 25px;
+      .media-content {
+        padding: 20px;
+        border-radius: 4px;
+        background-color: #fff;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
       }
     }
   }
@@ -152,100 +193,26 @@ export default {
   .bangumi-template {
     .play-wrap {
       .play-inner {
-        width: 960px;
+        width: 1024px;
         .play-info {
           .title {
             font-size: 23px;
           }
         }
-        .play-content {
-          // height/width=0.56
-          height: 537.6px;
+        .player-wrap {
+          .player-content {
+            width: 778px;
+            // height/width=0.56
+            height: 435.68px;
+          }
         }
       }
     }
     .media-wrap {
-      .media-tab-detail-content {
-        .sl-ep-nav {
-          height: 25px;
-          white-space: nowrap;
-          -webkit-transition: -webkit-transform 0.3s ease;
-          transition: -webkit-transform 0.3s ease;
-          -o-transition: transform 0.3s ease;
-          transition: transform 0.3s ease;
-          transition: transform 0.3s ease, -webkit-transform 0.3s ease;
-          .sl-ep-nav-item {
-            position: relative;
-            display: inline-block;
-            margin-right: 30px;
-            line-height: 26px;
-            height: 26px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0);
-            font-size: 12px;
-            cursor: pointer;
-            &:last-child {
-              margin-right: 0;
-            }
-            &:hover,
-            &.on {
-              color: #00a1d6;
-              border-bottom-color: #00a1d6;
-              &:after {
-                content: "";
-                position: absolute;
-                left: 50%;
-                bottom: 0;
-                -webkit-transform: translateX(-3px);
-                -ms-transform: translateX(-3px);
-                transform: translateX(-3px);
-                border-bottom: 3px solid #00a1d6;
-                border-top: 0;
-                border-left: 3px solid rgba(0, 0, 0, 0);
-                border-right: 3px solid rgba(0, 0, 0, 0);
-                -webkit-transition: color, border-bottom-color 0.1s linear;
-                -o-transition: color, border-bottom-color 0.1s linear;
-                transition: color, border-bottom-color 0.1s linear;
-              }
-            }
-          }
-        }
-        .sl-ep-list {
-          clear: both;
-          ul {
-            padding-top: 10px;
-            margin: 10px 0px 0 0;
-            height: auto;
-            overflow: hidden;
-            .misl-ep-item {
-              display: inline-block;
-              width: 85px;
-              margin-right: 20px;
-              margin-bottom: 15px;
-              &:nth-child(12n + 12) {
-                margin-right: 0px;
-              }
-              .misl-ep-index {
-                height: 38px;
-                padding: 0 4px;
-                line-height: 36px;
-                font-size: 14px;
-                background-color: #f4f5f7;
-                border: 1px solid #f4f5f7;
-                color: #6d757a;
-                border-radius: 4px;
-                text-align: center;
-                overflow: hidden;
-                -o-text-overflow: ellipsis;
-                text-overflow: ellipsis;
-                transition: background 0.3s linear;
-                cursor: pointer;
-                &:hover {
-                  background: #00a1d6;
-                  color: #fff;
-                }
-              }
-            }
-          }
+      .tab-inner {
+        width: 1024px;
+        .media-content {
+          padding: 10px;
         }
       }
     }
@@ -259,7 +226,6 @@ export default {
       padding: 15px 0 25px;
       background: #181818;
       .play-inner {
-        margin: 0 auto;
         width: 720px;
         .play-info {
           .title {
@@ -267,9 +233,23 @@ export default {
             font-size: 20px;
           }
         }
-        .play-content {
-          // height/width=0.56
-          height: 403.2px;
+        .player-wrap {
+          .player-content {
+            width: 720px;
+            // height/width=0.56
+            height: 403.2px;
+          }
+          .play-list {
+            display: none;
+          }
+        }
+      }
+    }
+    .media-wrap {
+      .tab-inner {
+        width: 720px;
+        .media-content {
+          padding: 0px;
         }
       }
     }
@@ -287,13 +267,27 @@ export default {
         .play-info {
           display: none;
         }
-        .play-content {
-          width: 100%;
-          height: unset;
-          .player {
+        .player-wrap {
+          .player-content {
             width: 100%;
-            height: auto;
+            height: unset;
+            .player {
+              width: 100% !important;
+              height: auto !important;
+            }
           }
+        }
+      }
+    }
+    .media-wrap {
+      .tab-inner {
+        width: 100%;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        .media-content {
+          box-shadow: none;
+          border-radius: 0px;
+          padding: 2.33vw 0;
         }
       }
     }

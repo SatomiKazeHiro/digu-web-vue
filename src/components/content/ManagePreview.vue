@@ -114,7 +114,7 @@ export default {
     padding: 20px 0;
     .item-title {
       font-size: 20px;
-      line-height: 22px;
+      line-height: 30px;
       font-weight: 700;
       overflow: hidden;
       -webkit-line-clamp: 2;
