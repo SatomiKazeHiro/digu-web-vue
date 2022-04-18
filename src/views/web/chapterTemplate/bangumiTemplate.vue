@@ -6,16 +6,16 @@
           <h1 class="title">{{ mediaInfo.title }}</h1>
           <div class="path-breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item @click.native="handleBreadcrumbClick('/')"
+              <el-breadcrumb-item @click.native="handleBreadcrumbOpen('/')"
                 >主站</el-breadcrumb-item
               >
               <el-breadcrumb-item
-                @click.native="handleBreadcrumbClick(`/${path.area}`)"
+                @click.native="handleBreadcrumbOpen(`/${path.area}`)"
                 >{{ path.area_web_name || path.area }}</el-breadcrumb-item
               >
               <el-breadcrumb-item
                 @click.native="
-                  handleBreadcrumbClick(`/${path.area}/${path.category}`)
+                  handleBreadcrumbOpen(`/${path.area}/${path.category}`)
                 "
                 >{{
                   path.category_web_name || path.category
@@ -23,7 +23,7 @@
               >
               <el-breadcrumb-item
                 @click.native="
-                  handleBreadcrumbClick(
+                  handleBreadcrumbOpen(
                     `/${path.area}/${path.category}/${$route.params.item}`
                   )
                 "
@@ -38,7 +38,25 @@
             <div id="mui-player" class="player"></div>
           </div>
           <div class="play-list">
-            <div class="play-list-box"></div>
+            <div class="play-list-box">
+              <div class="play-list-top">
+                <span title="选集">选集</span>
+              </div>
+              <div class="play-list-content">
+                <ul>
+                  <li
+                    class="scroll-item"
+                    v-for="p in playList"
+                    :key="p.value"
+                    :title="p.label"
+                    @click="handleChapterChange(p.link_url)"
+                    :class="{ on: isCurrentPlaying(p.link_url) }"
+                  >
+                    {{ p.label }}
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -84,15 +102,16 @@ export default {
       player: "",
       // 播放列表
       playList: [],
-      // 当前播放
+      // 当前播放的媒体信息
       currentPlay: {},
       // 导航面包屑
       path: {},
     };
   },
-  mounted() {
+  created() {
     // 处理获取视频列表
     this.playList = handleBangumi(this.mediaInfo);
+
     // 如果没有播放内容则跳转至404
     if (!this.playList[this.$route.params.chapter - 1])
       this.$router.push("/404");
@@ -102,10 +121,17 @@ export default {
 
       // 获取导航路径
       getACPath(this.mediaInfo.area, this.mediaInfo.category).then((res) => {
-        console.log(res);
+        console.log("获取导航路径：" + res);
         if (res.code && res.code === 200) this.path = res.data;
       });
-
+    }
+  },
+  mounted() {
+    this.initPlayer();
+  },
+  methods: {
+    // 初始化播放器
+    initPlayer() {
       // 播放器配置
       this.player = new MuiPlayer({
         container: "#mui-player",
@@ -113,20 +139,46 @@ export default {
         src: `/proxy${this.currentPlay.source_url}`,
         plugins: [new MuiPlayerDesktopPlugin({})],
       });
-    }
-  },
-  methods: {
-    // 跳转
-    handleBreadcrumbClick(url) {
+    },
+
+    // 导航面包屑跳转
+    handleBreadcrumbOpen(url) {
       console.log(url);
       window.open(url, "_blank");
     },
-    // // 番剧资源播放跳转
-    // handleChapterPlay(url) {
-    //   // window.open(url, "_blank");
-    //   console.log(url);
-    //   this.$router.push(url);
-    // },
+
+    // 右侧列表面板点击切换频道
+    handleChapterChange(url) {
+      console.log(url);
+      this.$router.push(url);
+    },
+
+    // 判断是否是当前播放的集
+    isCurrentPlaying(link_url) {
+      if (this.currentPlay && this.currentPlay.link_url === link_url)
+        return true;
+      else return false;
+    },
+  },
+  watch: {
+    "$route.path"(newVal, oldVal) {
+      if (this.player) {
+        let newPlayMedia = this.playList.filter(
+          (i) => i.link_url === newVal
+        )[0];
+        // 路径正确则换源
+        if (!newPlayMedia) this.$router.push("/404");
+        else {
+          // 更新当前播放的媒体信息
+          this.currentPlay = newPlayMedia;
+          // 设置新的媒体源的路径
+          this.player.reloadUrl("/proxy" + newPlayMedia.source_url);
+          // 由于 MuiPlayer 官方没有提供修改 title 的方法，需要同js修改
+          // ***注：这里修改 title 需要放在更新了路径之后（否则其title覆盖自定义新的）
+          document.getElementById("title-name").innerHTML = newPlayMedia.label;
+        }
+      }
+    },
   },
 };
 </script>
@@ -162,11 +214,69 @@ export default {
         }
         .play-list {
           flex: 1;
+          width: 0;
           padding-left: 5px;
           .play-list-box {
             width: 100%;
             height: 100%;
             background: #252525;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            .play-list-top {
+              height: 42px;
+              line-height: 42px;
+              padding: 0 10px;
+              span {
+                color: #969696;
+              }
+            }
+            .play-list-content {
+              height: 531.5px;
+              overflow: auto;
+              &::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+              }
+              /*滚动条里面小方块样式*/
+              &::-webkit-scrollbar-thumb {
+                border-radius: 100px;
+                -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                background: rgb(80, 80, 80);
+              }
+              /*滚动条里面轨道样式*/
+              &::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+                border-radius: 0;
+                background: rgba(0, 0, 0, 0.1);
+              }
+              ul {
+                padding: 0 7px;
+                li.scroll-item {
+                  height: 30px;
+                  line-height: 30px;
+                  margin-bottom: 10px;
+                  background: #323232;
+                  border-radius: 4px;
+                  color: #969696;
+                  font-size: 12px;
+                  padding: 0 10px;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  cursor: pointer;
+                  transition: background-color 0.2s linear;
+                  &:hover {
+                    color: #fff;
+                    background-color: #00a1d6;
+                  }
+                  &.on {
+                    color: #fff;
+                    background-color: #00a1d6;
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -204,6 +314,20 @@ export default {
             width: 778px;
             // height/width=0.56
             height: 435.68px;
+          }
+          .play-list {
+            .play-list-box {
+              .play-list-top {
+                height: 36px;
+                line-height: 36px;
+                span {
+                  font-size: 14px;
+                }
+              }
+              .play-list-content {
+                height: 399.5px;
+              }
+            }
           }
         }
       }

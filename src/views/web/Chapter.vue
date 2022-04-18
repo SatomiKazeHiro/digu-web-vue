@@ -45,57 +45,62 @@ export default {
     };
   },
   mounted() {
-    // 判断路由参数，域，分类，资源项目id，缺一不可
-    if (
-      this.$route.params.area &&
-      this.$route.params.category &&
-      this.$route.params.item
-    ) {
-      // 检查资源项目是否存在
-      checkItem(this.$route.params.item).then(
-        (res) => {
-          console.log(res);
-          if (res && res.code === 200 && res.data === true) {
-            // 获取资源项目的详细数据
-            getItem(
-              this.$route.params.area,
-              this.$route.params.category,
-              this.$route.params.item
-            ).then(
-              (res) => {
-                console.log(res);
-                if (res.code && res.code === 200) {
-                  this.mediaInfo = res.data;
-                  this.isShow = true;
-                } else if (
-                  res.code &&
-                  res.code === 400 &&
-                  res.data.type === "no-Template"
-                ) {
-                  // 显示没有设置模板
-                  this.noTemplate = true;
+    this.initChapter();
+  },
+  methods: {
+    initChapter() {
+      // 判断路由参数，域，分类，资源项目id，缺一不可
+      if (
+        this.$route.params.area &&
+        this.$route.params.category &&
+        this.$route.params.item
+      ) {
+        // 检查资源项目是否存在
+        checkItem(this.$route.params.item).then(
+          (res) => {
+            console.log(res);
+            if (res && res.code === 200 && res.data === true) {
+              // 获取资源项目的详细数据
+              getItem(
+                this.$route.params.area,
+                this.$route.params.category,
+                this.$route.params.item
+              ).then(
+                (res) => {
+                  console.log(res);
+                  if (res.code && res.code === 200) {
+                    this.mediaInfo = res.data;
+                    this.isShow = true;
+                  } else if (
+                    res.code &&
+                    res.code === 400 &&
+                    res.data.type === "no-Template"
+                  ) {
+                    // 显示没有设置模板
+                    this.noTemplate = true;
+                    this.isShow = true;
+                  }
+                },
+                (err) => {
+                  // 数据获取失败
+                  this.loadingError = true;
                   this.isShow = true;
                 }
-              },
-              (err) => {
-                // 数据获取失败
-                this.loadingError = true;
-                this.isShow = true;
-              }
-            );
-          } else this.$router.push("/404");
-        },
-        (err) => {
-          // 数据获取失败
-          this.isShow = true;
-          this.loadingError = true;
-        }
-      );
-    } else {
-      // 路径参数不正确则跳转至404页面
-      this.$router.push("/404");
-    }
-  },
+              );
+            } else this.$router.push("/404");
+          },
+          (err) => {
+            // 数据获取失败
+            this.isShow = true;
+            this.loadingError = true;
+          }
+        );
+      } else {
+        // 路径参数不正确则跳转至404页面
+        this.$router.push("/404");
+      }
+    },
+  }
 };
 </script>
 
