@@ -50,7 +50,7 @@
                     :key="p.value"
                     :title="p.label"
                     @click="handleChapterChange(p.link_url)"
-                    :class="{ on: isCurrentPlaying(p.link_url) }"
+                    :class="{ playing: isCurrentPlaying(p.link_url) }"
                   >
                     {{ p.label }}
                   </li>
@@ -65,7 +65,8 @@
       <div class="tab"></div>
       <div class="tab-inner">
         <div class="media-content">
-          <item-play-list :mediaInfo="mediaInfo"></item-play-list>
+          <item-play-list :mediaInfo="mediaInfo" v-if="isScreenWidthLessThanX()"></item-play-list>
+          <item-media-info :mediaInfo="mediaInfo" :border="isScreenWidthLessThanX()"></item-media-info>
           <item-random></item-random>
         </div>
       </div>
@@ -83,10 +84,12 @@ import handleBangumi from "@/utils/handleBangumi";
 
 import ItemPlayList from "components/content/ItemPlayList";
 import ItemRandom from "components/content/ItemRandom";
+import ItemMediaInfo from "components/content/ItemMediaInfo";
 export default {
   components: {
     ItemPlayList,
     ItemRandom,
+    ItemMediaInfo,
   },
   props: {
     mediaInfo: {
@@ -159,6 +162,12 @@ export default {
         return true;
       else return false;
     },
+
+    // 屏幕适应处理
+    isScreenWidthLessThanX(w = 1044){
+      if(this.$store.state._browserStatus.appWidth < w) return true;
+      else return false;
+    }
   },
   watch: {
     "$route.path"(newVal, oldVal) {
@@ -270,7 +279,7 @@ export default {
                     color: #fff;
                     background-color: #00a1d6;
                   }
-                  &.on {
+                  &.playing {
                     color: #fff;
                     background-color: #00a1d6;
                   }

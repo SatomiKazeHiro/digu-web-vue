@@ -7,7 +7,7 @@
           <li class="sl-ep-nav-item">第13话-第24话</li>
         </ul>
       </div> -->
-      <div class="sl-ep-list">
+      <div class="sl-ep-list" v-if="playList.length>0">
         <ul>
           <li class="misl-ep-item" v-for="i in handleVideos()" :key="i.value">
             <div class="misl-ep-index" @click="handleChapterPlay(i.link_url)">
@@ -15,6 +15,9 @@
             </div>
           </li>
         </ul>
+      </div>
+      <div class="no-item" v-else>
+        无资源
       </div>
     </div>
   </div>
@@ -31,14 +34,22 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      playList: [],
+    };
+  },
   methods: {
     // 处理显示可观看的内容
     handleVideos() {
-      return handleBangumi(this.mediaInfo);
+      this.playList = handleBangumi(this.mediaInfo);
+      return this.playList;
     },
+
     // 番剧资源播放跳转
     handleChapterPlay(url) {
       window.open(url, "_blank");
+      // this.$router.push(url);
     },
   },
 };
@@ -131,6 +142,12 @@ export default {
         }
       }
     }
+    .no-item{
+      height: 60px;
+      line-height: 60px;
+      color: #969696;
+      text-align: center;
+    }
   }
 }
 
@@ -165,6 +182,7 @@ export default {
             max-width: 16.666%;
             // padding: 0 1.1666vw;
             width: unset;
+            margin-bottom: 10px;
             .misl-ep-index {
               height: 32px;
               line-height: 30px;
@@ -183,11 +201,13 @@ export default {
     .media-tab-detail-content {
       .sl-ep-list {
         ul {
+          margin-top: 0;
           .misl-ep-item {
             flex: 0 0 20%;
             max-width: 20%;
             padding: 0 1.1666vw;
             width: unset;
+            margin-bottom: 1.6666vw;
             .misl-ep-index {
               font-size: 12px;
             }
