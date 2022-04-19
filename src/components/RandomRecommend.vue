@@ -29,13 +29,15 @@
     <div class="rr-mobile">
       <div class="video-list">
         <div class="v-card" v-for="item in RRItem" :key="item.id">
-          <div class="card">
-            <img
-              class="opacity-0"
-              :src="item.cover"
-              :ref="'mobile' + item.id"
-              @load="showImgMobile(item.id)"
-            />
+          <div class="card" @click="$router.push(item.link_url)">
+            <div class="v-cover">
+              <img
+                class="opacity-0"
+                :src="item.cover"
+                :ref="'mobile' + item.id"
+                @load="showImgMobile(item.id)"
+              />
+            </div>
             <div class="title">
               <p>{{ item.title }}</p>
             </div>
@@ -154,7 +156,7 @@ img.el-banner-img {
             top: 0;
             transition: top 0.3s;
             .info-title {
-              transition: 0.3;
+              // transition: 0.3;
               text-overflow: ellipsis;
               white-space: normal;
               display: -webkit-box;
@@ -163,7 +165,7 @@ img.el-banner-img {
               -webkit-line-clamp: 2;
             }
             .info-content {
-              transition: 0.3;
+              // transition: 0.3;
               text-overflow: ellipsis;
               white-space: normal;
               display: -webkit-box;
@@ -223,37 +225,46 @@ img.el-banner-img {
   .rr-mobile {
     display: none;
     .video-list {
-      padding: 0 1vw;
-      display: -webkit-box;
-      display: -ms-flexbox;
+      padding: 1.1666vw 1vw;
       display: flex;
-      -ms-flex-wrap: wrap;
       flex-wrap: wrap;
       align-items: flex-start;
       justify-content: space-between;
       background: #f1f2f3;
       .v-card {
         width: 50%;
-        padding: 2.333vw 1.333vw;
+        padding: 1.5vw 1.1666vw;
         .card {
+          width: 100%;
           background: #fff;
           border-radius: 1vw;
           overflow: hidden;
-          box-shadow: rgba(0, 0, 0, 0.05) 0px 0.5px 1px 0px;
-          img {
+          // box-shadow: rgba(0, 0, 0, 0.05) 0px 0.5px 1px 0px;
+          box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 3px 0px,
+            rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+          .v-cover {
             width: 100%;
-            height: 32vw;
-            object-fit: cover;
-            opacity: 1;
-            transition: 0.25s;
-            display: block;
+            padding-bottom: 68%;
+            height: 0;
+            overflow: hidden;
+            position: relative;
+            img {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              opacity: 1;
+              transition: 0.25s;
+              display: block;
+            }
           }
           .title {
-            padding: 2.4vw 1.7vw;
+            padding: 1.666vw;
             p {
+              height: 2rem;
               font-size: 3.2vw;
-              // font-size: 14px;
-              // height: 2.72em;
               color: #212121;
               overflow: hidden;
               word-break: break-all;
@@ -296,7 +307,7 @@ img.el-banner-img {
   }
 }
 // 手机 平板 < 1000
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1044px) {
   .rr-wrap {
     height: auto;
     border-radius: 0;

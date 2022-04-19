@@ -131,7 +131,7 @@ export default {
 //   }
 // }
 // 手机 平板 <= 1024
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1044px) {
   .base-header {
     height: 48px;
     background: #fff;

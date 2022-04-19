@@ -19,9 +19,7 @@
         v-for="i in userItems"
         :key="'header-' + i.label"
       >
-        <a :href="i.url" v-if="$store.state._browserStatus.appWidth > 1024">{{
-          i.label
-        }}</a>
+        <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
@@ -85,6 +83,11 @@ export default {
       ],
     };
   },
+  methods: {
+    isPC() {
+      return this.$store.state._browserStatus.appWidth > 1044;
+    },
+  },
 };
 </script>
 
@@ -99,12 +102,15 @@ export default {
     z-index: 10;
   }
 }
-// 手机 平板 <1000
+// 手机 平板 <1044
 @media only screen and (max-width: 1044px) {
   #main-header {
     border-bottom: 1px solid #ccc;
     height: 48px;
-    .m-header {}
+    .m-header {
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
+        rgb(209, 213, 219) 0px 0px 0px 1px inset;
+    }
     .m-banner {
       display: none;
     }

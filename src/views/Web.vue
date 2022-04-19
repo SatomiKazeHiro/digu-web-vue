@@ -10,7 +10,7 @@
           v-for="i in areaList"
           :key="i.area"
           :title="i.title"
-          :areaList="i.list"
+          :areaItemList="i.list"
           :area="i.area"
         ></index-area-panel>
       </div>
@@ -54,20 +54,22 @@ export default {
       }
     });
     // 获取所有的域名
-    getAreaAllName(false).then((res) => {
+    getAreaAllName(false).then(async (res) => {
       if (res.code === 200) {
-        res.data.forEach(async (i) => {
+        // 通过 async/await 按顺序请求，使得页面排版固定
+        for (let i = 0; i < res.data.length; i++) {
+          const areaObj = res.data[i];
           // 每个栏目获取随机12个
-          await getAreaRandom(i.area, this.areaRandomLimit).then((res) => {
+          await getAreaRandom(areaObj.area, this.areaRandomLimit).then((res) => {
             if (res.code === 200) {
               this.areaList.push({
-                title: i.web_name || i.area,
-                area: i.area,
+                title: areaObj.web_name || areaObj.area,
+                area: areaObj.area,
                 list: res.data,
               });
             }
           });
-        });
+        }
       }
     });
   },

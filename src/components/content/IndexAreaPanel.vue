@@ -9,17 +9,17 @@
       </div>
     </div>
     <div class="panel-content">
-      <div class="item-unity" v-for="i in areaList" :key="i.title">
+      <div
+        class="item-unity opacity-0"
+        v-for="i in areaItemList"
+        :key="i.title"
+        :ref="i.id"
+      >
         <div class="item-type">
           <span>{{ i.type }}</span>
         </div>
         <a :href="i.link_url">
-          <img
-            :src="`/proxy${i.source_url}/${i.cover}`"
-            class="opacity-0"
-            :ref="'a' + i.id"
-            @load="showImg(i.id)"
-          />
+          <img :src="`/proxy${i.source_url}${i.cover}`" @load="showImg(i.id)" />
         </a>
         <span class="item-title" :title="i.title">{{ i.title }}</span>
         <span class="item-status">{{ i.status }}</span>
@@ -44,7 +44,7 @@ export default {
         return "";
       },
     },
-    areaList: {
+    areaItemList: {
       type: Array,
       default() {
         return [];
@@ -52,22 +52,18 @@ export default {
     },
   },
   mounted() {
-    console.log(this.areaList);
+    console.log(this.areaItemList);
   },
   methods: {
     showImg(id) {
       // 当图片的高大于宽的时候，使用竖版图片模板
-      if (
-        this.$refs["a" + id][0].naturalHeight >
-        this.$refs["a" + id][0].naturalWidth
-      ) {
-        this.$refs["a" + id][0].classList.toggle("vertical-img-t");
+      if (this.$refs[id].length && this.$refs[id][0].children[1].firstChild) {
+        // 如果高度大于宽度的，则使用竖直样式
+        let img = this.$refs[id][0].children[1].firstChild;
+        if (img.naturalHeight > img.naturalWidth) img.classList.add("vertical-img");
+        // 资源项目渐变出现
+        this.$refs[id][0].classList.remove("opacity-0");
       }
-      this.$refs["a" + id][0].classList.toggle("opacity-0");
-    },
-    createAUrl(url, id) {
-      console.log();
-      // return `/${url.split("/")[2]}/${url.split("/")[3]}/${id}`;
     },
   },
 };
@@ -106,9 +102,9 @@ export default {
         border-radius: 10px 0px 0px 10px;
         color: #ffffff;
         background: #ff8a80;
-        transition: 0.25s;
+        transition: background-color 0.25s;
         &:hover {
-          background: #000;
+          background-color: #000;
         }
       }
     }
@@ -129,6 +125,7 @@ export default {
       overflow: hidden;
       margin-right: 20px;
       margin-bottom: 10px;
+      opacity: 1;
       &:nth-child(6n + 6) {
         margin-right: 0px;
       }
@@ -143,8 +140,8 @@ export default {
           border-radius: 5px;
           overflow: hidden;
           box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
-          transition: 0.3s;
-          &.vertical-img-t {
+          transition: opacity 0.3s linear;
+          &.vertical-img {
             height: 269.2px;
           }
         }
@@ -185,7 +182,7 @@ export default {
           display: none;
         }
         a img {
-          &.vertical-img-t {
+          &.vertical-img {
             height: 269.2px;
           }
         }

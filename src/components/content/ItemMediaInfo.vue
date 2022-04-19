@@ -34,7 +34,7 @@ export default {
     isHd() {
       return (
         this.$store.getters.isHd ||
-        (this.$store.state._browserStatus.appWidth < 1024 &&
+        (this.$store.state._browserStatus.appWidth <= 1044 &&
           this.$store.state._browserStatus.appWidth / 135.3 >= 4.5)
       );
     },

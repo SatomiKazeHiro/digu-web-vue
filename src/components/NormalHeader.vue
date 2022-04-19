@@ -24,7 +24,7 @@
         v-for="i in userItems"
         :key="'header-' + i.label"
       >
-        <a :href="i.url" v-if="windowWidth > 1024">{{ i.label }}</a>
+        <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
@@ -50,7 +50,6 @@ export default {
   },
   data() {
     return {
-      windowWidth: 0,
       // 左侧站内链接内容
       linkItems: [
         {
@@ -81,19 +80,16 @@ export default {
       ],
     };
   },
-  mounted() {
-    this.windowWidth = window.innerWidth;
-    window.addEventListener(
-      "resize",
-      () => (this.windowWidth = window.innerWidth),
-      false
-    );
+  methods: {
+    isPC() {
+      return this.$store.state._browserStatus.appWidth > 1044;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-#normal-header{
+#normal-header {
   transition: opacity 0.25s linear;
 }
 </style>

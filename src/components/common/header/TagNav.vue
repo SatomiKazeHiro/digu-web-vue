@@ -246,7 +246,7 @@ export default {
   }
 }
 // 手机 平板 <1000
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1044px) {
   .tag-nav-wrap {
     box-shadow: 0 1px 1px 0 #d8d8d8;
     .tag-nav {
