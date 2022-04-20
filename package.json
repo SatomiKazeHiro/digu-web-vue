@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "dplayer": "^1.26.0",
     "element-ui": "^2.4.5",
     "jquery": "^3.6.0",
     "mui-player": "^1.6.0",

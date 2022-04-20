@@ -25,7 +25,7 @@
           </el-carousel-item>
         </el-carousel>
       </div>
-      <div class="categories-nav">
+      <div class="categories-nav" id="categories-nav">
         <div class="nav-content">
           <el-tabs v-model="activeTab" @tab-click="handleTabClick">
             <el-tab-pane label="所有" name="all"></el-tab-pane>
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="category-wrap">
-      <Category></Category>
+      <Category ref="category" @scrollToTop="scrollToTop"></Category>
     </div>
     <div class="footer-wrap"></div>
   </div>
@@ -90,15 +90,24 @@ export default {
       }`;
       this.$router.push(url);
     },
+
     // 在封面加载完后渐变显示
     showImg(id) {
       this.$refs["area_cl" + id][0].classList.toggle("opacity-0");
     },
+
     // 获取应用窗口宽度
     getAppWidth() {
       if (this.$store.state._browserStatus.appWidth > 1300) return "480px";
       else if (this.$store.state._browserStatus.appWidth > 960) return "380px";
       else return "";
+    },
+
+    // 跳转到顶部
+    scrollToTop() {
+      document.getElementById("area").scrollTop =
+        document.getElementById("area").scrollTop +
+        document.getElementById("categories-nav").getBoundingClientRect().top;
     },
   },
 };

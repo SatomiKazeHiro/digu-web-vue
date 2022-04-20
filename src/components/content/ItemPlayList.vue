@@ -9,7 +9,7 @@
       </div> -->
       <div class="sl-ep-list" v-if="playList.length>0">
         <ul>
-          <li class="misl-ep-item" v-for="i in handleVideos()" :key="i.value">
+          <li class="misl-ep-item" v-for="i in playList" :key="i.value">
             <div class="misl-ep-index" @click="handleChapterPlay(i.link_url)">
               {{ i.label }}
             </div>
@@ -39,13 +39,11 @@ export default {
       playList: [],
     };
   },
-  methods: {
+  created(){
     // 处理显示可观看的内容
-    handleVideos() {
-      this.playList = handleBangumi(this.mediaInfo);
-      return this.playList;
-    },
-
+    this.playList = handleBangumi(this.mediaInfo);
+  },
+  methods: {
     // 番剧资源播放跳转
     handleChapterPlay(url) {
       window.open(url, "_blank");

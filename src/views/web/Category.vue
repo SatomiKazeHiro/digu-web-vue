@@ -67,7 +67,7 @@ export default {
       this.$refs["category"].classList.add("hd");
   },
   beforeDestroy() {
-    // 撤销监听
+    // 撤销页面滚动的监听
     this.$refs.category.removeEventListener(
       "scroll",
       this.handleCategoriesNavShow
@@ -98,10 +98,12 @@ export default {
     // 判断是否有该域和类，获取对应的类页面加载数据
     getInitData() {
       checkArea(this.area).then((res) => {
+        console.log("checkArea", res);
         if (res.data) {
           if (!this.category) {
             getAreaNormal(this.area, this.limit, this.currentPage).then(
               (res) => {
+                console.log("getAreaNormal", res);
                 if (res.code === 200) {
                   this.itemTotal = res.data.total;
                   this.currentPage = res.data.page;
@@ -111,6 +113,7 @@ export default {
             );
           } else {
             checkCategory(this.area, this.category).then((res) => {
+              console.log("checkCategory", res);
               if (res.data) {
                 getCategoryNormal(
                   this.area,
@@ -118,7 +121,7 @@ export default {
                   this.limit,
                   this.currentPage
                 ).then((res) => {
-                  console.log(res);
+                  console.log("getCategoryNormal", res);
                   if (res.code === 200) {
                     this.itemTotal = res.data.total;
                     this.currentPage = res.data.page;
@@ -131,11 +134,13 @@ export default {
         } else this.$router.push("/404");
       });
     },
+
     // 生成 img 标签的连接
     getImgUrl(i) {
       if (i) return `/proxy${i.sources_url}/${i.cover}`;
       else return "";
     },
+
     // 渐变加载拓扑，防拉伸
     showImg(id) {
       let coverDom = this.$refs[id][0];
@@ -151,6 +156,7 @@ export default {
         coverDom.classList.remove("opacity-0");
       }
     },
+
     // 移动端根据上下滑生成控制顶部导航栏显示的数据
     handleCategoriesNavShow(e) {
       console.log(e);
@@ -164,17 +170,36 @@ export default {
       // 存入新的高度
       this.scrollToTop = this.$refs.category.scrollTop;
     },
+
     // 当前页码改变时发起请求
     handleCurrentChange(val) {
       this.currentPage = val;
-      getAreaNormal(this.area, this.limit, this.currentPage).then((res) => {
-        if (res.code === 200) {
-          this.$refs.category.scrollTop = 0;
-          this.itemTotal = res.data.total;
-          this.currentPage = res.data.page;
-          this.data = res.data.resArr;
-        }
-      });
+      if (this.category)
+        getCategoryNormal(
+          this.area,
+          this.category,
+          this.limit,
+          this.currentPage
+        ).then((res) => {
+          console.log("getCategoryNormal", res);
+          if (res.code === 200) {
+            this.$emit("scrollToTop");
+            this.itemTotal = res.data.total;
+            this.currentPage = res.data.page;
+            this.data = res.data.resArr;
+          }
+        });
+      else
+        getAreaNormal(this.area, this.limit, this.currentPage).then((res) => {
+          console.log("getAreaNormal", res);
+          if (res.code === 200) {
+            this.$emit("scrollToTop");
+            // this.$refs.category.scrollTop = 0;
+            this.itemTotal = res.data.total;
+            this.currentPage = res.data.page;
+            this.data = res.data.resArr;
+          }
+        });
     },
   },
 };

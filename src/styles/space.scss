@@ -117,8 +117,11 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
         width: 100%;
         height: 100%;
         transition: left 0.33s linear;
-        &.config-on {
+        &.ac-config-on {
           left: 0;
+        }
+        &.i-config-on {
+          left: -200%;
         }
         .preview-panel {
           width: 100%;
@@ -285,6 +288,43 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
                 color: #00a1d6;
               }
             }
+          }
+        }
+        .item-config-panel {
+          width: 100%;
+          min-width: 100%;
+          display: flex;
+          flex-direction: column;
+          .header-nav {
+            height: 48px;
+            min-height: 48px;
+            display: flex;
+            position: relative;
+            align-items: center;
+            padding: 0 10px;
+            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            position: relative;
+            justify-content: flex-end;
+            .return-btn {
+              color: #525252;
+              font-size: 28px;
+              margin-right: 5px;
+            }
+            .title {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              font-size: 20px;
+              color: #525252;
+              font-weight: bold;
+            }
+          }
+          .config-content {
+            flex: 1;
+            padding: 15px 20px;
+            color: #525252;
+            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
           }
         }
       }

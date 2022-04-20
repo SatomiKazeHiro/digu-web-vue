@@ -57,11 +57,11 @@ export default {
       console.log("点击配置配置");
       // console.log(node, data);
       if (node.parent.data.label)
-        this.$emit("openConfigPanel", {
+        this.$emit("openACConfigPanel", {
           area: node.parent.data.label,
           category: data.label,
         });
-      else this.$emit("openConfigPanel", { area: data.label });
+      else this.$emit("openACConfigPanel", { area: data.label });
     },
   },
 };

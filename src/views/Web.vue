@@ -60,15 +60,17 @@ export default {
         for (let i = 0; i < res.data.length; i++) {
           const areaObj = res.data[i];
           // 每个栏目获取随机12个
-          await getAreaRandom(areaObj.area, this.areaRandomLimit).then((res) => {
-            if (res.code === 200) {
-              this.areaList.push({
-                title: areaObj.web_name || areaObj.area,
-                area: areaObj.area,
-                list: res.data,
-              });
+          await getAreaRandom(areaObj.area, this.areaRandomLimit).then(
+            (res) => {
+              if (res.code === 200) {
+                this.areaList.push({
+                  title: areaObj.web_name || areaObj.area,
+                  area: areaObj.area,
+                  list: res.data,
+                });
+              }
             }
-          });
+          );
         }
       }
     });
@@ -82,6 +84,7 @@ export default {
   height: 100%;
   overflow-y: auto;
   // background: #f4f5f7;
+  padding-bottom: 60px;
   .index-content-wrap {
     width: 1280px;
     margin: 0 auto;
@@ -104,6 +107,7 @@ export default {
 // 手机、平板 x<=1024px（预留多20给滚动条占位置）
 @media only screen and (max-width: 1044px) {
   #web {
+    padding-bottom: 0;
     .index-content-wrap {
       width: 100%;
       // nav + tag 高度

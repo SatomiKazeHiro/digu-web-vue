@@ -17,7 +17,7 @@
             <manage-log-tree
               :treeData="treeData"
               @selectNode="setTreeNode"
-              @openConfigPanel="openConfigPanel"
+              @openACConfigPanel="openACConfigPanel"
             ></manage-log-tree>
           </div>
         </div>
@@ -28,12 +28,18 @@
         </div>
       </div>
       <div class="content-wrap">
-        <div class="content-inner" :class="{ 'config-on': configPanelDrawer }">
+        <div
+          class="content-inner"
+          :class="{
+            'ac-config-on': acConfigDrawer,
+            'i-config-on': iConfigDrawer,
+          }"
+        >
           <div class="config-panel">
             <div class="header-nav">
               <button
                 class="transparent return-btn"
-                @click="configPanelDrawer = false"
+                @click="acConfigDrawer = false"
               >
                 <svg-icon icon-class="close"></svg-icon>
               </button>
@@ -318,7 +324,12 @@
                       direction="vertical"
                       v-if="currentItem.id"
                     ></el-divider>
-                    <button class="item-btn" v-if="currentItem.id" title="编辑">
+                    <button
+                      class="item-btn"
+                      v-if="currentItem.id"
+                      title="编辑"
+                      @click="openIConfigPanel"
+                    >
                       <svg-icon icon-class="space-manage-edit"></svg-icon>
                     </button>
                     <button
@@ -380,6 +391,18 @@
               </div>
             </div>
           </div>
+          <div class="item-config-panel">
+            <div class="header-nav">
+              <button
+                class="transparent return-btn"
+                @click="iConfigDrawer = false"
+              >
+                <svg-icon icon-class="close"></svg-icon>
+              </button>
+              <span class="title">项目配置面板</span>
+            </div>
+            <div class="config-content"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -408,6 +431,7 @@ export default {
   },
   data() {
     return {
+      // 目录树
       treeData: [],
       currentAreaNode: {
         label: "",
@@ -426,9 +450,13 @@ export default {
       tableData: [],
       total: 0,
 
+      // 是否表格展示列表
       isGridView: false,
 
+      // 是否显示封面（列表条件下）
       showCover: false,
+
+      // 当前预览的项目
       currentItem: {
         id: "",
         title: "",
@@ -441,12 +469,18 @@ export default {
         size: "",
       },
 
-      configPanelDrawer: false,
+      // 页面配置面板开关
+      acConfigDrawer: false,
+      // 项目配置面板开关
+      iConfigDrawer: false,
+
       editObj: "",
 
+      // 域配置及其原配置对照组
       editArea: {},
       editAreaCG: {},
 
+      // 分类配置及其原配置对照组
       editCategoty: {},
       editCategotyCG: {},
     };
@@ -473,7 +507,8 @@ export default {
           });
         });
     },
-    // 获取数据
+
+    // 获取列表数据
     getData() {
       return new Promise((resolve, reject) => {
         if (
@@ -532,6 +567,7 @@ export default {
         }
       });
     },
+
     // 设置当前节点信息
     setTreeNode(currentNode, parentNode) {
       this.currentPage = 1;
@@ -553,18 +589,21 @@ export default {
       }
       this.getData();
     },
+
     // 监听表格选择
     selectChange(rowObj) {
       Object.keys(this.currentItem).forEach((key) => {
         this.currentItem[key] = rowObj[key];
       });
     },
+
     // 选中假想根目录
     selectRootNode() {
       console.log("假设是根目录");
       this.isSelectRootOrAreaNode = true;
       this.assumeRoot = true;
     },
+
     // 创建目录
     plusFolder() {
       if (this.assumeRoot) {
@@ -576,11 +615,13 @@ export default {
         );
       }
     },
+
     // 切换表格分页
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
     },
+
     // 打开具体展示页面
     handleOpenPage() {
       let url = this.$router.resolve({
@@ -588,6 +629,7 @@ export default {
       });
       window.open(url.href, "_blank");
     },
+
     // 对获取配置方法的进一步封装
     getAConfig(area) {
       getAreaConfig(area).then(
@@ -627,9 +669,10 @@ export default {
         }
       );
     },
-    // 打开配置面板
-    openConfigPanel(opt) {
-      this.configPanelDrawer = true;
+
+    // 打开页面配置面板
+    openACConfigPanel(opt) {
+      this.acConfigDrawer = true;
       if (opt.category) {
         this.editObj = "category";
         this.getCConfig(opt.area, opt.category);
@@ -638,6 +681,12 @@ export default {
         this.getAConfig(opt.area);
       }
     },
+
+    // 打开项目配置面板
+    openIConfigPanel() {
+      this.iConfigDrawer = true;
+    },
+
     // 提交配置信息
     handleSubmitConfig() {
       if (this.editObj === "area") {

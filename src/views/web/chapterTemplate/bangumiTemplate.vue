@@ -65,8 +65,14 @@
       <div class="tab"></div>
       <div class="tab-inner">
         <div class="media-content">
-          <item-play-list :mediaInfo="mediaInfo" v-if="isScreenWidthLessThanX()"></item-play-list>
-          <item-media-info :mediaInfo="mediaInfo" :border="isScreenWidthLessThanX()"></item-media-info>
+          <item-play-list
+            :mediaInfo="mediaInfo"
+            v-if="isScreenWidthLessThanX()"
+          ></item-play-list>
+          <item-media-info
+            :mediaInfo="mediaInfo"
+            :border="isScreenWidthLessThanX()"
+          ></item-media-info>
           <item-random></item-random>
         </div>
       </div>
@@ -130,7 +136,10 @@ export default {
     }
   },
   mounted() {
+    // 初始化播放器
     this.initPlayer();
+    // 给播放器中的原生 video 打上标签，在画中画模式中用于判断是否是自己的页面开了画中画模式
+    this.player.video().setAttribute("id", "digu-player");
   },
   methods: {
     // 初始化播放器
@@ -164,13 +173,27 @@ export default {
     },
 
     // 屏幕适应处理
-    isScreenWidthLessThanX(w = 1044){
-      if(this.$store.state._browserStatus.appWidth < w) return true;
+    isScreenWidthLessThanX(w = 1044) {
+      if (this.$store.state._browserStatus.appWidth < w) return true;
       else return false;
-    }
+    },
+
+    // 重新载入视频
+    reloadVideo() {
+      // 设置新的媒体源的路径
+      this.player.reloadUrl("/proxy" + this.currentPlay.source_url);
+      // 由于 MuiPlayer 官方没有提供修改 title 的方法，需要同js修改
+      // ***注：这里修改 title 需要放在更新了路径之后（否则其title覆盖自定义新的）
+      document.getElementById("title-name").innerHTML = this.currentPlay.label;
+      // 换源后会更新原生的 video，这里从新打上id
+      this.player.video().setAttribute("id", "digu-player");
+    },
   },
   watch: {
     "$route.path"(newVal, oldVal) {
+      // 最迫不得已的情况使用重刷新
+      // window.location.reload()
+
       if (this.player) {
         let newPlayMedia = this.playList.filter(
           (i) => i.link_url === newVal
@@ -180,11 +203,16 @@ export default {
         else {
           // 更新当前播放的媒体信息
           this.currentPlay = newPlayMedia;
-          // 设置新的媒体源的路径
-          this.player.reloadUrl("/proxy" + newPlayMedia.source_url);
-          // 由于 MuiPlayer 官方没有提供修改 title 的方法，需要同js修改
-          // ***注：这里修改 title 需要放在更新了路径之后（否则其title覆盖自定义新的）
-          document.getElementById("title-name").innerHTML = newPlayMedia.label;
+
+          // 判断是否是本页打开的画中画模式，是则关闭画中画模式，并重新加载视频
+          if (
+            document.pictureInPictureElement &&
+            document.pictureInPictureElement.id === "digu-player"
+          ) {
+            document.exitPictureInPicture().then(() => {
+              this.reloadVideo();
+            });
+          } else this.reloadVideo();
         }
       }
     },
