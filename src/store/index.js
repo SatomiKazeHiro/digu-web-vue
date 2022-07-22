@@ -35,15 +35,27 @@ let moduleBrowserStatus = {
   state: {
     appWidth: 0,
     appHeight: 0,
+    // 客户端信息
+    broswerInfo: null,
     // 域页面（移动端时有效）是否下拉状态
     areaMobileScrollIsDrop: false,
   },
   getters: {
     isHd: (state) => {
       return state.appWidth > state.appHeight;
+    },
+    isPc: (state)=>{
+      return state.broswerInfo.platformType === "pc";
+    },
+    isMobile:()=>{
+      return state.broswerInfo.platformType === "mobile";
     }
   },
   mutations: {
+    // 设置用户端信息
+    setBrowserInfo(state,info) {
+      state.broswerInfo = info;
+    },
     // 获取应用宽度
     setAppWidth(state, windowInnerWidth) {
       state.appWidth = windowInnerWidth;

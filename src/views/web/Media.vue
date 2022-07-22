@@ -15,6 +15,7 @@
           :coverBgImgStyle="coverBgImgStyle"
           :mediaInfo="mediaInfo"
         ></bangumi-template>
+        <div v-if="mediaInfo.template === 'video'">1111</div>
       </div>
     </div>
     <no-template-page v-if="isShow && noTemplate"></no-template-page>

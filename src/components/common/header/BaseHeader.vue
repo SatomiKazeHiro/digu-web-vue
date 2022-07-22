@@ -8,9 +8,9 @@
     }"
   >
     <div class="nav__content">
-      <div class="nav-links">
+      <div class="nav-web-box">
         <slot name="web-logo"></slot>
-        <slot name="link-item"></slot>
+        <slot name="web-item"></slot>
       </div>
       <div class="nav-serach-box">
         <slot name="search-item"></slot>
@@ -30,28 +30,20 @@ export default {
     // PC端的字体颜色和背景颜色
     pcColor: {
       type: String,
-      default() {
-        return "#fff";
-      },
+      default: "#fff",
     },
     pcBgColor: {
       type: String,
-      default() {
-        return "transparent";
-      },
+      default: "transparent",
     },
     // 移动端的字体颜色和背景颜色
     mobileColor: {
       type: String,
-      default() {
-        return "#333";
-      },
+      default: "#333",
     },
     mobileBgColor: {
       type: String,
-      default() {
-        return "#fff";
-      },
+      default: "#fff",
     },
   },
 };
@@ -64,17 +56,17 @@ export default {
   position: relative;
   z-index: 5;
   .nav__content {
-    display: flex;
     padding: 10px 24px;
     line-height: 30px;
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    .nav-links {
+    .nav-web-box {
       height: 36px;
       display: flex;
       align-items: center;
       z-index: 5;
-      .link-item {
+      .web-item {
         white-space: nowrap;
         margin-right: 12px;
         color: #fff;
@@ -87,9 +79,7 @@ export default {
       z-index: 5;
     }
     .nav-user-box {
-      display: -ms-flexbox;
       display: flex;
-      -ms-flex-align: center;
       align-items: center;
       height: 36px;
       z-index: 5;
@@ -144,7 +134,7 @@ export default {
       width: 100%;
       transition: all 0.2s linear;
       align-items: center;
-      .nav-links {
+      .nav-web-box {
         display: none;
       }
       .nav-serach-box {

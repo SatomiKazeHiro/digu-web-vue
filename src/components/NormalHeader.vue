@@ -7,9 +7,9 @@
       :mobileColor="mobileColor"
     >
       <div
-        class="link-item"
-        slot="link-item"
-        v-for="i in linkItems"
+        slot="web-item"
+        class="web-item"
+        v-for="i in webItems"
         :key="'header-' + i.label"
       >
         <a :href="i.url">{{ i.label }}</a>
@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       // 左侧站内链接内容
-      linkItems: [
+      webItems: [
         {
           label: "主站",
           url: "/",

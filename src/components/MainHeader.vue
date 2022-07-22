@@ -2,8 +2,8 @@
   <div id="main-header" :style="{ 'background-color': bgcolor }">
     <base-header class="m-header">
       <div
-        slot="link-item"
-        class="link-item"
+        slot="web-item"
+        class="web-item"
         v-for="i in linkItems"
         :key="'header-' + i.label"
       >

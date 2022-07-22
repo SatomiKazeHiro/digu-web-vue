@@ -23,9 +23,7 @@ export default {
   props: {
     brs: {
       type: String,
-      default() {
-        return "";
-      },
+      default: "",
     },
   },
 };

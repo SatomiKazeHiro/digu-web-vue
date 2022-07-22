@@ -5,12 +5,20 @@
 </template>
 
 <script>
+import platform from "utils/platform";
 export default {
   data() {
     return {
       appWidth: this.calculateW() + "px",
       appHeight: this.calculateH() + "px",
     };
+  },
+  created() {
+    this.$store.commit("setBrowserInfo", platform.getPlatformInfo());
+    this.$root.$on("linkTo", (url) => {
+      if (this.$store.getters.isPc) this.$router.push(url);
+      else if (this.$store.getters.isMobile) window.open(url, "_blank");
+    });
   },
   mounted() {
     const _this = this;
