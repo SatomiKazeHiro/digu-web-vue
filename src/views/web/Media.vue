@@ -5,7 +5,7 @@
       :class="{ 'opacity-0': !isShow }"
       v-if="isShow && !noTemplate && !loadingError"
     >
-      <normal-header>
+      <normal-header :style="getNavStyle()">
         <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="media-content">
@@ -111,6 +111,19 @@ export default {
       this.$router.push("/404");
     }
   },
+  methods: {
+    getNavStyle() {
+      let isPc = this.$store.getters.isPc;
+      let isMobile = this.$store.getters.isMobile;
+      let template = this.mediaInfo.template;
+      if (isPc && template === "video") {
+        return {
+          color: "#333",
+          backgroundColoe: "#fff",
+        };
+      }
+    },
+  },
 };
 </script>
 
@@ -135,12 +148,12 @@ export default {
 
 // 手机 平板 <1000
 @media only screen and (max-width: 1044px) {
-#media {
-  .media-wrap {
-    .media-content {
-      overflow-y: auto;
+  #media {
+    .media-wrap {
+      .media-content {
+        overflow-y: auto;
+      }
     }
   }
-}
 }
 </style>

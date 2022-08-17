@@ -2,10 +2,7 @@
   <div
     class="base-header"
     ref="base-nav"
-    :style="{
-      'background-color':
-        $store.state._browserStatus.appWidth < 1024 ? mobileBgColor : pcBgColor,
-    }"
+    :style="$store.state._browserStatus.appWidth < 1024 ? mobileStyle : pcStyle"
   >
     <div class="nav__content">
       <div class="nav-web-box">
@@ -27,24 +24,28 @@
 export default {
   name: "BaseHeader",
   props: {
-    // PC端的字体颜色和背景颜色
-    pcColor: {
-      type: String,
-      default: "#fff",
+    style: Object,
+    pcStyle: {
+      type: Object,
+      default: () => {
+        return {
+          color: "#fff",
+          backgroundColor: "transparent",
+        };
+      },
     },
-    pcBgColor: {
-      type: String,
-      default: "transparent",
+    mobileStyle: {
+      type: Object,
+      default: () => {
+        return {
+          color: "#333",
+          backgroundColor: "#fff",
+        };
+      },
     },
-    // 移动端的字体颜色和背景颜色
-    mobileColor: {
-      type: String,
-      default: "#333",
-    },
-    mobileBgColor: {
-      type: String,
-      default: "#fff",
-    },
+  },
+  mounted() {
+    console.log(this.$attrs);
   },
 };
 </script>

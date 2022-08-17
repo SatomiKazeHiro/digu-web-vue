@@ -1,11 +1,6 @@
 <template>
   <div id="normal-header">
-    <base-header
-      :pcBgColor="pcBgColor"
-      :pcColor="pcColor"
-      :mobileBgColor="mobileBgColor"
-      :mobileColor="mobileColor"
-    >
+    <base-header :style="style">
       <div
         slot="web-item"
         class="web-item"
@@ -43,10 +38,7 @@ export default {
     NavSearch,
   },
   props: {
-    pcBgColor: String,
-    pcColor: String,
-    mobileBgColor: String,
-    mobileColor: String,
+    style: Object,
   },
   data() {
     return {

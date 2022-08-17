@@ -47,7 +47,7 @@ let moduleBrowserStatus = {
     isPc: (state)=>{
       return state.broswerInfo.platformType === "pc";
     },
-    isMobile:()=>{
+    isMobile:(state)=>{
       return state.broswerInfo.platformType === "mobile";
     }
   },
