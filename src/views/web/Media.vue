@@ -15,7 +15,7 @@
           :coverBgImgStyle="coverBgImgStyle"
           :mediaInfo="mediaInfo"
         ></bangumi-template>
-        <div v-if="mediaInfo.template === 'video'">1111</div>
+        <video-template v-if="mediaInfo.template === 'video'"></video-template>
       </div>
     </div>
     <no-template-page v-if="isShow && noTemplate"></no-template-page>
@@ -30,6 +30,7 @@ import NormalHeader from "components/NormalHeader";
 import NoTemplatePage from "./page/NoTemplatePage";
 import LoadingErrorPage from "./page/LoadingErrorPage";
 import bangumiTemplate from "./mediaTemplate/bangumiTemplate";
+import videoTemplate from "./playTemplate/videoTemplate.vue"
 export default {
   name: "Media",
   components: {
@@ -37,6 +38,7 @@ export default {
     NoTemplatePage,
     LoadingErrorPage,
     bangumiTemplate,
+    videoTemplate
   },
   data() {
     return {

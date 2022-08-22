@@ -1,15 +1,30 @@
 <template>
-  <div>
-    <h1>Test</h1>
+  <div id="test">
+    <h1>Main Header</h1>
+    <main-header></main-header>
+    <h1>Normal Header</h1>
+    <normal-header type="transparent"></normal-header>
   </div>
 </template>
 
 <script>
-export default {};
+import MainHeader from "components/MainHeader";
+import NormalHeader from "components/NormalHeader";
+export default {
+  components: {
+    MainHeader,
+    NormalHeader
+  }
+};
 </script>
 
 <style lang="scss" scoped>
+div#test {
+  width: 100%;
+  height: 100%;
+  background: #333;
+}
 h1 {
-  color: red;
+  color: #fff;
 }
 </style>

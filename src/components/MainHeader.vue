@@ -1,6 +1,6 @@
 <template>
-  <div id="main-header" :style="{ 'background-color': bgcolor }">
-    <base-header class="m-header">
+  <div id="main-header">
+    <base-header class="m-header" type="gradient">
       <div
         slot="web-item"
         class="web-item"

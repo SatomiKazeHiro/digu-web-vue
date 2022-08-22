@@ -1,6 +1,6 @@
 <template>
   <div id="normal-header">
-    <base-header :style="style">
+    <base-header v-bind="$attrs">
       <div
         slot="web-item"
         class="web-item"
@@ -38,7 +38,7 @@ export default {
     NavSearch,
   },
   props: {
-    style: Object,
+    normalStyle: Object,
   },
   data() {
     return {

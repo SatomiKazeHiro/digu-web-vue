@@ -38,7 +38,7 @@ const routes = [
     component: Web,
   },
   {
-    path: "/",
+    path: "/test",
     name: "Test",
     component: () => import("views/Test.vue"),
   },

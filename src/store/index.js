@@ -2,12 +2,27 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // 安装插件
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+// 配置模块
+const moduleConfig = {
+  state: {
+    mobileWidth: 7,
+    padWidth: 1024,
+    pcWidth: 1280,
+  },
+  mutations: {
+  },
+  actions: {
+  },
+  modules: {
+  }
+}
 
 // 用户模块
-let moduleUser = {
+const moduleUser = {
   state: {
-    header: "https://img0.baidu.com/it/u=2859944020,1774086333&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400",
+    header: "",
   },
   mutations: {
     updateUsername(state, val) {
@@ -19,8 +34,9 @@ let moduleUser = {
   modules: {
   }
 }
+
 // 设置模块
-let moduleSetting = {
+const moduleSetting = {
   state: {
   },
   mutations: {
@@ -30,8 +46,9 @@ let moduleSetting = {
   modules: {
   }
 }
+
 // 浏览器状态
-let moduleBrowserStatus = {
+const moduleBrowserStatus = {
   state: {
     appWidth: 0,
     appHeight: 0,
@@ -84,6 +101,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    _config: moduleConfig,
     _user: moduleUser,
     _setting: moduleSetting,
     _browserStatus: moduleBrowserStatus
