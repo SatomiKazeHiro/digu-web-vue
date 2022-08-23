@@ -26,21 +26,21 @@
       </div>
     </base-header>
     <digu-banner class="m-banner"></digu-banner>
-    <tag-nav></tag-nav>
+    <tags-nav class="m-tags"></tags-nav>
   </div>
 </template>
 
 <script>
 import BaseHeader from "./common/header/BaseHeader";
 import DiguBanner from "./common/header/DiguBanner";
-import TagNav from "./common/header/TagNav";
+import TagsNav from "./common/header/TagsNav";
 import NavSearch from "./common/header/NavSearch";
 export default {
   name: "MainHeader",
   components: {
     BaseHeader,
     DiguBanner,
-    TagNav,
+    TagsNav,
     NavSearch,
   },
   props: {
@@ -92,21 +92,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#main-header {
-  position: relative;
-  .m-header {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
+@media only screen and ($pcMaxWidth) {
+  #main-header {
+    position: relative;
+    .m-header {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
   }
 }
 // 手机 平板 <1044
-@media only screen and (max-width: 1044px) {
+@media only screen and ($padMaxWidth) {
   #main-header {
     border-bottom: 1px solid #ccc;
     height: 48px;
+    padding-top: 48px;
     .m-header {
       box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
         rgb(209, 213, 219) 0px 0px 0px 1px inset;

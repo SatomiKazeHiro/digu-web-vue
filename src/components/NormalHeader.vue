@@ -40,6 +40,7 @@ export default {
   props: {
     normalStyle: Object,
   },
+  inheritAttrs: false,
   data() {
     return {
       // 左侧站内链接内容

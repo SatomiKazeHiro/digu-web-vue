@@ -1,6 +1,6 @@
 <template>
-  <div class="tag-nav-wrap">
-    <div class="tag-nav">
+  <div class="tags-nav-wrap">
+    <div class="tags-nav">
       <div class="recommend-web">
         <ul>
           <li>
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: "TagNav",
+  name: "TagsNav",
   data() {
     return {
       tags: [
@@ -137,8 +137,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tag-nav-wrap {
-  .tag-nav {
+.tags-nav-wrap {
+  .tags-nav {
     width: 1280px;
     margin: 10px auto;
     padding: 10px 0;
@@ -227,8 +227,8 @@ export default {
 }
 // 平板 宽屏 1000~1280
 @media only screen and (max-width: 1300px) {
-  .tag-nav-wrap {
-    .tag-nav {
+  .tags-nav-wrap {
+    .tags-nav {
       width: 1000px;
       // width: 100%;
       .recommend-web {
@@ -247,9 +247,9 @@ export default {
 }
 // 手机 平板 <1000
 @media only screen and (max-width: 1044px) {
-  .tag-nav-wrap {
+  .tags-nav-wrap {
     box-shadow: 0 1px 1px 0 #d8d8d8;
-    .tag-nav {
+    .tags-nav {
       width: 100%;
       border-radius: 0;
       margin: 0;

@@ -134,7 +134,7 @@ export default {
       padding: 6px 12px;
       position: relative;
       width: 100%;
-      background: #fff;
+      background: #fff !important;
       // transition: all 0.2s linear;
       align-items: center;
       .nav-web-box {

@@ -3,6 +3,10 @@
     <h1>Main Header</h1>
     <main-header></main-header>
     <h1>Normal Header</h1>
+    <normal-header type="normal"></normal-header>
+    <h1>Gradient Header</h1>
+    <normal-header type="gradient"></normal-header>
+    <h1>Transparent Header</h1>
     <normal-header type="transparent"></normal-header>
   </div>
 </template>
@@ -13,8 +17,8 @@ import NormalHeader from "components/NormalHeader";
 export default {
   components: {
     MainHeader,
-    NormalHeader
-  }
+    NormalHeader,
+  },
 };
 </script>
 
@@ -26,5 +30,8 @@ div#test {
 }
 h1 {
   color: #fff;
+  &:not(:first-child){
+    margin-top: 25px;
+  }
 }
 </style>
