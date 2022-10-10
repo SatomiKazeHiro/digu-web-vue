@@ -5,7 +5,7 @@
       :class="{ 'opacity-0': !isShow }"
       v-if="isShow && !noTemplate && !loadingError"
     >
-      <normal-header pcBgColor="#000">
+      <normal-header :selfStyle="{ background: '#181818', color: '#eee' }" inTop>
         <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="chapter-content">
@@ -50,11 +50,7 @@ export default {
   methods: {
     initChapter() {
       // 判断路由参数，域，分类，资源项目id，缺一不可
-      if (
-        this.$route.params.area &&
-        this.$route.params.category &&
-        this.$route.params.item
-      ) {
+      if (this.$route.params.area && this.$route.params.category && this.$route.params.item) {
         // 检查资源项目是否存在
         checkItem(this.$route.params.item).then(
           (res) => {
@@ -71,11 +67,7 @@ export default {
                   if (res.code && res.code === 200) {
                     this.mediaInfo = res.data;
                     this.isShow = true;
-                  } else if (
-                    res.code &&
-                    res.code === 400 &&
-                    res.data.type === "no-Template"
-                  ) {
+                  } else if (res.code && res.code === 400 && res.data.type === "no-Template") {
                     // 显示没有设置模板
                     this.noTemplate = true;
                     this.isShow = true;
@@ -100,7 +92,7 @@ export default {
         this.$router.push("/404");
       }
     },
-  }
+  },
 };
 </script>
 

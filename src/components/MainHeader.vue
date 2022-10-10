@@ -1,32 +1,22 @@
 <template>
   <div id="main-header">
     <base-header class="m-header" type="gradient">
-      <div
-        slot="web-item"
-        class="web-item"
-        v-for="i in linkItems"
-        :key="'header-' + i.label"
-      >
+      <div slot="web-item" class="web-item" v-for="i in linkItems" :key="'header-' + i.label">
         <a :href="i.url">{{ i.label }}</a>
       </div>
       <nav-search slot="search-item"></nav-search>
       <div class="user-head" slot="user-head">
         <slot name="user-img"></slot>
       </div>
-      <div
-        slot="user-item"
-        class="user-item"
-        v-for="i in userItems"
-        :key="'header-' + i.label"
-      >
+      <div slot="user-item" class="user-item" v-for="i in userItems" :key="'header-' + i.label">
         <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
       </div>
     </base-header>
-    <digu-banner class="m-banner"></digu-banner>
-    <tags-nav class="m-tags"></tags-nav>
+    <digu-banner class="m-banner" />
+    <tags-nav class="m-tags" />
   </div>
 </template>
 
@@ -55,31 +45,14 @@ export default {
     return {
       // 左侧站内链接内容
       linkItems: [
-        {
-          label: "主站",
-          url: "/",
-        },
-        {
-          label: "动画",
-          url: "/anime",
-        },
-        {
-          label: "漫画",
-          url: "/manga",
-        },
+        { label: "主站", url: "/" },
+        { label: "动画", url: "/anime" },
+        { label: "漫画", url: "/manga" },
       ],
       // 右侧用户链接内容
       userItems: [
-        {
-          label: "收藏",
-          icon: "header-collect",
-          url: "/space/favlist",
-        },
-        {
-          label: "历史记录",
-          icon: "header-history",
-          url: "/space/history",
-        },
+        { label: "收藏", icon: "header-collect", url: "/space/favlist" },
+        { label: "历史记录", icon: "header-history", url: "/space/history" },
       ],
     };
   },
@@ -107,15 +80,17 @@ export default {
 // 手机 平板 <1044
 @media only screen and ($padMaxWidth) {
   #main-header {
-    border-bottom: 1px solid #ccc;
-    height: 48px;
+    border-bottom: 1px solid #dfdfdf;
     padding-top: 48px;
     .m-header {
-      box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
-        rgb(209, 213, 219) 0px 0px 0px 1px inset;
+      // box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
+      //   rgb(209, 213, 219) 0px 0px 0px 1px inset;
     }
     .m-banner {
       display: none;
+    }
+    .m-tags {
+      z-index: 10;
     }
   }
 }

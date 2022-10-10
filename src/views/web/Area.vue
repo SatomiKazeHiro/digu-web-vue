@@ -6,7 +6,7 @@
         hideHeaderNav: $store.state._browserStatus.areaMobileScrollIsDrop,
       }"
     >
-      <normal-header pcBgColor="#333" mobileBgColor="transparent">
+      <normal-header :selfStyle="{ background: '#000', color: '#eee' }" inTop>
         <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="carousel-wrap" v-cloak>

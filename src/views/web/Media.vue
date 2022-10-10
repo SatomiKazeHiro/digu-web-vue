@@ -1,11 +1,8 @@
 <template>
   <div id="media" v-cloak>
-    <div
-      class="media-wrap"
-      :class="{ 'opacity-0': !isShow }"
-      v-if="isShow && !noTemplate && !loadingError"
-    >
-      <normal-header :style="getNavStyle()">
+    <div class="media-wrap" :class="{ 'opacity-0': !isShow }" v-if="isShow && !noTemplate && !loadingError">
+      <!-- <normal-header :style="getNavStyle()"> -->
+      <normal-header type="transparent" inTop>
         <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="media-content">
@@ -30,7 +27,7 @@ import NormalHeader from "components/NormalHeader";
 import NoTemplatePage from "./page/NoTemplatePage";
 import LoadingErrorPage from "./page/LoadingErrorPage";
 import bangumiTemplate from "./mediaTemplate/bangumiTemplate";
-import videoTemplate from "./playTemplate/videoTemplate.vue"
+import videoTemplate from "./playTemplate/videoTemplate.vue";
 export default {
   name: "Media",
   components: {
@@ -38,7 +35,7 @@ export default {
     NoTemplatePage,
     LoadingErrorPage,
     bangumiTemplate,
-    videoTemplate
+    videoTemplate,
   },
   data() {
     return {
@@ -59,36 +56,22 @@ export default {
   },
   mounted() {
     // 判断路由参数，域，分类，资源项目id，缺一不可
-    if (
-      this.$route.params.area &&
-      this.$route.params.category &&
-      this.$route.params.item
-    ) {
+    if (this.$route.params.area && this.$route.params.category && this.$route.params.item) {
       // 检查资源项目是否存在
       checkItem(this.$route.params.item).then(
         (res) => {
           console.log(res);
           if (res && res.code === 200 && res.data === true) {
             // 获取资源项目的详细数据
-            getItem(
-              this.$route.params.area,
-              this.$route.params.category,
-              this.$route.params.item
-            ).then(
+            getItem(this.$route.params.area, this.$route.params.category, this.$route.params.item).then(
               (res) => {
                 console.log(res);
                 if (res.code && res.code === 200) {
-                  this.coverPath =
-                    "/proxy" + res.data.sources_url + res.data.cover;
-                  this.coverBgImgStyle =
-                    'background-image: url("' + this.coverPath + '");';
+                  this.coverPath = "/proxy" + res.data.sources_url + res.data.cover;
+                  this.coverBgImgStyle = 'background-image: url("' + this.coverPath + '");';
                   this.mediaInfo = res.data;
                   this.isShow = true;
-                } else if (
-                  res.code &&
-                  res.code === 400 &&
-                  res.data.type === "no-Template"
-                ) {
+                } else if (res.code && res.code === 400 && res.data.type === "no-Template") {
                   // 显示没有设置模板
                   this.noTemplate = true;
                   this.isShow = true;

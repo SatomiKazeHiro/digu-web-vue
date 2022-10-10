@@ -22,7 +22,7 @@ const moduleConfig = {
 // 用户模块
 const moduleUser = {
   state: {
-    header: "",
+    header: "https://img2.woyaogexing.com/2020/04/24/894dcb5acd504d43b725ae8bea725340!400x400.jpeg",
   },
   mutations: {
     updateUsername(state, val) {

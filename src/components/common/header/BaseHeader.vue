@@ -1,6 +1,10 @@
 <template>
   <div class="nav__base-header" ref="base-nav" v-show="show">
-    <div class="nav__content" :class="[type, fixed ? 'fixed' : '']">
+    <div
+      class="nav__content"
+      :class="[type, fixed ? 'fixed' : '', inTop ? 'inTop' : '']"
+      :style="{ ...selfStyle }"
+    >
       <div class="nav-web-box">
         <slot name="web-logo"></slot>
         <slot name="web-item"></slot>
@@ -22,9 +26,9 @@ export default {
   props: {
     type: {
       type: String,
-      default: "normal",
+      default: "",
       validator(value) {
-        return ["normal", "gradient", "transparent"].includes(value);
+        return ["", "normal", "gradient", "transparent"].includes(value);
       },
     },
     fixed: {
@@ -34,6 +38,14 @@ export default {
     show: {
       type: Boolean,
       default: true,
+    },
+    inTop: {
+      type: Boolean,
+      default: false,
+    },
+    selfStyle: {
+      type: Object,
+      default: () => {},
     },
   },
   mounted() {},
@@ -69,6 +81,11 @@ export default {
       }
       &.fixed {
         position: fixed;
+      }
+      &.inTop {
+        position: absolute;
+        top: 0;
+        left: 0;
       }
       .nav-web-box {
         height: 36px;

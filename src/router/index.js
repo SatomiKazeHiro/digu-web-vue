@@ -14,22 +14,22 @@ VueRouter.prototype.replace = function replace(location) {
 
 Vue.use(VueRouter);
 
-let Web = () => import("views/Web.vue");
-let Area = () => import("views/web/Area.vue");
-let Category = () => import("views/web/Category.vue");
-let Media = () => import("views/web/Media.vue");
-let Play = () => import("views/web/Play.vue");
-let Chapter = () => import("views/web/Chapter.vue");
+const Web = () => import("views/Web.vue");
+const Area = () => import("views/web/Area.vue");
+const Category = () => import("views/web/Category.vue");
+const Media = () => import("views/web/Media.vue");
+const Play = () => import("views/web/Play.vue");
+const Chapter = () => import("views/web/Chapter.vue");
 
-let Space = () => import("views/Space.vue");
-let User = () => import("views/space/User.vue");
-let History = () => import("views/space/History.vue");
-let Favlist = () => import("views/space/Favlist.vue");
-let Watchlater = () => import("views/space/Watchlater.vue");
-let Manage = () => import("views/space/Manage.vue");
-let Setting = () => import("views/space/Setting.vue");
+const Space = () => import("views/Space.vue");
+const User = () => import("views/space/User.vue");
+const History = () => import("views/space/History.vue");
+const Favlist = () => import("views/space/Favlist.vue");
+const Watchlater = () => import("views/space/Watchlater.vue");
+const Manage = () => import("views/space/Manage.vue");
+const Setting = () => import("views/space/Setting.vue");
 
-let ErrorPage = () => import("views/ErrorPage.vue");
+const ErrorPage = () => import("views/ErrorPage.vue");
 
 const routes = [
   {
