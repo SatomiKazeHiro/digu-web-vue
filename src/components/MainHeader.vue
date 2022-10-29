@@ -1,45 +1,37 @@
 <template>
   <div id="main-header">
-    <base-header class="m-header" type="gradient">
-      <div slot="web-item" class="web-item" v-for="i in linkItems" :key="'header-' + i.label">
+    <BaseHeader class="m-header" type="gradient">
+      <div slot="web-item" class="web-item" v-for="i in linkItems" :key="'web-' + i.label">
         <a :href="i.url">{{ i.label }}</a>
       </div>
-      <nav-search slot="search-item"></nav-search>
+      <NavSearch slot="search-item" />
       <div class="user-head" slot="user-head">
-        <slot name="user-img"></slot>
+        <img :src="$store.state._user.header" slot="user-img" />
       </div>
-      <div slot="user-item" class="user-item" v-for="i in userItems" :key="'header-' + i.label">
+      <div slot="user-item" class="user-item" v-for="i in userItems" :key="'user-' + i.label">
         <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
       </div>
-    </base-header>
-    <digu-banner class="m-banner" />
-    <tags-nav class="m-tags" />
+    </BaseHeader>
+    <Banner class="m-banner" />
+    <TagsNav class="m-tags" />
   </div>
 </template>
 
 <script>
 import BaseHeader from "./common/header/BaseHeader";
-import DiguBanner from "./common/header/DiguBanner";
+import Banner from "./common/header/Banner";
 import TagsNav from "./common/header/TagsNav";
 import NavSearch from "./common/header/NavSearch";
 export default {
   name: "MainHeader",
   components: {
     BaseHeader,
-    DiguBanner,
+    Banner,
     TagsNav,
     NavSearch,
-  },
-  props: {
-    bgcolor: {
-      type: String,
-      default() {
-        return "transparent";
-      },
-    },
   },
   data() {
     return {
@@ -82,10 +74,6 @@ export default {
   #main-header {
     border-bottom: 1px solid #dfdfdf;
     padding-top: 48px;
-    .m-header {
-      // box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
-      //   rgb(209, 213, 219) 0px 0px 0px 1px inset;
-    }
     .m-banner {
       display: none;
     }

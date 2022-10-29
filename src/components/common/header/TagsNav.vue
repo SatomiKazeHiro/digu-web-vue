@@ -1,35 +1,7 @@
 <template>
   <div class="tags-nav-wrap">
     <div class="tags-nav">
-      <div class="recommend-web">
-        <ul>
-          <li>
-            <a href="https://www.bilibili.com/" target="_blank">
-              <div class="web-item" style="background: #73c9e5">
-                <img src="~assets/img/web/area/Bilibili.png" alt="" />
-              </div>
-              <span>BiliBili</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.iqiyi.com/dongman/" target="_blank">
-              <div class="web-item" style="background: #00be06">
-                <img src="~assets/img/web/area/iQIYI.png" alt="" />
-              </div>
-              <span>爱奇艺</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://ac.qq.com/" target="_blank">
-              <div class="web-item" style="background: #fa9144">
-                <img src="~assets/img/web/area/tencent.png" alt="" />
-              </div>
-              <span>腾讯动漫</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="primaryChannelMenu">
+      <div class="primary-channel-menu">
         <ul v-if="tags.length > 0" class="clearfix">
           <li v-for="item in tags" :key="item.label">
             <a :href="item.url">
@@ -50,86 +22,26 @@ export default {
   data() {
     return {
       tags: [
-        {
-          label: "动画",
-          url: "",
-        },
-        {
-          label: "音乐",
-          url: "",
-        },
-        {
-          label: "漫画",
-          url: "",
-        },
-        {
-          label: "游戏",
-          url: "",
-        },
-        {
-          label: "MMD",
-          url: "",
-        },
-        {
-          label: "科普",
-          url: "",
-        },
-        {
-          label: "杂谈",
-          url: "",
-        },
-        {
-          label: "科幻",
-          url: "",
-        },
-        {
-          label: "纪录片",
-          url: "",
-        },
-        {
-          label: "电影",
-          url: "",
-        },
-        {
-          label: "搞笑",
-          url: "",
-        },
-        {
-          label: "MAD",
-          url: "",
-        },
-        {
-          label: "动物",
-          url: "",
-        },
-        {
-          label: "悬疑",
-          url: "",
-        },
-        {
-          label: "舞蹈",
-          url: "",
-        },
-        {
-          label: "历史",
-          url: "",
-        },
-        {
-          label: "人文",
-          url: "",
-        },
-        {
-          label: "学习",
-          url: "",
-        },
-        {
-          label: "OVA",
-          url: "",
-        },
-        {
-          label: "生活",
-          url: "",
-        },
+        { label: "动画", url: "" },
+        { label: "音乐", url: "" },
+        { label: "漫画", url: "" },
+        { label: "游戏", url: "" },
+        { label: "MMD", url: "" },
+        { label: "科普", url: "" },
+        { label: "杂谈", url: "" },
+        { label: "科幻", url: "" },
+        { label: "纪录片", url: "" },
+        { label: "电影", url: "" },
+        { label: "搞笑", url: "" },
+        { label: "MAD", url: "" },
+        { label: "动物", url: "" },
+        { label: "悬疑", url: "" },
+        { label: "舞蹈", url: "" },
+        { label: "历史", url: "" },
+        { label: "人文", url: "" },
+        { label: "学习", url: "" },
+        { label: "OVA", url: "" },
+        { label: "生活", url: "" },
       ],
     };
   },
@@ -140,84 +52,46 @@ export default {
 .tags-nav-wrap {
   .tags-nav {
     width: 1280px;
-    margin: 10px auto;
-    padding: 10px 0;
+    margin: 8px auto;
+    padding: 8px;
     border-radius: 4px;
     background: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .recommend-web {
-      height: 70px;
-      ul {
-        display: flex;
-        li {
-          width: 60px;
-          padding: 0 5px;
-          text-align: center;
-          font-size: 14px;
-          color: #212121;
-          box-sizing: unset;
-          a {
-            transition: 0.3s;
-            &:hover {
-              transition: 0.3s;
-              color: #73c9e5;
-            }
-            span {
-              font-size: 12px;
-            }
-            .web-item {
-              width: 42px;
-              height: 42px;
-              border-radius: 20px;
-              overflow: hidden;
-              margin: 0 auto 5px;
-              img {
-                width: 32px;
-                height: 32px;
-                position: relative;
-                top: 50%;
-                transform: translate(0, -50%);
-              }
-            }
-          }
-        }
-      }
-    }
-    .primaryChannelMenu {
+    .primary-channel-menu {
       flex: 1;
-      height: 100%;
-      padding-left: 20px;
       text-align: center;
       -webkit-overflow-scrolling: touch;
       overflow: hidden;
       overflow-x: auto;
       overflow-y: hidden;
       overflow: -moz-scrollbars-none;
-      overflow: -moz-scrollbars-none;
       scrollbar-width: none;
       &::-webkit-scrollbar {
         display: none;
       }
       ul {
-        border-left: 1px solid #cccccc;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         flex-flow: row wrap;
-        text-align: center;
         li {
-          flex: 0 0 10%;
+          flex: 0 0 8.3333%;
           margin: 5px 0;
+          text-align: left;
           a {
             display: inline-block;
             span {
               font-size: 14px;
               color: #ffffff;
               border-radius: 4px;
-              background: #ff8a80;
-              padding: 2px 4px;
+              background-color: #ff8a80;
+              padding: 4px 8px;
+              transition: background-color 0.25s linear;
+              &:hover {
+                background-color: #00A1D6;
+              }
             }
           }
         }
@@ -230,18 +104,6 @@ export default {
   .tags-nav-wrap {
     .tags-nav {
       width: 1000px;
-      // width: 100%;
-      .recommend-web {
-        ul {
-          li {
-            a {
-              span {
-                font-size: 13px;
-              }
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -254,10 +116,7 @@ export default {
       border-radius: 0;
       margin: 0;
       padding: 0;
-      .recommend-web {
-        display: none;
-      }
-      .primaryChannelMenu {
+      .primary-channel-menu {
         height: unset;
         padding-left: 10px;
         overflow: hidden;

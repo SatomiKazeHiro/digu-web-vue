@@ -1,5 +1,5 @@
 <template>
-  <div>视频模板</div>
+  <div>插画模板</div>
 </template>
 
 <script>

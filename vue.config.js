@@ -34,7 +34,6 @@ module.exports = {
   },
   chainWebpack: (config) => {
     config.module.rule("svg").exclude.add(resolve("src/icons")).end();
-
     config.module
       .rule("icons")
       .test(/\.svg$/)

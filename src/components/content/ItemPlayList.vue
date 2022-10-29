@@ -11,7 +11,7 @@
         <ul>
           <li class="misl-ep-item" v-for="i in playList" :key="i.value">
             <div class="misl-ep-index" @click="handleChapterPlay(i.link_url)">
-              {{ i.label }}
+              <span :title="i.label">{{ i.label }}</span>
             </div>
           </li>
         </ul>
@@ -112,8 +112,10 @@ export default {
         flex-flow: row wrap;
         .misl-ep-item {
           display: inline-block;
-          flex: 0 0 8.333%;
-          max-width: 8.333%;
+          // flex: 0 0 8.333%;
+          // max-width: 8.333%;
+          flex: 0 0 16.666%;
+          max-width: 16.666%;
           margin-bottom: 15px;
           padding: 5px;
           .misl-ep-index {
@@ -201,8 +203,10 @@ export default {
         ul {
           margin-top: 0;
           .misl-ep-item {
-            flex: 0 0 20%;
-            max-width: 20%;
+            // flex: 0 0 20%;
+            // max-width: 20%;
+            flex: 0 0 33.333%;
+            max-width: 33.333%;
             padding: 0 1.1666vw;
             width: unset;
             margin-bottom: 1.6666vw;

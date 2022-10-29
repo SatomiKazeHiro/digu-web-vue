@@ -3,7 +3,7 @@
     <div class="media-info-wrap">
       <div class="info-bg-wrap">
         <div class="info-blurbg-wrapper">
-          <div class="info-blurbg" :style="coverBgImgStyle"></div>
+          <div class="info-blurbg" :style="mediaInfo.coverBgImgStyle"></div>
         </div>
       </div>
       <div class="info-content-wrap">
@@ -11,7 +11,7 @@
           <div class="media-preview fl">
             <div class="common-lazy-img">
               <img
-                :src="coverPath"
+                :src="mediaInfo.coverPath"
                 class="opacity-0"
                 :ref="'cover' + mediaInfo.id"
                 @load="showImg('cover' + mediaInfo.id)"
@@ -23,15 +23,11 @@
               <span class="media-info-title-t">{{ mediaInfo.title }}</span>
               <div class="media-tags" v-if="mediaInfo.tags">
                 <span v-if="mediaInfo.tags.length == 0">无标签</span>
-                <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{
-                  i
-                }}</span>
+                <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{ i }}</span>
               </div>
             </div>
             <div class="media-info-status">
-              <span class="status" v-if="mediaInfo.status">{{
-                mediaInfo.status
-              }}</span>
+              <span class="status" v-if="mediaInfo.status">{{ mediaInfo.status }}</span>
               <span class="status" v-else>状态未知</span>
             </div>
             <div class="media-info-intro">
@@ -79,13 +75,9 @@ export default {
     ItemRandom,
   },
   props: {
-    coverPath: "",
-    coverBgImgStyle: "",
     mediaInfo: {
       type: Object,
-      default() {
-        return {};
-      },
+      default: () => ({}),
     },
   },
   data() {

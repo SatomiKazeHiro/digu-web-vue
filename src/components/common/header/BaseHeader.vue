@@ -2,7 +2,7 @@
   <div class="nav__base-header" ref="base-nav" v-show="show">
     <div
       class="nav__content"
-      :class="[type, fixed ? 'fixed' : '', inTop ? 'inTop' : '']"
+      :class="[type, fixed ? 'fixed' : '']"
       :style="{ ...selfStyle }"
     >
       <div class="nav-web-box">
@@ -39,10 +39,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    inTop: {
-      type: Boolean,
-      default: false,
-    },
     selfStyle: {
       type: Object,
       default: () => {},
@@ -57,7 +53,7 @@ export default {
   .nav__base-header {
     width: 100%;
     height: 56px;
-    position: relative;
+    // position: relative;
     z-index: 5;
     .nav__content {
       width: 100%;
@@ -81,11 +77,6 @@ export default {
       }
       &.fixed {
         position: fixed;
-      }
-      &.inTop {
-        position: absolute;
-        top: 0;
-        left: 0;
       }
       .nav-web-box {
         height: 36px;

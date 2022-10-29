@@ -29,7 +29,7 @@ const Watchlater = () => import("views/space/Watchlater.vue");
 const Manage = () => import("views/space/Manage.vue");
 const Setting = () => import("views/space/Setting.vue");
 
-const ErrorPage = () => import("views/ErrorPage.vue");
+const ErrorPage = () => import("views/404.vue");
 
 const routes = [
   {

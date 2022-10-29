@@ -1,12 +1,12 @@
 <template>
-  <div id="normal-header">
+  <div id="normal-header" :class="{ inTop: inTop }">
     <base-header v-bind="$attrs">
       <div slot="web-item" class="web-item" v-for="i in webItems" :key="'header-' + i.label">
         <a :href="i.url">{{ i.label }}</a>
       </div>
       <nav-search slot="search-item"></nav-search>
       <div class="user-head" slot="user-head">
-        <slot name="user-img"></slot>
+        <img :src="$store.state._user.header" slot="user-img" />
       </div>
       <div slot="user-item" class="user-item" v-for="i in userItems" :key="'header-' + i.label">
         <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
@@ -28,6 +28,12 @@ export default {
     NavSearch,
   },
   inheritAttrs: false,
+  props: {
+    inTop: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       // 左侧站内链接内容
@@ -53,6 +59,10 @@ export default {
 
 <style lang="scss" scoped>
 #normal-header {
+  width: 100%;
   transition: opacity 0.25s linear;
+  &.inTop {
+    position: absolute;
+  }
 }
 </style>

@@ -24,6 +24,17 @@ let handleBangumi = function (mediaInfo) {
     return supportedVideoFormats.indexOf(f.split(".").pop().toLowerCase()) > -1;
   });
 
+  return supportedVideos.map((v,index) => {
+    return {
+      value: index,
+      label: removeSuffix(v),
+      source_url: `${mediaInfo.sources_url}${v}`,
+      link_url: `${mediaInfo.link_url}/s/${index + 1}`
+    }
+  })
+
+  // ----------------------------------------------------
+
   // 用来存储文件名中没有数字的视频文件
   let otherVideos = [];
 

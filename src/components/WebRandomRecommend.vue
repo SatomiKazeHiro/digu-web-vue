@@ -3,7 +3,12 @@
     <div class="rr-left fl">
       <el-carousel height="242px">
         <el-carousel-item v-for="item in RRItem" :key="item.id">
-          <img :src="item.cover" class="el-banner-img" />
+          <img
+            :src="compressImg(`rrl${item.id}`, item.cover)"
+            :ref="`rrl${item.id}`"
+            class="el-banner-img"
+            @load="showImg(`rrl${item.id}`)"
+          />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -13,13 +18,13 @@
           <a href="#" target="_blank">
             <img
               class="opacity-0"
-              :src="item.cover"
-              :ref="'rr' + item.id"
-              @load="showImg(item.id)"
+              :src="compressImg(`rrr${item.id}`, item.cover)"
+              :ref="`rrr${item.id}`"
+              @load="showImg(`rrr${item.id}`)"
             />
             <div class="info">
-              <p class="info-title">{{ item.title }}</p>
-              <p class="info-content" v-if="item.intro"></p>
+              <p class="info-title" :title="item.title">{{ item.title }}</p>
+              <p class="info-content" v-if="item.intro" :title="item.intro"></p>
               <p class="info-content" v-else>无简介</p>
             </div>
           </a>
@@ -33,9 +38,9 @@
             <div class="v-cover">
               <img
                 class="opacity-0"
-                :src="item.cover"
-                :ref="'mobile' + item.id"
-                @load="showImgMobile(item.id)"
+                :src="compressImg(`mobile${item.id}`, item.cover)"
+                :ref="`mobile${item.id}`"
+                @load="showImg(`mobile${item.id}`)"
               />
             </div>
             <div class="title">
@@ -49,6 +54,7 @@
 </template>
 
 <script>
+import compress from "utils/compress.js";
 export default {
   name: "RandomRecommend",
   props: {
@@ -61,20 +67,17 @@ export default {
   },
   mounted() {
     // 判断是否是横屏的
-    if (
-      this.$store.state._browserStatus.appWidth &&
-      this.$store.state._browserStatus.appHeight &&
-      this.$store.state._browserStatus.appWidth >=
-        this.$store.state._browserStatus.appHeight
-    )
+    if (this.$store.state._browserStatus.appWidth >= this.$store.state._browserStatus.appHeight)
       document.querySelector(".video-list").classList.add("hd");
   },
   methods: {
-    showImg(id) {
-      this.$refs["rr" + id][0].classList.remove("opacity-0");
+    showImg(ref) {
+      this.$refs[ref][0].classList.remove("opacity-0");
     },
-    showImgMobile(id) {
-      this.$refs["mobile" + id][0].classList.remove("opacity-0");
+    compressImg(ref, url) {
+      compress(url).then((base64) => {
+        this.$refs[ref][0].src = base64;
+      });
     },
   },
   watch: {
@@ -82,10 +85,7 @@ export default {
     "$store.state._browserStatus.appWidth"(newValue, oldValue) {
       if (newValue && newValue >= this.$store.state._browserStatus.appHeight) {
         document.querySelector(".video-list").classList.add("hd");
-      } else if (
-        newValue &&
-        document.querySelector(".video-list").classList.contains("hd")
-      )
+      } else if (newValue && document.querySelector(".video-list").classList.contains("hd"))
         document.querySelector(".video-list").classList.remove("hd");
     },
   },
@@ -111,9 +111,7 @@ img.el-banner-img {
     padding-left: 5px;
     display: flex;
     flex-wrap: wrap;
-    -ms-flex-pack: justify;
     justify-content: space-between;
-    -ms-flex-line-pack: justify;
     align-content: space-between;
     overflow: hidden;
     .video-card-reco {
@@ -240,8 +238,7 @@ img.el-banner-img {
           border-radius: 1vw;
           overflow: hidden;
           // box-shadow: rgba(0, 0, 0, 0.05) 0px 0.5px 1px 0px;
-          box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 3px 0px,
-            rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+          box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 3px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
           .v-cover {
             width: 100%;
             padding-bottom: 68%;

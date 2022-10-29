@@ -5,7 +5,7 @@
       :class="{ 'opacity-0': !isShow }"
       v-if="isShow && !noTemplate && !loadingError"
     >
-      <normal-header :selfStyle="{ background: '#181818', color: '#eee' }" inTop>
+      <normal-header :selfStyle="{ background: '#181818', color: '#eee' }">
         <img :src="$store.state._user.header" slot="user-img" />
       </normal-header>
       <div class="chapter-content">
@@ -23,7 +23,7 @@ import { getItem } from "network/getWebData";
 import NormalHeader from "components/NormalHeader";
 import NoTemplatePage from "./page/NoTemplatePage";
 import LoadingErrorPage from "./page/LoadingErrorPage";
-import bangumiTemplate from "./chapterTemplate/bangumiTemplate";
+import bangumiTemplate from "./template/bangumi/chapter.vue";
 export default {
   name: "Chapter",
   components: {

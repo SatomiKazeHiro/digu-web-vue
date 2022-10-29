@@ -252,7 +252,7 @@ export default {
         .play-list {
           flex: 1;
           width: 0;
-          padding-left: 5px;
+          // padding-left: 5px;
           .play-list-box {
             width: 100%;
             height: 100%;

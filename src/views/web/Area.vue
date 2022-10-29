@@ -6,9 +6,7 @@
         hideHeaderNav: $store.state._browserStatus.areaMobileScrollIsDrop,
       }"
     >
-      <normal-header :selfStyle="{ background: '#000', color: '#eee' }" inTop>
-        <img :src="$store.state._user.header" slot="user-img" />
-      </normal-header>
+      <normal-header :selfStyle="{ background: '#000', color: '#eee' }" />
       <div class="carousel-wrap" v-cloak>
         <el-carousel :interval="4000" type="card" :height="getAppWidth()">
           <el-carousel-item v-for="i in carouselList" :key="'cl' + i.id">

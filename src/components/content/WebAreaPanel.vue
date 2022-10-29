@@ -2,24 +2,23 @@
   <div class="area-panel">
     <div class="area-name">
       <div class="title">
-        <span>{{ title }}</span>
+        <span>{{ areaData.title }}</span>
       </div>
       <div class="btns">
-        <a :href="'/' + area" class="more">查看更多</a>
+        <a :href="`/${areaData.area}`" class="more">查看更多</a>
       </div>
     </div>
     <div class="panel-content">
-      <div
-        class="item-unity opacity-0"
-        v-for="i in areaItemList"
-        :key="i.title"
-        :ref="i.id"
-      >
+      <div class="item-unity opacity-0" v-for="i in areaData.list" :key="i.title" :ref="i.id">
         <div class="item-type">
           <span>{{ i.type }}</span>
         </div>
         <a :href="i.link_url">
-          <img :src="`/proxy${i.source_url}${i.cover}`" @load="showImg(i.id)" />
+          <img
+            :src="compressImg(`${areaData.area}${i.id}`, `/proxy${i.source_url}${i.cover}`)"
+            :ref="`${areaData.area}${i.id}`"
+            @load="showImg(i.id,i)"
+          />
         </a>
         <span class="item-title" :title="i.title">{{ i.title }}</span>
         <span class="item-status">{{ i.status }}</span>
@@ -29,33 +28,18 @@
 </template>
 
 <script>
+import compress from "utils/compress.js";
 export default {
   name: "IndexAreaPanel",
   props: {
-    area: {
-      type: String,
-      default() {
-        return "";
-      },
+    areaData: {
+      type: Object,
+      default: () => ({}),
     },
-    title: {
-      type: String,
-      default() {
-        return "";
-      },
-    },
-    areaItemList: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
-  },
-  mounted() {
-    console.log(this.areaItemList);
   },
   methods: {
-    showImg(id) {
+    showImg(id,i) {
+      console.log(i);
       // 当图片的高大于宽的时候，使用竖版图片模板
       if (this.$refs[id].length && this.$refs[id][0].children[1].firstChild) {
         // 如果高度大于宽度的，则使用竖直样式
@@ -64,6 +48,11 @@ export default {
         // 资源项目渐变出现
         this.$refs[id][0].classList.remove("opacity-0");
       }
+    },
+    compressImg(ref, url) {
+      compress(url).then((base64) => {
+        this.$refs[ref][0].src = base64;
+      });
     },
   },
 };
@@ -115,14 +104,11 @@ export default {
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: flex-start;
-    -ms-flex-pack: justify;
-    -ms-flex-line-pack: justify;
     overflow: hidden;
     .item-unity {
       position: relative;
       width: 191.66px;
       border-radius: 4px;
-      overflow: hidden;
       margin-right: 20px;
       margin-bottom: 10px;
       opacity: 1;
@@ -137,7 +123,7 @@ export default {
           width: 100%;
           height: auto;
           object-fit: cover;
-          border-radius: 5px;
+          border-radius: 8px;
           overflow: hidden;
           box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
           transition: opacity 0.3s linear;
@@ -147,8 +133,8 @@ export default {
         }
       }
       span.item-title {
-        font-size: 14px;
-        margin: 5px 0;
+        font-size: 15px;
+        margin: 8px 0;
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;

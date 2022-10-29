@@ -1,22 +1,23 @@
 <template>
   <div id="media" v-cloak>
-    <div class="media-wrap" :class="{ 'opacity-0': !isShow }" v-if="isShow && !noTemplate && !loadingError">
-      <!-- <normal-header :style="getNavStyle()"> -->
-      <normal-header type="transparent" inTop>
+    <div
+      class="media-wrap"
+      :class="{ 'opacity-0': !isShow }"
+      v-if="isShow && !noTemplate && !loadingError"
+    >
+      <NormalHeader type="transparent" class="media-header">
         <img :src="$store.state._user.header" slot="user-img" />
-      </normal-header>
+      </NormalHeader>
       <div class="media-content">
-        <bangumi-template
-          v-if="mediaInfo.template === 'bangumi'"
-          :coverPath="coverPath"
-          :coverBgImgStyle="coverBgImgStyle"
-          :mediaInfo="mediaInfo"
-        ></bangumi-template>
-        <video-template v-if="mediaInfo.template === 'video'"></video-template>
+        <!-- 可以配置的媒体详情的 -->
+        <BangumiMedia v-if="mediaInfo.template === 'bangumi'" :mediaInfo="mediaInfo" />
+        <MangaMedia v-else-if="mediaInfo.template === 'manga'" :mediaInfo="mediaInfo" />
+        <!-- 没有媒体详情页面的 -->
+        <VideoPlay v-else-if="mediaInfo.template === 'video'" :mediaInfo="mediaInfo" />
       </div>
     </div>
-    <no-template-page v-if="isShow && noTemplate"></no-template-page>
-    <loading-error-page v-if="isShow && loadingError"></loading-error-page>
+    <NoTemplatePage v-if="isShow && noTemplate" />
+    <LoadingErrorPage v-if="isShow && loadingError" />
   </div>
 </template>
 
@@ -26,16 +27,18 @@ import { getItem } from "network/getWebData";
 import NormalHeader from "components/NormalHeader";
 import NoTemplatePage from "./page/NoTemplatePage";
 import LoadingErrorPage from "./page/LoadingErrorPage";
-import bangumiTemplate from "./mediaTemplate/bangumiTemplate";
-import videoTemplate from "./playTemplate/videoTemplate.vue";
+import BangumiMedia from "./template/bangumi/media";
+import MangaMedia from "./template/manga/media";
+import VideoPlay from "./template/video/play";
 export default {
   name: "Media",
   components: {
     NormalHeader,
     NoTemplatePage,
     LoadingErrorPage,
-    bangumiTemplate,
-    videoTemplate,
+    BangumiMedia,
+    MangaMedia,
+    VideoPlay,
   },
   data() {
     return {
@@ -45,11 +48,6 @@ export default {
       noTemplate: false,
       // 数据加载标志
       loadingError: false,
-
-      // 封面路径
-      coverPath: "",
-      // 封面作为背景的样式
-      coverBgImgStyle: "",
       // 资源项目的信息
       mediaInfo: {},
     };
@@ -63,13 +61,21 @@ export default {
           console.log(res);
           if (res && res.code === 200 && res.data === true) {
             // 获取资源项目的详细数据
-            getItem(this.$route.params.area, this.$route.params.category, this.$route.params.item).then(
+            getItem(
+              this.$route.params.area,
+              this.$route.params.category,
+              this.$route.params.item
+            ).then(
               (res) => {
                 console.log(res);
                 if (res.code && res.code === 200) {
-                  this.coverPath = "/proxy" + res.data.sources_url + res.data.cover;
-                  this.coverBgImgStyle = 'background-image: url("' + this.coverPath + '");';
-                  this.mediaInfo = res.data;
+                  let coverPath = `/proxy${res.data.sources_url}${res.data.cover}`;
+                  let coverBgImgStyle = `background-image: url("${coverPath}");`;
+                  this.mediaInfo = {
+                    ...res.data,
+                    coverPath,
+                    coverBgImgStyle,
+                  };
                   this.isShow = true;
                 } else if (res.code && res.code === 400 && res.data.type === "no-Template") {
                   // 显示没有设置模板
@@ -118,6 +124,7 @@ export default {
   width: 100%;
   overflow-y: auto;
   background: #f4f5f7;
+  position: relative;
   .media-wrap {
     height: 100%;
     display: flex;

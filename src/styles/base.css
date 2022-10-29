@@ -15,26 +15,30 @@ a {
   -moz-user-focus: none;
   -moz-user-select: none;
 }
+
 a,
 a:hover,
 a:active,
 a:visited,
 a:link,
 a:focus {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
   -webkit-tap-highlight-color: transparent;
   outline: none;
   background: none;
   text-decoration: none;
 }
+
 ::selection {
   background: #fff;
   color: #333;
 }
+
 ::-moz-selection {
   background: #fff;
   color: #333;
 }
+
 ::-webkit-selection {
   background: #fff;
   color: #333;
@@ -114,44 +118,36 @@ li {
   transition: all 0.25 ease;
 }
 
-// 选中颜色
 ::selection {
   background: #00a1d6;
-  color: white; /* Safari */
-}
-::-moz-selection {
-  background: #00a1d6;
-  color: white; /* Firefox */
+  color: white;
+  /* Safari */
 }
 
-// -------------------------------新的通用样式-----------------------------
-button.base {
+::-moz-selection {
+  background: #00a1d6;
+  color: white;
+  /* Firefox */
+}
+
+button.base, button.normal, button.transparent {
   outline: none;
   cursor: pointer;
 }
 
-button.normal {
-  @extend button.base;
-}
-
 button.transparent {
-  @extend button.base;
   border: none;
   background: transparent;
 }
 
-// 遮罩之上的元素使用
 .z-100 {
   z-index: 100 !important;
 }
 
-// 遮罩使用
 .z-50 {
   z-index: 50 !important;
 }
 
-// -------------------------------定制化样式-----------------------------
-// mui-player
 .m-player .mplayer-footer {
-  background: linear-gradient(180deg, hsla(0, 0%, 100%, 0), rgba(0, 0, 0, 0.9)) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.9)) !important;
 }

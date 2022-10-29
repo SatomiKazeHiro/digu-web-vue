@@ -1,18 +1,14 @@
 <template>
   <div id="web">
-    <main-header>
-      <img :src="$store.state._user.header" slot="user-img" />
-    </main-header>
+    <MainHeader />
     <div class="index-content-wrap">
-      <random-recommend :RRItem="itemRandomArr"></random-recommend>
+      <WebRandomRecommend :RRItem="randomItems" />
       <div class="inner">
-        <index-area-panel
+        <WebAreaPanel
           v-for="i in areaList"
           :key="i.area"
-          :title="i.title"
-          :areaItemList="i.list"
-          :area="i.area"
-        ></index-area-panel>
+          :areaData="i"
+        />
       </div>
     </div>
     <router-view />
@@ -20,35 +16,31 @@
 </template>
 
 <script>
-import {
-  getItemRandom,
-  getAreaAllName,
-  getAreaRandom,
-} from "network/getWebData";
+import { getItemRandom, getAreaAllName, getAreaRandom } from "network/getWebData";
 import MainHeader from "components/MainHeader";
-import RandomRecommend from "components/RandomRecommend";
-import IndexAreaPanel from "components/content/IndexAreaPanel";
+import WebRandomRecommend from "components/WebRandomRecommend";
+import WebAreaPanel from "components/content/WebAreaPanel";
 export default {
   name: "Web",
   components: {
     MainHeader,
-    RandomRecommend,
-    IndexAreaPanel,
+    WebRandomRecommend,
+    WebAreaPanel,
   },
   data() {
     return {
-      itemRandomLimit: 8,
-      itemRandomArr: [],
       areaList: [],
-      areaRandomLimit: 12,
+      itemRandomLimit: 8,
+      randomItems: [],
+      areaItemRandomLimit: 12,
     };
   },
   mounted() {
     // 获取所有资源项目中的随机8个
     getItemRandom(this.itemRandomLimit).then((res) => {
       if (res.code === 200) {
-        this.itemRandomArr = res.data;
-        this.itemRandomArr.forEach((i) => {
+        this.randomItems = res.data;
+        this.randomItems.forEach((i) => {
           i.cover = `/proxy${i.source_url}${i.cover}`;
         });
       }
@@ -60,17 +52,15 @@ export default {
         for (let i = 0; i < res.data.length; i++) {
           const areaObj = res.data[i];
           // 每个栏目获取随机12个
-          await getAreaRandom(areaObj.area, this.areaRandomLimit).then(
-            (res) => {
-              if (res.code === 200) {
-                this.areaList.push({
-                  title: areaObj.web_name || areaObj.area,
-                  area: areaObj.area,
-                  list: res.data,
-                });
-              }
+          await getAreaRandom(areaObj.area, this.areaItemRandomLimit).then((res) => {
+            if (res.code === 200) {
+              this.areaList.push({
+                title: areaObj.web_name || areaObj.area,
+                area: areaObj.area,
+                list: res.data,
+              });
             }
-          );
+          });
         }
       }
     });
@@ -111,7 +101,7 @@ export default {
     .index-content-wrap {
       width: 100%;
       // nav + tag 高度
-      height: calc(100vh - 48px);
+      height: calc(100vh - 80px);
       overflow: hidden;
       overflow-y: auto;
       .inner {

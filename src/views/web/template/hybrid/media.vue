@@ -1,5 +1,7 @@
 <template>
-  <div class="hybrid-template"></div>
+  <div class="hybrid-template">
+
+  </div>
 </template>
 
 <script>
