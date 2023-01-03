@@ -9,23 +9,16 @@
               <el-breadcrumb-item @click.native="handleBreadcrumbOpen('/')"
                 >主站</el-breadcrumb-item
               >
+              <el-breadcrumb-item @click.native="handleBreadcrumbOpen(`/${path.area}`)">{{
+                path.area_web_name || path.area
+              }}</el-breadcrumb-item>
               <el-breadcrumb-item
-                @click.native="handleBreadcrumbOpen(`/${path.area}`)"
-                >{{ path.area_web_name || path.area }}</el-breadcrumb-item
+                @click.native="handleBreadcrumbOpen(`/${path.area}/${path.category}`)"
+                >{{ path.category_web_name || path.category }}</el-breadcrumb-item
               >
               <el-breadcrumb-item
                 @click.native="
-                  handleBreadcrumbOpen(`/${path.area}/${path.category}`)
-                "
-                >{{
-                  path.category_web_name || path.category
-                }}</el-breadcrumb-item
-              >
-              <el-breadcrumb-item
-                @click.native="
-                  handleBreadcrumbOpen(
-                    `/${path.area}/${path.category}/${$route.params.item}`
-                  )
+                  handleBreadcrumbOpen(`/${path.area}/${path.category}/${$route.params.item}`)
                 "
                 >{{ mediaInfo.title }}</el-breadcrumb-item
               >
@@ -65,10 +58,7 @@
       <div class="tab"></div>
       <div class="tab-inner">
         <div class="media-content">
-          <item-play-list
-            :mediaInfo="mediaInfo"
-            v-if="isScreenWidthLessThanX()"
-          ></item-play-list>
+          <item-play-list :mediaInfo="mediaInfo" v-if="isScreenWidthLessThanX()"></item-play-list>
           <item-media-info
             :mediaInfo="mediaInfo"
             :border="isScreenWidthLessThanX()"
@@ -86,7 +76,7 @@ import MuiPlayer from "mui-player";
 import MuiPlayerDesktopPlugin from "mui-player-desktop-plugin";
 
 import { getACPath } from "@/network/getWebData";
-import handleBangumi from "@/utils/handleBangumi";
+import { VIDEO_FORMAT } from "@/config";
 
 import ItemPlayList from "components/content/ItemPlayList";
 import ItemRandom from "components/content/ItemRandom";
@@ -100,9 +90,7 @@ export default {
   props: {
     mediaInfo: {
       type: Object,
-      default() {
-        return {};
-      },
+      default: () => ({}),
     },
   },
   data() {
@@ -118,19 +106,23 @@ export default {
     };
   },
   created() {
-    // 处理获取视频列表
-    this.playList = handleBangumi(this.mediaInfo);
+    this.playList = this.mediaInfo.files_detail
+      .filter((f) => VIDEO_FORMAT.includes(f.ext))
+      .map((i, index) => ({
+        label: i.name,
+        source_url: `${this.mediaInfo.sources_url}${i.target}`,
+        link_url: `${this.mediaInfo.link_url}/s/${index + 1}`,
+      }));
 
     // 如果没有播放内容则跳转至404
-    if (!this.playList[this.$route.params.chapter - 1])
-      this.$router.push("/404");
+    if (!this.playList[this.$route.params.chapter - 1]) this.$router.push("/404");
     else {
       this.currentPlay = this.playList[this.$route.params.chapter - 1];
-      console.log(this.currentPlay);
+      console.log(9999, this.currentPlay);
 
       // 获取导航路径
       getACPath(this.mediaInfo.area, this.mediaInfo.category).then((res) => {
-        console.log("获取导航路径：" + res);
+        console.log("获取导航路径：", res);
         if (res.code && res.code === 200) this.path = res.data;
       });
     }
@@ -167,8 +159,7 @@ export default {
 
     // 判断是否是当前播放的集
     isCurrentPlaying(link_url) {
-      if (this.currentPlay && this.currentPlay.link_url === link_url)
-        return true;
+      if (this.currentPlay && this.currentPlay.link_url === link_url) return true;
       else return false;
     },
 
@@ -195,9 +186,7 @@ export default {
       // window.location.reload()
 
       if (this.player) {
-        let newPlayMedia = this.playList.filter(
-          (i) => i.link_url === newVal
-        )[0];
+        let newPlayMedia = this.playList.filter((i) => i.link_url === newVal)[0];
         // 路径正确则换源
         if (!newPlayMedia) this.$router.push("/404");
         else {

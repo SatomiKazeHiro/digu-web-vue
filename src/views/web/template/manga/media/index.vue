@@ -1,5 +1,5 @@
 <template>
-  <div class="manga-template" :class="{ padTop }">
+  <div class="manga-template" :style="getStyle($attrs.mediaInfo.type)">
     <components :is="getComponent($attrs.mediaInfo.type)" v-bind="$attrs" />
   </div>
 </template>
@@ -14,15 +14,21 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    padTop: {
-      type: Boolean,
-      default: true,
-    },
+    padTop: { type: String, default: "" },
   },
   methods: {
     getComponent(type) {
       if (type === "normal") return "Separate";
       else if (type === "serial") return "Serialize";
+    },
+    getStyle(type) {
+      let style = { paddingTop: this.padTop };
+      if (type === "serial") return { ...style };
+      else if (type === "normal")
+        return {
+          ...style,
+          backgroundColor: "#16151D",
+        };
     },
   },
 };
@@ -30,8 +36,6 @@ export default {
 
 <style lang="scss" scoped>
 .manga-template {
-  &.padTop {
-    padding-top: 56px;
-  }
+  padding-bottom: 48px;
 }
 </style>

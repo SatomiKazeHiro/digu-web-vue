@@ -18,8 +18,6 @@ const Web = () => import("views/Web.vue");
 const Area = () => import("views/web/Area.vue");
 const Category = () => import("views/web/Category.vue");
 const Media = () => import("views/web/Media.vue");
-const Play = () => import("views/web/Play.vue");
-const Chapter = () => import("views/web/Chapter.vue");
 
 const Space = () => import("views/Space.vue");
 const User = () => import("views/space/User.vue");
@@ -92,7 +90,6 @@ const routes = [
     path: "/:area",
     name: "Area",
     component: Area,
-    // redirect: "/:area/all",
     children: [
       {
         path: ":category",
@@ -103,15 +100,27 @@ const routes = [
   },
   {
     path: "/:area/:category/:item",
+    name: "media",
+    meta: {
+      type: "media",
+    },
     component: Media,
   },
   {
     path: "/:area/:category/:item/play",
-    component: Play,
+    name: "play",
+    meta: {
+      type: "play",
+    },
+    component: Media,
   },
   {
     path: "/:area/:category/:item/s/:chapter",
-    component: Chapter,
+    name: "chapter",
+    meta: {
+      type: "chapter",
+    },
+    component: Media,
   },
   {
     path: "*",

@@ -6,22 +6,9 @@
         hideHeaderNav: $store.state._browserStatus.areaMobileScrollIsDrop,
       }"
     >
-      <normal-header :selfStyle="{ background: '#000', color: '#eee' }" />
-      <div class="carousel-wrap" v-cloak>
-        <el-carousel :interval="4000" type="card" :height="getAppWidth()">
-          <el-carousel-item v-for="i in carouselList" :key="'cl' + i.id">
-            <div class="item-cover">
-              <a :href="i.link_url">
-                <img
-                  :ref="'area_cl' + i.id"
-                  class="opacity-0"
-                  :src="`/proxy${i.source_url}${i.cover}`"
-                  @load="showImg(i.id)"
-                />
-              </a>
-            </div>
-          </el-carousel-item>
-        </el-carousel>
+      <NormalHeader :selfStyle="{ background: '#000', color: '#eee' }" />
+      <div class="carousel-wrap">
+        <AreaBanner :carouselList="carouselList" />
       </div>
       <div class="categories-nav" id="categories-nav">
         <div class="nav-content">
@@ -32,13 +19,13 @@
               :key="i.category"
               :label="i.web_name || i.category"
               :name="i.category"
-            ></el-tab-pane>
+            />
           </el-tabs>
         </div>
       </div>
     </div>
     <div class="category-wrap">
-      <Category ref="category" @scrollToTop="scrollToTop"></Category>
+      <Category ref="category" @scrollToTop="scrollToTop" />
     </div>
     <div class="footer-wrap"></div>
   </div>
@@ -47,11 +34,13 @@
 <script>
 import { getCategoryAllName, getAreaRandom } from "network/getWebData";
 import NormalHeader from "components/NormalHeader";
+import AreaBanner from "components/content/AreaBanner";
 import Category from "./Category";
 export default {
   name: "Area",
   components: {
     NormalHeader,
+    AreaBanner,
     Category,
   },
   data() {
@@ -89,18 +78,6 @@ export default {
       this.$router.push(url);
     },
 
-    // 在封面加载完后渐变显示
-    showImg(id) {
-      this.$refs["area_cl" + id][0].classList.toggle("opacity-0");
-    },
-
-    // 获取应用窗口宽度
-    getAppWidth() {
-      if (this.$store.state._browserStatus.appWidth > 1300) return "480px";
-      else if (this.$store.state._browserStatus.appWidth > 960) return "380px";
-      else return "";
-    },
-
     // 跳转到顶部
     scrollToTop() {
       document.getElementById("area").scrollTop =
@@ -118,43 +95,6 @@ export default {
   overflow-y: auto;
   .m-header {
     background: #fff;
-    .carousel-wrap {
-      padding-top: 8px;
-      background: #000;
-      // el 走马灯样式
-      .el-carousel.el-carousel--horizontal.el-carousel--card {
-        max-width: 1920px;
-        margin: 0 auto;
-        .el-carousel__item.el-carousel__item--card {
-          border-radius: 4px;
-          overflow: hidden;
-          .item-cover {
-            width: 100%;
-            height: 100%;
-            a {
-              width: 100%;
-              height: 100%;
-              img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-              }
-            }
-          }
-        }
-      }
-      // 底色
-      .el-carousel__item:nth-child(2n) {
-        background-color: #99a9bf;
-      }
-      .el-carousel__item:nth-child(2n + 1) {
-        background-color: #d3dce6;
-      }
-      // 遮罩
-      ::v-deep .el-carousel__mask {
-        background: rgb(0, 0, 0) !important;
-      }
-    }
     .categories-nav {
       height: 56px;
       background: #fff;
@@ -242,28 +182,6 @@ export default {
       // padding-bottom: 40px;
       transition: transform 0.25s;
       z-index: 4;
-    }
-  }
-}
-// element-ui走马灯样式
-::v-deep li.el-carousel__indicator {
-  &.is-active button.el-carousel__button {
-    background-color: #00a1d6;
-  }
-  button.el-carousel__button {
-    height: 10px;
-    width: 10px;
-    opacity: 1;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    background-color: #fff;
-    vertical-align: middle;
-    cursor: pointer;
-    transition: all 0.2s;
-    &:hover {
-      border: 2px solid #fff;
-      background-color: #00a1d6;
-      transform: scale(1.3);
     }
   }
 }

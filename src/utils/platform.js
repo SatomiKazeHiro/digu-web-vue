@@ -39,7 +39,6 @@ let getPlatform = (ua) => {
       if (ua.indexOf(p) > -1) platform = p;
     });
   }
-  console.log(platform, platformType);
   return { platform, platformType };
 };
 

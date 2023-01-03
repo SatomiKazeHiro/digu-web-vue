@@ -89,9 +89,6 @@ export default {
       currentTagID: 1,
     };
   },
-  mounted() {
-    console.log("mediaInfo", this.mediaInfo);
-  },
   methods: {
     // 渐变显示图片
     showImg(ref) {

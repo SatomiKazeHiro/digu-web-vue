@@ -64,3 +64,11 @@ export function getACPath(area, category) {
   })
 }
 
+// 获取资源项目所属的网页名（web_name）路径
+export function getFolderFiles(path) {
+  return request({
+    url: "/api/get/getFolderFiles",
+    method: "POST",
+    data: { path }
+  })
+}

@@ -1,10 +1,6 @@
 <template>
-  <div class="nav__base-header" ref="base-nav" v-show="show">
-    <div
-      class="nav__content"
-      :class="[type, fixed ? 'fixed' : '']"
-      :style="{ ...selfStyle }"
-    >
+  <div class="nav__base-header" ref="base-nav" v-show="show" :class="[fixed ? 'fixed' : '']">
+    <div class="nav__content" :class="[type]" :style="{ ...selfStyle }">
       <div class="nav-web-box">
         <slot name="web-logo"></slot>
         <slot name="web-item"></slot>
@@ -55,6 +51,10 @@ export default {
     height: 56px;
     // position: relative;
     z-index: 5;
+    &.fixed {
+      position: fixed;
+      top: 0;
+    }
     .nav__content {
       width: 100%;
       padding: 10px 24px;
@@ -74,9 +74,6 @@ export default {
       &.transparent {
         color: #fff;
         background: transparent;
-      }
-      &.fixed {
-        position: fixed;
       }
       .nav-web-box {
         height: 36px;

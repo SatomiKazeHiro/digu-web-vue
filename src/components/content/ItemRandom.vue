@@ -1,25 +1,28 @@
 <template>
-  <div class="__item-random">
-    <div class="media-tab-module-wrap">
-      <div class="media-tab-module-title">更多推荐</div>
-      <div class="media-tab-module-more">更多</div>
+  <div ref="__item-random" class="__item-random">
+    <div class="media-tab-module-wrap" :class="{ line: showLine }">
+      <div class="top-wrp">
+        <div class="media-tab-module-title" :style="titleStyle">{{ title || "更多推荐" }}</div>
+        <div class="media-tab-module-more" @click="moreClick">更多</div>
+      </div>
       <div class="media-tab-module-content" :class="{ hd: isHd() }">
         <div class="none-content" v-if="recommendItems.length === 0">
           <span v-if="recommendLoadErr">加载失败</span>
         </div>
         <div
-          class="slide-item"
+          class="slide-item opacity-0"
           v-else
           v-for="i in recommendItems"
           :key="i.id"
+          :ref="i.id"
           @click="itemTransfer(i)"
         >
           <div class="img-box">
             <div class="img-inner">
-              <img :src="i.cover" />
+              <img :data-src="i.cover" class="pre-cover" @load="showImg(i.id)" />
             </div>
           </div>
-          <p>{{ i.title }}</p>
+          <p :title="i.title">{{ i.title }}</p>
         </div>
       </div>
     </div>
@@ -27,36 +30,64 @@
 </template>
 
 <script>
+import compress from "utils/compress.js";
 import { getAreaRandom } from "network/getWebData";
 export default {
+  props: {
+    color: {
+      type: String,
+      default: "#333",
+    },
+    showLine: {
+      type: Boolean,
+      default: true,
+    },
+    moreLink: {
+      type: String,
+      default: "",
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    titleStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       recommendItems: [],
       recommendLoadErr: false,
     };
   },
-  mounted() {
+  created() {
     this.getRecommendItem();
+  },
+  mounted() {
+    if (this.color)
+      this.$refs["__item-random"].style.setProperty("--item-randon-main-color", this.color);
   },
   methods: {
     // 获取推荐的随机内容
     getRecommendItem() {
-      getAreaRandom(this.$route.params.area, 6, this.$route.params.item).then(
-        (res) => {
-          console.log(res);
+      getAreaRandom(this.$route.params.area, 6, this.$route.params.item)
+        .then((res) => {
           if (res.code === 200) {
-            this.recommendLoadErr = false;
-            this.recommendItems = res.data;
-            this.recommendItems.forEach((i) => {
+            res.data.forEach((i) => {
               i.cover = `/proxy${i.source_url}${i.cover}`;
             });
-          }
-        },
-        (err) => {
-          console.log(err);
+            this.recommendItems = res.data;
+            this.recommendLoadErr = false;
+          } else return Promise.reject(new Error(`code: ${res.code}, msg: ${res.msg}`));
+        })
+        .catch((err) => {
+          this.$message({ message: err, type: "error" });
           this.recommendLoadErr = true;
-        }
-      );
+        })
+        .finally(() => {
+          if (this.recommendItems.length && !this.recommendLoadErr) this.renderImg();
+        });
     },
 
     // 随机资源项目的跳转事件
@@ -72,6 +103,35 @@ export default {
           this.$store.state._browserStatus.appWidth / 135.3 >= 4.5)
       );
     },
+
+    showImg(ref) {
+      let coverDom = this.$refs[ref][0];
+      let img = coverDom.querySelector("img.pre-cover");
+      if (img) {
+        // 判断图片的高度是否小于宽度
+        if (img.naturalHeight < img.naturalWidth) img.classList.add("horizontal");
+        else img.classList.remove("horizontal");
+        // 渐变显示图片
+        coverDom.classList.remove("opacity-0");
+      }
+    },
+
+    renderImg() {
+      this.recommendItems.forEach((item) => {
+        this.compressImg(item.id, item.cover);
+      });
+    },
+
+    compressImg(ref, url) {
+      compress(url, 300, 80).then((base64) => {
+        let img = this.$refs[ref][0].querySelector("img.pre-cover");
+        img.src = base64;
+      });
+    },
+
+    moreClick() {
+      if (this.moreLink) window.open(this.moreLink);
+    },
   },
 };
 </script>
@@ -79,42 +139,54 @@ export default {
 <style lang="scss" scoped>
 .__item-random {
   width: 100%;
+  color: var(--item-randon-main-color);
+  margin-top: 8px;
+  padding-top: 8px;
   .media-tab-module-wrap {
-    vertical-align: top;
-    border-top: 1px solid #e5e9ef;
-    padding-top: 20px;
-    margin-top: 20px;
-    .media-tab-module-title {
-      display: inline-block;
-      font-size: 18px;
-      font-weight: 700;
-      color: #222;
-      height: 24px;
-      line-height: 24px;
-    }
-    .media-tab-module-more {
-      float: right;
-      line-height: 22px;
-      border: 1px solid #b7c0cc;
-      border-radius: 4px;
-      padding: 0 10px;
-      font-size: 12px;
-      color: #6e7579;
-      cursor: pointer;
+    .top-wrp {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .line {
+        border-top: 1px solid #e7e7e7;
+        padding-top: 20px;
+        margin-top: 20px;
+      }
+      .media-tab-module-title {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 700;
+        height: 24px;
+        line-height: 24px;
+      }
+      .media-tab-module-more {
+        float: right;
+        line-height: 22px;
+        border: 1px solid #e7e7e7;
+        border-radius: 4px;
+        padding: 0 10px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        user-select: none;
+        &:hover {
+          border: 1px solid #00a1d6;
+          background-color: #00a1d6;
+          color: #fff;
+        }
+      }
     }
     .media-tab-module-content {
       display: flex;
-      gap: 20px;
-      margin-top: 20px;
+      gap: 24px;
+      margin-top: 16px;
       .slide-item {
         flex: 1;
-        padding: 5px;
         cursor: pointer;
         .img-box {
           width: 100%;
           padding-bottom: 140%;
           height: 0;
-          // overflow: hidden;
           position: relative;
           .img-inner {
             position: absolute;
@@ -122,7 +194,7 @@ export default {
             left: 0;
             width: 100%;
             height: 100%;
-            img {
+            > img {
               width: 100%;
               height: 100%;
               overflow: hidden;
@@ -130,15 +202,13 @@ export default {
               border-radius: 4px;
               box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
               &.horizontal {
-                width: 100%;
-                height: auto;
+                height: unset;
               }
             }
           }
         }
         p {
           margin: 5px 0;
-          font-weight: 700;
           word-break: break-all;
           overflow: hidden;
           text-overflow: ellipsis;

@@ -1,20 +1,20 @@
 <template>
-  <div id="normal-header" :class="{ inTop: inTop }">
-    <base-header v-bind="$attrs">
-      <div slot="web-item" class="web-item" v-for="i in webItems" :key="'header-' + i.label">
+  <div id="normal-header" :class="{ inTop, fixed }">
+    <BaseHeader v-bind="$attrs">
+      <div slot="web-item" class="web-item" v-for="i in webItems" :key="i.label">
         <a :href="i.url">{{ i.label }}</a>
       </div>
-      <nav-search slot="search-item"></nav-search>
+      <NavSearch slot="search-item" />
       <div class="user-head" slot="user-head">
         <img :src="$store.state._user.header" slot="user-img" />
       </div>
-      <div slot="user-item" class="user-item" v-for="i in userItems" :key="'header-' + i.label">
+      <div slot="user-item" class="user-item" v-for="i in userItems" :key="i.label">
         <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
         </button>
       </div>
-    </base-header>
+    </BaseHeader>
   </div>
 </template>
 
@@ -29,10 +29,8 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    inTop: {
-      type: Boolean,
-      default: false,
-    },
+    inTop: { type: Boolean, default: false },
+    fixed: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -63,6 +61,23 @@ export default {
   transition: opacity 0.25s linear;
   &.inTop {
     position: absolute;
+  }
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    pointer-events: none;
+    > * {
+      pointer-events: all;
+    }
+    &::-webkit-scrollbar {
+      // 滚动条背景透明
+      background: transparent;
+    }
   }
 }
 </style>

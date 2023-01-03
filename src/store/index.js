@@ -7,7 +7,7 @@ Vue.use(Vuex);
 // 配置模块
 const moduleConfig = {
   state: {
-    mobileWidth: 7,
+    mobileWidth: 724,
     padWidth: 1024,
     pcWidth: 1280,
   },

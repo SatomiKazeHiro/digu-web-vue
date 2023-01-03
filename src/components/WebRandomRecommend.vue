@@ -3,12 +3,7 @@
     <div class="rr-left fl">
       <el-carousel height="242px">
         <el-carousel-item v-for="item in RRItem" :key="item.id">
-          <img
-            :src="compressImg(`rrl${item.id}`, item.cover)"
-            :ref="`rrl${item.id}`"
-            class="el-banner-img"
-            @load="showImg(`rrl${item.id}`)"
-          />
+          <img :ref="`rrl${item.id}`" class="el-banner-img" @load="showImg(`rrl${item.id}`)" />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -16,12 +11,7 @@
       <div class="video-card-reco" v-for="item in RRItem" :key="item.id">
         <div class="info-box">
           <a href="#" target="_blank">
-            <img
-              class="opacity-0"
-              :src="compressImg(`rrr${item.id}`, item.cover)"
-              :ref="`rrr${item.id}`"
-              @load="showImg(`rrr${item.id}`)"
-            />
+            <img class="opacity-0" :ref="`rrr${item.id}`" @load="showImg(`rrr${item.id}`)" />
             <div class="info">
               <p class="info-title" :title="item.title">{{ item.title }}</p>
               <p class="info-content" v-if="item.intro" :title="item.intro"></p>
@@ -38,7 +28,6 @@
             <div class="v-cover">
               <img
                 class="opacity-0"
-                :src="compressImg(`mobile${item.id}`, item.cover)"
                 :ref="`mobile${item.id}`"
                 @load="showImg(`mobile${item.id}`)"
               />
@@ -60,23 +49,27 @@ export default {
   props: {
     RRItem: {
       type: Array,
-      default() {
-        return [];
-      },
+      default: () => [],
     },
   },
   mounted() {
+    this.renderImg();
     // 判断是否是横屏的
     if (this.$store.state._browserStatus.appWidth >= this.$store.state._browserStatus.appHeight)
       document.querySelector(".video-list").classList.add("hd");
   },
   methods: {
+    renderImg() {
+      this.RRItem.forEach((i) => {
+        this.compressImg([`rrl${i.id}`, `rrr${i.id}`, `mobile${i.id}`], i.cover);
+      });
+    },
     showImg(ref) {
       this.$refs[ref][0].classList.remove("opacity-0");
     },
-    compressImg(ref, url) {
+    compressImg(refs, url) {
       compress(url).then((base64) => {
-        this.$refs[ref][0].src = base64;
+        refs.forEach((ref) => (this.$refs[ref][0].src = base64));
       });
     },
   },
@@ -338,6 +331,11 @@ img.el-banner-img {
       background-color: #00a1d6;
       transform: scale(1.3);
     }
+  }
+}
+::v-deep div.el-carousel__container {
+  button.el-carousel__arrow {
+    background-color: rgba(0, 0, 0, 0.42);
   }
 }
 </style>

@@ -1,19 +1,18 @@
 <template>
   <div id="category" ref="category" v-cloak>
     <div class="items-wrap" ref="item-wrap">
-      <div
-        class="item-cell opacity-0"
-        v-for="i in data"
-        :key="i.id"
-        :ref="i.id"
-      >
+      <div class="item-cell opacity-0" v-for="i in data" :key="i.id" :ref="i.id">
         <a :href="i.link_url">
-          <img :src="getImgUrl(i)" @load="showImg(i.id)" />
-          <span class="title">{{ i.title }}</span>
+          <img
+            :ref="`${area}${i.id}`"
+            :data-src="`/proxy${i.sources_url}/${i.cover}`"
+            @load="showImg(i.id)"
+          />
+          <span class="title" :title="i.title">{{ i.title }}</span>
         </a>
       </div>
     </div>
-    <div class="pagination-wrap">
+    <div class="pagination-wrap" v-if="data.length">
       <el-pagination
         background
         layout="prev, pager, next, jumper"
@@ -32,6 +31,7 @@
 <script>
 import { getAreaNormal, getCategoryNormal } from "network/getWebData";
 import { checkArea, checkCategory } from "network/checkResource";
+import compress from "utils/compress.js";
 export default {
   name: "Category",
   data() {
@@ -51,27 +51,19 @@ export default {
     // 初始化页面滚动值
     this.$store.commit("setAreaScrollIsDrop", false);
     // 监听页面滚动
-    this.$refs.category.addEventListener(
-      "scroll",
-      this.handleCategoriesNavShow,
-      true
-    );
+    this.$refs.category.addEventListener("scroll", this.handleCategoriesNavShow, true);
     // 判断是否是横屏的
     if (
       this.$store.state._browserStatus.appWidth &&
       this.$store.state._browserStatus.appHeight &&
       this.$store.state._browserStatus.appWidth <= 1024 &&
-      this.$store.state._browserStatus.appWidth >=
-        this.$store.state._browserStatus.appHeight
+      this.$store.state._browserStatus.appWidth >= this.$store.state._browserStatus.appHeight
     )
       this.$refs["category"].classList.add("hd");
   },
   beforeDestroy() {
     // 撤销页面滚动的监听
-    this.$refs.category.removeEventListener(
-      "scroll",
-      this.handleCategoriesNavShow
-    );
+    this.$refs.category.removeEventListener("scroll", this.handleCategoriesNavShow);
   },
   watch: {
     // 监听当前路由
@@ -84,14 +76,9 @@ export default {
     },
     // 监听屏幕选择，当的平板类型的横屏的时候
     "$store.state._browserStatus.appWidth"(newValue, oldValue) {
-      if (
-        newValue &&
-        newValue <= 1024 &&
-        newValue >= this.$store.state._browserStatus.appHeight
-      )
+      if (newValue && newValue <= 1024 && newValue >= this.$store.state._browserStatus.appHeight)
         this.$refs.category.classList.add("hd");
-      else if (newValue && newValue <= 1024)
-        this.$refs.category.classList.remove("hd");
+      else if (newValue && newValue <= 1024) this.$refs.category.classList.remove("hd");
     },
   },
   methods: {
@@ -101,33 +88,30 @@ export default {
         console.log("checkArea", res);
         if (res.data) {
           if (!this.category) {
-            getAreaNormal(this.area, this.limit, this.currentPage).then(
-              (res) => {
-                console.log("getAreaNormal", res);
-                if (res.code === 200) {
-                  this.itemTotal = res.data.total;
-                  this.currentPage = res.data.page;
-                  this.data = res.data.resArr;
-                }
+            getAreaNormal(this.area, this.limit, this.currentPage).then((res) => {
+              console.log("getAreaNormal", res);
+              if (res.code === 200) {
+                this.itemTotal = res.data.total;
+                this.currentPage = res.data.page;
+                this.data = res.data.resArr;
+                this.renderImg();
               }
-            );
+            });
           } else {
             checkCategory(this.area, this.category).then((res) => {
               console.log("checkCategory", res);
               if (res.data) {
-                getCategoryNormal(
-                  this.area,
-                  this.category,
-                  this.limit,
-                  this.currentPage
-                ).then((res) => {
-                  console.log("getCategoryNormal", res);
-                  if (res.code === 200) {
-                    this.itemTotal = res.data.total;
-                    this.currentPage = res.data.page;
-                    this.data = res.data.resArr;
+                getCategoryNormal(this.area, this.category, this.limit, this.currentPage).then(
+                  (res) => {
+                    console.log("getCategoryNormal", res);
+                    if (res.code === 200) {
+                      this.itemTotal = res.data.total;
+                      this.currentPage = res.data.page;
+                      this.data = res.data.resArr;
+                      this.renderImg();
+                    }
                   }
-                });
+                );
               } else this.$router.push("/404");
             });
           }
@@ -135,20 +119,13 @@ export default {
       });
     },
 
-    // 生成 img 标签的连接
-    getImgUrl(i) {
-      if (i) return `/proxy${i.sources_url}/${i.cover}`;
-      else return "";
-    },
-
     // 渐变加载拓扑，防拉伸
-    showImg(id) {
-      let coverDom = this.$refs[id][0];
+    showImg(ref) {
+      let coverDom = this.$refs[ref][0];
       if (coverDom) {
         // 判断图片的高度是否小于宽度
         if (
-          coverDom.firstChild.firstChild.naturalHeight <
-          coverDom.firstChild.firstChild.naturalWidth
+          coverDom.firstChild.firstChild.naturalHeight < coverDom.firstChild.firstChild.naturalWidth
         )
           coverDom.firstChild.firstChild.classList.add("horizontal");
         else coverDom.firstChild.firstChild.classList.remove("horizontal");
@@ -175,18 +152,14 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       if (this.category)
-        getCategoryNormal(
-          this.area,
-          this.category,
-          this.limit,
-          this.currentPage
-        ).then((res) => {
+        getCategoryNormal(this.area, this.category, this.limit, this.currentPage).then((res) => {
           console.log("getCategoryNormal", res);
           if (res.code === 200) {
             this.$emit("scrollToTop");
             this.itemTotal = res.data.total;
             this.currentPage = res.data.page;
             this.data = res.data.resArr;
+            this.renderImg();
           }
         });
       else
@@ -198,8 +171,21 @@ export default {
             this.itemTotal = res.data.total;
             this.currentPage = res.data.page;
             this.data = res.data.resArr;
+            this.renderImg();
           }
         });
+    },
+
+    renderImg() {
+      this.data.forEach((i) => {
+        this.compressImg(`${this.area}${i.id}`, `/proxy${i.sources_url}/${i.cover}`);
+      });
+    },
+
+    compressImg(ref, url) {
+      compress(url, 300, 80).then((base64) => {
+        this.$refs[ref][0].src = base64;
+      });
     },
   },
 };
@@ -207,7 +193,7 @@ export default {
 
 <style lang="scss" scoped>
 #category {
-  padding-top: 15px;
+  padding: 32px 0;
   overflow-x: hidden;
   overflow-y: auto;
   .items-wrap {

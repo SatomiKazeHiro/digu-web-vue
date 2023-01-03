@@ -7,31 +7,28 @@
           <li class="sl-ep-nav-item">第13话-第24话</li>
         </ul>
       </div> -->
-      <div class="sl-ep-list" v-if="playList.length>0">
+      <div class="sl-ep-list" v-if="playList.length > 0">
         <ul>
-          <li class="misl-ep-item" v-for="i in playList" :key="i.value">
+          <li class="misl-ep-item" v-for="i in playList" :key="i.name">
             <div class="misl-ep-index" @click="handleChapterPlay(i.link_url)">
               <span :title="i.label">{{ i.label }}</span>
             </div>
           </li>
         </ul>
       </div>
-      <div class="no-item" v-else>
-        无资源
-      </div>
+      <div class="no-item" v-else>无资源</div>
     </div>
   </div>
 </template>
 
 <script>
-import handleBangumi from "@/utils/handleBangumi";
+import { VIDEO_FORMAT } from "@/config";
+
 export default {
   props: {
     mediaInfo: {
       type: Object,
-      default() {
-        return {};
-      },
+      default: () => ({}),
     },
   },
   data() {
@@ -39,9 +36,14 @@ export default {
       playList: [],
     };
   },
-  created(){
-    // 处理显示可观看的内容
-    this.playList = handleBangumi(this.mediaInfo);
+  created() {
+    this.playList = this.mediaInfo.files_detail
+      .filter((f) => VIDEO_FORMAT.includes(f.ext))
+      .map((i, index) => ({
+        label: i.name,
+        source_url: `${this.mediaInfo.sources_url}${i.target}`,
+        link_url: `${this.mediaInfo.link_url}/s/${index + 1}`,
+      }));
   },
   methods: {
     // 番剧资源播放跳转
@@ -103,8 +105,8 @@ export default {
     .sl-ep-list {
       clear: both;
       ul {
-        padding-top: 10px;
-        margin: 10px 0px 0 0;
+        padding-top: 8px;
+        margin-top: 10px;
         height: auto;
         overflow: hidden;
         display: flex;
@@ -142,9 +144,10 @@ export default {
         }
       }
     }
-    .no-item{
-      height: 60px;
-      line-height: 60px;
+    .no-item {
+      height: 220px;
+      line-height: 220px;
+      font-size: 16px;
       color: #969696;
       text-align: center;
     }

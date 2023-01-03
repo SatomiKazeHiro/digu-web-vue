@@ -1,14 +1,10 @@
 <template>
   <div id="web">
-    <MainHeader />
+    <MainHeader id="main-header" />
     <div class="index-content-wrap">
-      <WebRandomRecommend :RRItem="randomItems" />
+      <WebRandomRecommend v-if="randomItems.length" :RRItem="randomItems" />
       <div class="inner">
-        <WebAreaPanel
-          v-for="i in areaList"
-          :key="i.area"
-          :areaData="i"
-        />
+        <WebAreaPanel v-for="i in areaList" :key="i.area" :areaData="i" />
       </div>
     </div>
     <router-view />
@@ -81,10 +77,6 @@ export default {
   }
 }
 
-// PC x>1920px
-@media only screen and (min-width: 1921px) {
-}
-
 // PC x<=1280px（预留多20给滚动条占位置）
 @media only screen and (max-width: 1300px) {
   #web {
@@ -98,8 +90,15 @@ export default {
 @media only screen and (max-width: 1044px) {
   #web {
     padding-bottom: 0;
+    #main-header {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
     .index-content-wrap {
       width: 100%;
+      margin-top: 80px;
       // nav + tag 高度
       height: calc(100vh - 80px);
       overflow: hidden;

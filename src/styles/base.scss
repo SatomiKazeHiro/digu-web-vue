@@ -150,6 +150,28 @@ button.transparent {
   z-index: 50 !important;
 }
 
+// 文本省略
+.max-line-1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 图片样式
+img.img-vertical {
+  max-height: 100% !important;
+}
+
+img.img-horizontal {
+  max-width: 100% !important;
+  height: unset !important;
+}
+
+// 禁止点击样式
+.disabled {
+  cursor: not-allowed !important;
+}
+
 // -------------------------------定制化样式-----------------------------
 // mui-player
 .m-player .mplayer-footer {

@@ -333,7 +333,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
 }
 
 // PC x>1920px
-@media only screen and (min-width: 1921px) {
+@media only screen and (min-width: 1920px) {
   #manage {
     .manage-wrap {
       width: 1920px;

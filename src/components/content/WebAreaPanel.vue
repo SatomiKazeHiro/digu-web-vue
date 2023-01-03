@@ -14,11 +14,7 @@
           <span>{{ i.type }}</span>
         </div>
         <a :href="i.link_url">
-          <img
-            :src="compressImg(`${areaData.area}${i.id}`, `/proxy${i.source_url}${i.cover}`)"
-            :ref="`${areaData.area}${i.id}`"
-            @load="showImg(i.id,i)"
-          />
+          <img :ref="`${areaData.area}${i.id}`" @load="showImg(i.id)" />
         </a>
         <span class="item-title" :title="i.title">{{ i.title }}</span>
         <span class="item-status">{{ i.status }}</span>
@@ -37,9 +33,16 @@ export default {
       default: () => ({}),
     },
   },
+  mounted() {
+    this.renderImg();
+  },
   methods: {
-    showImg(id,i) {
-      console.log(i);
+    renderImg() {
+      this.areaData.list.forEach((i) => {
+        this.compressImg(`${this.areaData.area}${i.id}`, `/proxy${i.source_url}${i.cover}`);
+      });
+    },
+    showImg(id) {
       // 当图片的高大于宽的时候，使用竖版图片模板
       if (this.$refs[id].length && this.$refs[id][0].children[1].firstChild) {
         // 如果高度大于宽度的，则使用竖直样式

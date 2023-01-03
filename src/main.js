@@ -12,9 +12,15 @@ Vue.prototype.$ = $;
 // 在Vue中使用SvgIcon组件，引入icon
 import "./icons";
 
+// 自定义指令
+import "./utils/loadImg.js";
+
 // 按需加载element ui组件
 import "./plugins/element.js";
 import "element-ui/lib/theme-chalk/index.css";
+
+import linkTo from "./utils/link";
+Vue.prototype.$linkTo = linkTo;
 
 // 使用事件总线
 Vue.prototype.$EventBus = new Vue();
