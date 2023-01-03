@@ -1,9 +1,14 @@
 <template>
   <div id="manga-play" v-if="type">
     <div class="manga-container">
-      <div class="view-wrap">
-        <div v-for="i in list" :key="i" class="view-cell">
-          <img v-lazy-img="i" />
+      <div class="view-wrap" :class="{ single: viewType === 'single' }">
+        <div
+          v-for="(i, index) in list"
+          :key="i"
+          class="view-cell"
+          :class="{ active: index + 1 == count }"
+        >
+          <img v-lazy-img="i" v-show="viewType === 'strip' || index + 1 == count" />
         </div>
         <div class="action-box">
           <div class="action" @click="viewClick('pre')"></div>
@@ -45,9 +50,9 @@
                   :class="{ disabled: isFirst }"
                   >上一话</span
                 >
-                <span @click="picClick('pre')">上一页</span>
+                <span v-if="viewType === 'single'" @click="picClick('pre')">上一页</span>
                 <span @click="autopPlay">幻灯片</span>
-                <span @click="picClick('next')">下一页</span>
+                <span v-if="viewType === 'single'" @click="picClick('next')">下一页</span>
                 <span
                   v-if="type !== 'separate'"
                   @click="viewClick('next')"
@@ -77,8 +82,8 @@ export default {
     return {
       isHover: false,
       timer: null,
-      count: 0,
-      viewType: "", // strip条漫
+      count: 1,
+      viewType: "strip", // single 单页 strip 条漫
       list: [],
       type: null,
       mode: null,
@@ -95,6 +100,10 @@ export default {
     },
   },
   created() {
+    if (this.$route.query.p) {
+      this.count = this.$route.query.p;
+      this.viewType = "single";
+    }
     const chapter = Number(this.$route.params.chapter);
     this.chapter = chapter;
 
@@ -159,18 +168,19 @@ export default {
     // 上/下一页点击
     picClick(type) {
       if (type === "pre") {
-        if (this.count == 0) return;
-        else if (this.count - 1 < 0) this.count = 0;
+        if (this.count - 1 < 1) this.count = 1;
         else --this.count;
       } else if (type === "next") {
-        if (this.count == this.list.length - 1) return;
-        else if (this.count + 1 > this.list.length - 1) this.count = this.list.length - 1;
+        if (this.count + 1 > this.list.length) this.count = this.list.length;
         else ++this.count;
       }
     },
 
     // 上/下一章点击
     viewClick(type) {
+      // 非连载无上下章切换
+      if (this.mediaInfo.type !== "serial") return;
+
       let { fullPath } = this.$route;
       fullPath = fullPath.slice(0, fullPath.lastIndexOf("/"));
 
@@ -218,6 +228,19 @@ export default {
     .view-wrap {
       width: 100%;
       position: relative;
+      &.single {
+        height: 100%;
+        .view-cell {
+          height: 0;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          overflow: hidden;
+          &.active {
+            height: 100%;
+          }
+        }
+      }
       .view-cell {
         text-align: center;
         img {
@@ -300,6 +323,30 @@ export default {
                 line-height: 52px;
                 text-align: center;
                 color: #bbb;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 平板 <1024
+@media only screen and (max-width: 1044px) {
+  #manga-play {
+    .manga-container {
+      .view-wrap {
+        .operation-box {
+          overflow: hidden;
+          &::-webkit-scrollbar {
+            background: transparent;
+          }
+          .sensing-zone {
+            > .operation-nav {
+              padding: 0 4.66vw;
+              .operation-container {
+                width: 100%;
               }
             }
           }

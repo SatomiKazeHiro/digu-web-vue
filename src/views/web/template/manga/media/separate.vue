@@ -203,14 +203,6 @@ export default {
       }
     }
   }
-  .recommend-wrap {
-    .title-wrp {
-      margin: 0 0 24px;
-      font-size: 24px;
-      font-weight: 400;
-      color: #fff;
-    }
-  }
 }
 
 // 平板 宽屏 1024~1280

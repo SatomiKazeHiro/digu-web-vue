@@ -47,12 +47,7 @@
           color="rgba(0, 0, 0, 0.9)"
           :moreLink="getCurrentLogLink"
           title="推荐"
-          :titleStyle="{
-            margin: '16px 0',
-            fontSize: '24px',
-            fontWeight: '400',
-            color: 'rgba(0, 0, 0, 0.87)',
-          }"
+          :titleStyle="titleStyle()"
         />
       </div>
     </div>
@@ -79,6 +74,30 @@ export default {
     sectionClick(i) {
       this.$linkTo(this.$route.fullPath + "/s/" + i);
     },
+    titleStyle() {
+      let style = {
+        margin: "8px 0",
+        fontWeight: "400",
+        color: "rgba(0, 0, 0, 0.87)",
+      };
+      if (this.$store.state._browserStatus.appWidth > 1044) {
+        return {
+          ...style,
+          fontSize: "22px",
+        };
+      } else if (this.$store.state._browserStatus.appWidth > 788) {
+        return {
+          ...style,
+          fontSize: "20px",
+        };
+      } else {
+        return {
+          ...style,
+          margin: "8px 0",
+          fontSize: "18px",
+        };
+      }
+    },
   },
 };
 </script>
@@ -103,7 +122,7 @@ export default {
       height: 320px;
       max-height: 320px;
       overflow: hidden;
-        border-radius: 4px;
+      border-radius: 4px;
       > img {
         width: 100%;
         height: 100%;
@@ -169,10 +188,10 @@ export default {
       .section-title {
         display: flex;
         align-items: center;
-        font-size: 24px;
+        font-size: 22px;
         color: rgba(0, 0, 0, 0.87);
-        height: 30px;
-        line-height: 30px;
+        height: 26px;
+        line-height: 26px;
       }
       .section-list {
         margin-top: 16px;
@@ -210,6 +229,9 @@ export default {
           }
         }
       }
+    }
+    .recommend-cell {
+      margin-top: 32px;
     }
   }
 }
@@ -261,6 +283,11 @@ export default {
     .main-wrap {
       padding: 2.33vw 1.165vw;
       .section-cell {
+        .section-title {
+          font-size: 20px;
+          height: 24px;
+          line-height: 24px;
+        }
         .section-list {
           gap: unset;
           .list-item {
@@ -271,6 +298,9 @@ export default {
             margin-bottom: 2.33vw;
           }
         }
+      }
+      .recommend-cell {
+        margin-top: 2.33vw;
       }
     }
   }
@@ -302,6 +332,11 @@ export default {
     }
     .main-wrap {
       .section-cell {
+        .section-title {
+          font-size: 18px;
+          height: 22px;
+          line-height: 22px;
+        }
         .section-list {
           .list-item {
             flex: 0 0 50%;
