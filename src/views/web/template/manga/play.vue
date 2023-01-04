@@ -1,19 +1,19 @@
 <template>
   <div id="manga-play" v-if="type">
     <div class="manga-container">
-      <div class="view-wrap" :class="{ single: viewType === 'single' }">
+      <div class="view-wrap" :class="{ single: mode === 'single' }">
         <div
           v-for="(i, index) in list"
           :key="i"
           class="view-cell"
-          :class="{ active: index + 1 == count }"
+          :class="{ active: index + 1 == current }"
         >
-          <img v-lazy-img="i" v-show="viewType === 'strip' || index + 1 == count" />
+          <img v-lazy-img="i" v-show="mode === 'strip' || index + 1 == current" />
         </div>
         <div class="action-box">
-          <div class="action" @click="viewClick('pre')"></div>
-          <div class="action" @click="activeClick"></div>
-          <div class="action" @click="viewClick('next')"></div>
+          <div class="action left" @click="handleActionClick('pre')"></div>
+          <div class="action center" @click="handleActiveClick"></div>
+          <div class="action right" @click="handleActionClick('next')"></div>
         </div>
         <div class="operation-box">
           <div
@@ -24,7 +24,10 @@
           >
             <div class="operation-nav" :class="{ active: isHover }">
               <div class="operation-container">
-                <span @click="$linkTo('/')">首页</span>
+                <span class="home" @click="$linkTo('/')">首页</span>
+                <span class="return" @click="$linkTo(mediaInfo.link_url, true)">
+                  <svg-icon icon-class="left-arrow"></svg-icon>
+                </span>
                 <div class="manga-path max-line-1">
                   <span style="cursor: pointer; color: #fff">{{ mediaInfo.title }}</span>
                   <span v-if="chapterName" style="padding: 0 4px; color: #bbb">></span>
@@ -50,9 +53,9 @@
                   :class="{ disabled: isFirst }"
                   >上一话</span
                 >
-                <span v-if="viewType === 'single'" @click="picClick('pre')">上一页</span>
+                <span v-if="mode === 'single'" @click="picClick('pre')">上一页</span>
                 <span @click="autopPlay">幻灯片</span>
-                <span v-if="viewType === 'single'" @click="picClick('next')">下一页</span>
+                <span v-if="mode === 'single'" @click="picClick('next')">下一页</span>
                 <span
                   v-if="type !== 'separate'"
                   @click="viewClick('next')"
@@ -82,11 +85,10 @@ export default {
     return {
       isHover: false,
       timer: null,
-      count: 1,
-      viewType: "strip", // single 单页 strip 条漫
+      current: 1,
+      mode: null, // single-单页 strip-条漫
       list: [],
-      type: null,
-      mode: null,
+      type: null, // 媒体是否连载
       chapter: null,
       chapterName: null,
     };
@@ -100,10 +102,13 @@ export default {
     },
   },
   created() {
+    // 有指定页数则模式为单页
     if (this.$route.query.p) {
-      this.count = this.$route.query.p;
-      this.viewType = "single";
-    }
+      this.current = this.$route.query.p;
+      this.mode = "single";
+    } else this.mode = "strip";
+
+    // 存在章节则类型为连载
     const chapter = Number(this.$route.params.chapter);
     this.chapter = chapter;
 
@@ -111,6 +116,7 @@ export default {
       this.type = "separate";
       this.setList(this.mediaInfo.files_detail, this.mediaInfo.sources_url);
     } else {
+      this.type = "serialize";
       this.switchChapter(chapter);
     }
   },
@@ -121,7 +127,6 @@ export default {
         .then((res) => {
           if (res.code && res.code === 200) {
             this.setList(res.data.details, `${path}/`);
-            this.type = "serialize";
           } else if (res.code && res.code === 400) {
             this.$router.push({ name: "error" });
           }
@@ -143,12 +148,10 @@ export default {
 
     // 工具栏感应
     onMouseover() {
-      console.log("over");
       this.isHover = true;
       if (this.timer) clearTimeout(this.timer);
     },
     omMouseleave() {
-      console.log("leave");
       if (this.timer) clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.isHover = false;
@@ -156,7 +159,7 @@ export default {
     },
 
     // 激活工具栏
-    activeClick() {
+    handleActiveClick() {
       // over + leave
       this.isHover = !this.isHover;
       if (this.timer) clearTimeout(this.timer);
@@ -165,14 +168,21 @@ export default {
       }, 3000);
     },
 
+    // 视图内容点击
+    handleActionClick(type) {
+      console.log(this.mode, type);
+      if (this.mode === "single") this.picClick(type);
+      else if (this.mode === "strip") this.viewClick(type);
+    },
+
     // 上/下一页点击
     picClick(type) {
       if (type === "pre") {
-        if (this.count - 1 < 1) this.count = 1;
-        else --this.count;
+        if (this.current - 1 < 1) this.current = 1;
+        else --this.current;
       } else if (type === "next") {
-        if (this.count + 1 > this.list.length) this.count = this.list.length;
-        else ++this.count;
+        if (this.current + 1 > this.list.length) this.current = this.list.length;
+        else ++this.current;
       }
     },
 
@@ -206,6 +216,11 @@ export default {
       }
     },
 
+    // 点击返回
+    handleReturn() {
+      this.$linkTo(this.mediaInfo.link_url, true);
+    },
+
     // 自动播放
     autopPlay() {},
   },
@@ -234,11 +249,14 @@ export default {
           height: 0;
           display: flex;
           align-items: center;
-          text-align: center;
+          justify-content: center;
           overflow: hidden;
           &.active {
             height: 100%;
           }
+        }
+        .operation-box {
+          overflow: hidden;
         }
       }
       .view-cell {
@@ -261,6 +279,12 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
+          &.left {
+            cursor: url("~assets/img/web/manga/manga-left.png"), default;
+          }
+          &.right {
+            cursor: url("~assets/img/web/manga/manga-right.png"), default;
+          }
         }
       }
       .operation-box {
@@ -313,6 +337,12 @@ export default {
               > span {
                 color: #fff;
                 cursor: pointer;
+                &.return {
+                  display: none;
+                  font-size: 36px;
+                  font-weight: bold;
+                  transform: translateX(-12px);
+                }
               }
               .manga-path {
                 width: 50%;
@@ -337,16 +367,26 @@ export default {
   #manga-play {
     .manga-container {
       .view-wrap {
+        .action-box {
+          .action.center {
+            flex: 2;
+          }
+        }
         .operation-box {
           overflow: hidden;
-          &::-webkit-scrollbar {
-            background: transparent;
-          }
           .sensing-zone {
             > .operation-nav {
               padding: 0 4.66vw;
               .operation-container {
                 width: 100%;
+                > span {
+                  &.home {
+                    display: none;
+                  }
+                  &.return {
+                    display: block;
+                  }
+                }
               }
             }
           }
