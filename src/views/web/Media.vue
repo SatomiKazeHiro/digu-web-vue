@@ -14,7 +14,11 @@
         <div v-if="routerType === 'media'">
           <!-- 可以配置的媒体详情的 -->
           <BangumiMedia v-if="mediaInfo.template === 'bangumi'" :mediaInfo="mediaInfo" />
-          <MangaMedia v-else-if="mediaInfo.template === 'manga'" :mediaInfo="mediaInfo" padTop="20px" />
+          <MangaMedia
+            v-else-if="mediaInfo.template === 'manga'"
+            :mediaInfo="mediaInfo"
+            padTop="20px"
+          />
           <!-- 没有媒体详情页面的 -->
           <VideoPlay v-else-if="mediaInfo.template === 'video'" :mediaInfo="mediaInfo" />
           <link-to-404 v-else />
@@ -28,11 +32,11 @@
         </div>
         <div v-else-if="routerType === 'chapter'">
           <BangumiChapter
-            v-if="mediaInfo.template === 'bangumi' && mediaInfo.type === 'serial'"
+            v-if="mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'"
             :mediaInfo="mediaInfo"
           />
           <MangaPlay
-            v-if="mediaInfo.template === 'manga' && mediaInfo.type === 'serial'"
+            v-else-if="mediaInfo.template === 'manga' && mediaInfo.type === 'serial'"
             :mediaInfo="mediaInfo"
           />
           <link-to-404 v-else />
@@ -130,14 +134,20 @@ export default {
               })
               .catch((err) => (this.loadingError = true))
               .finally(() => (this.isShow = true));
-          } else this.$router.push("/404");
+          } else {
+            console.log("请求错误：", res);
+            this.$router.push("/404");
+          }
         })
         .catch((err) => {
           // 数据获取失败
           this.isShow = true;
           this.loadingError = true;
         });
-    } else this.$router.push("/404");
+    } else {
+      console.log("area, category, item 数据缺失：", area, category, item);
+      this.$router.push("/404");
+    }
   },
   methods: {
     getHeaderType() {
