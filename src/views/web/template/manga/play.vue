@@ -12,7 +12,7 @@
         </div>
         <div class="action-box">
           <div class="action left" @click="handleActionClick('pre')"></div>
-          <div class="action center" @click="handleActiveClick"></div>
+          <div class="action center" @click="handleActiveClick()"></div>
           <div class="action right" @click="handleActionClick('next')"></div>
         </div>
         <div class="operation-box">
@@ -28,14 +28,19 @@
                 <span class="return" @click="$linkTo(mediaInfo.link_url, true)">
                   <svg-icon icon-class="left-arrow"></svg-icon>
                 </span>
-                <div class="manga-path max-line-1">
-                  <span style="cursor: pointer; color: #fff">{{ mediaInfo.title }}</span>
-                  <span v-if="chapterName" style="padding: 0 4px; color: #bbb">></span>
-                  <span v-if="chapterName" style="color: #bbb" :title="chapterName">
+                <div class="manga-path max-line-1" :class="{ hasChapter: chapter }">
+                  <span class="work" style="cursor: pointer; color: #fff">
+                    {{ mediaInfo.title }}
+                  </span>
+                  <span class="sep" v-if="chapterName" style="padding: 0 4px; color: #bbb">></span>
+                  <span class="chapter" v-if="chapterName" style="color: #bbb" :title="chapterName">
                     {{ chapterName }}
                   </span>
                 </div>
-                <span>历史记录</span>
+                <span class="history">历史记录</span>
+                <span class="setting" @click="openSetting()">
+                  <svg-icon icon-class="manga-setting"></svg-icon>
+                </span>
               </div>
             </div>
           </div>
@@ -54,7 +59,9 @@
                   >上一话</span
                 >
                 <span v-if="mode === 'single'" @click="picClick('pre')">上一页</span>
-                <span @click="autopPlay">幻灯片</span>
+                <span v-if="mode === 'single'" @click="autoPlay()" :class="{ active: isAutoPlay }">
+                  幻灯片
+                </span>
                 <span v-if="mode === 'single'" @click="picClick('next')">下一页</span>
                 <span
                   v-if="type !== 'separate'"
@@ -62,6 +69,54 @@
                   :class="{ disabled: isLast }"
                   >下一话</span
                 >
+              </div>
+            </div>
+          </div>
+          <div ref="setting" :class="{ active: isOpenSetting }" class="setting-zone">
+            <div class="setting-mask" @click="isOpenSetting = false"></div>
+            <div class="setting-panel">
+              <h3 class="title">设置</h3>
+              <div class="setting-content">
+                <div class="item">
+                  <div class="row">
+                    <div class="label">阅读模式</div>
+                    <div class="content">
+                      <div
+                        class="select-box"
+                        :class="{ active: mode === 'single' }"
+                        @click="mode = 'single'"
+                      >
+                        <span class="icon"><svg-icon icon-class="manga-single"></svg-icon></span>
+                        <span>单页</span>
+                      </div>
+                      <div
+                        class="select-box"
+                        :class="{ active: mode === 'strip' }"
+                        @click="mode = 'strip'"
+                      >
+                        <span class="icon"><svg-icon icon-class="manga-strip"></svg-icon></span>
+                        <span>条漫</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="row">
+                    <div class="label">自动播放间隔</div>
+                    <div class="content">
+                      <input
+                        class="slider"
+                        v-model:value="autoPlayIntervalTime"
+                        type="range"
+                        min="1"
+                        max="9"
+                        style="width: 25vw; max-width: 88px"
+                        :style="{ backgroundSize: (autoPlayIntervalTime / 9) * 100 + '% 100%' }"
+                      />
+                      <span class="desc">{{ autoPlayIntervalTime }}秒</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -91,6 +146,10 @@ export default {
       type: null, // 媒体是否连载
       chapter: null,
       chapterName: null,
+      autoPlayIntervalTime: 3,
+      autoPlayTimer: false,
+      isAutoPlay: false,
+      isOpenSetting: false,
     };
   },
   computed: {
@@ -170,7 +229,6 @@ export default {
 
     // 视图内容点击
     handleActionClick(type) {
-      console.log(this.mode, type);
       if (this.mode === "single") this.picClick(type);
       else if (this.mode === "strip") this.viewClick(type);
     },
@@ -222,10 +280,50 @@ export default {
     },
 
     // 自动播放
-    autopPlay() {},
+    autoPlay() {
+      if (this.isAutoPlay) {
+        // 原开启则关闭
+        this.isAutoPlay = false;
+        if (this.autoPlayTimer) clearInterval(this.autoPlayTimer);
+      } else {
+        // 原关闭则开启
+        this.isAutoPlay = true;
+        // 定时器重置
+        if (this.autoPlayTimer) clearInterval(this.autoPlayTimer);
+        this.autoPlayTimer = setInterval(() => {
+          if (this.current + 1 > this.list.length) {
+            // 下一章
+            if (this.chapter < this.mediaInfo.files_detail.length) {
+              ++this.chapter;
+              this.current = null;
+              this.$nextTick(() => {
+                this.switchChapter(this.chapter);
+                this.current = 1;
+              });
+            } else {
+              // 终章
+              clearTimeout(this.autoPlayTimer);
+              this.isAutoPlay = false;
+            }
+          } else {
+            // 下一页
+            this.picClick("next");
+          }
+        }, (this.autoPlayIntervalTime || 3) * 1000);
+      }
+    },
+
+    // 打开设置弹窗
+    openSetting() {
+      // 收缩感应区
+      if (this.timer) clearTimeout(this.timer);
+      this.isHover = false;
+      this.isOpenSetting = true;
+    },
   },
   beforeDestroy() {
     if (this.timer) clearTimeout(this.timer);
+    if (this.autoPlayTimer) clearInterval(this.autoPlayTimer);
   },
 };
 </script>
@@ -337,11 +435,24 @@ export default {
               > span {
                 color: #fff;
                 cursor: pointer;
+                transition: all 0.25s linear;
                 &.return {
                   display: none;
-                  font-size: 36px;
+                  font-size: 32px;
                   font-weight: bold;
-                  transform: translateX(-12px);
+                  transform: translateX(-8px);
+                }
+                &.setting {
+                  display: none;
+                  font-size: 32px;
+                  font-weight: bold;
+                  transform: translateX(8px);
+                }
+                &.active {
+                  background-color: #4fa0e7;
+                  padding: 4px 12px;
+                  border-radius: 8px;
+                  font-size: 14px;
                 }
               }
               .manga-path {
@@ -353,6 +464,111 @@ export default {
                 line-height: 52px;
                 text-align: center;
                 color: #bbb;
+              }
+            }
+          }
+        }
+        .setting-zone {
+          z-index: 5;
+          height: 100%;
+          pointer-events: none;
+          &.active {
+            pointer-events: all;
+            .setting-mask {
+              opacity: 1;
+            }
+            .setting-panel {
+              transform: translateY(0);
+            }
+          }
+          .setting-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            background-color: rgba(0, 0, 0, 0.18);
+            transition: opacity 0.25s linear;
+          }
+          .setting-panel {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #1b1d2c;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            padding: 20px 20px 56px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 3px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transform: translateY(100%);
+            transition: transform 0.25s linear;
+            .title {
+              color: #d5d7e6;
+            }
+            .setting-content {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              gap: 16px;
+              .item {
+                width: 100%;
+                border-radius: 12px;
+                background-color: #1f2639;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                .row {
+                  min-height: 48px;
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  padding: 16px;
+                  color: #9ea3b7;
+                  .content {
+                    flex: 1;
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 16px;
+                    .select-box {
+                      color: #9ea3b7;
+                      padding: 8px 16px;
+                      border: 1px solid #b4bdc3;
+                      border-radius: 8px;
+                      font-size: 14px;
+                      display: flex;
+                      align-items: center;
+                      .icon {
+                        font-size: 16px;
+                        margin-right: 4px;
+                      }
+                      &.active {
+                        color: #4fa0e7;
+                        border: 1px solid #4fa0e7;
+                      }
+                    }
+                    input[type="range"].slider {
+                      margin-top: 10px; /*上部分的填充值*/
+                      outline: none;
+                      -webkit-appearance: none; /*清除系统默认样式*/
+                      background: -webkit-linear-gradient(#4fa0e7, #4fa0e7) no-repeat, #9ea3b7; /*背景颜色，俩个颜色分别对应上下，自己尝试下就知道了嗯*/
+                      background-size: 33% 100%; /*设置左右宽度比例*/
+                      height: 2px; /*横条的高度，细的真的比较好看嗯*/
+                    }
+                    /*拖动块的样式*/
+                    input[type="range"].slider::-webkit-slider-thumb {
+                      -webkit-appearance: none; /*清除系统默认样式*/
+                      height: 12px; /*拖动块高度*/
+                      width: 12px; /*拖动块宽度*/
+                      background: #e9ebea; /*拖动块背景*/
+                      border-radius: 50%; /*外观设置为圆形*/
+                      border: solid 1px #ddd; /*设置边框*/
+                    }
+                  }
+                }
               }
             }
           }
@@ -376,15 +592,34 @@ export default {
           overflow: hidden;
           .sensing-zone {
             > .operation-nav {
-              padding: 0 4.66vw;
+              padding: 0 5.2vw;
               .operation-container {
                 width: 100%;
                 > span {
-                  &.home {
+                  &.home,
+                  &.history {
                     display: none;
                   }
-                  &.return {
+                  &.return,
+                  &.setting {
                     display: block;
+                  }
+                }
+                .manga-path {
+                  position: static;
+                  width: 0;
+                  flex: 1;
+                  text-align: left;
+                  transform: translateX(0);
+                  padding-right: 20%;
+                  &.hasChapter {
+                    .work,
+                    .sep {
+                      display: none;
+                    }
+                    .chapter {
+                      color: #fff !important;
+                    }
                   }
                 }
               }
