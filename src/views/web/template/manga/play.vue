@@ -8,7 +8,11 @@
           class="view-cell"
           :class="{ active: index + 1 == current }"
         >
-          <img v-lazy-img="i" v-show="mode === 'strip' || index + 1 == current" />
+          <img
+            v-lazy-img="i"
+            v-show="mode === 'strip' || index + 1 == current"
+            :class="{ strip: mode === 'strip' }"
+          />
         </div>
         <div class="action-box">
           <div class="action left" @click="handleActionClick('pre')"></div>
@@ -84,7 +88,7 @@
                       <div
                         class="select-box"
                         :class="{ active: mode === 'single' }"
-                        @click="mode = 'single'"
+                        @click="setMode('single')"
                       >
                         <span class="icon"><svg-icon icon-class="manga-single"></svg-icon></span>
                         <span>单页</span>
@@ -92,7 +96,7 @@
                       <div
                         class="select-box"
                         :class="{ active: mode === 'strip' }"
-                        @click="mode = 'strip'"
+                        @click="setMode('strip')"
                       >
                         <span class="icon"><svg-icon icon-class="manga-strip"></svg-icon></span>
                         <span>条漫</span>
@@ -186,6 +190,7 @@ export default {
         .then((res) => {
           if (res.code && res.code === 200) {
             this.setList(res.data.details, `${path}/`);
+            this.current = 1;
           } else if (res.code && res.code === 400) {
             this.$router.push({ name: "error" });
           }
@@ -270,6 +275,7 @@ export default {
       this.chapterName = chapterObj.name;
       if (!chapterObj || !chapterObj.path) this.$router.push({ name: "error" });
       else {
+        this.current = null;
         this.fetchFolderFiles(chapterObj.path);
       }
     },
@@ -277,6 +283,13 @@ export default {
     // 点击返回
     handleReturn() {
       this.$linkTo(this.mediaInfo.link_url, true);
+    },
+
+    // 设置阅读模式
+    setMode(type) {
+      // 自动播放的情况下不允许修改
+      if (this.isAutoPlay) return; // 后续加个提示
+      this.mode = type;
     },
 
     // 自动播放
@@ -294,12 +307,7 @@ export default {
           if (this.current + 1 > this.list.length) {
             // 下一章
             if (this.chapter < this.mediaInfo.files_detail.length) {
-              ++this.chapter;
-              this.current = null;
-              this.$nextTick(() => {
-                this.switchChapter(this.chapter);
-                this.current = 1;
-              });
+              this.switchChapter(++this.chapter);
             } else {
               // 终章
               clearTimeout(this.autoPlayTimer);
@@ -363,6 +371,9 @@ export default {
           max-width: 100%;
           user-select: none;
           -webkit-user-drag: none;
+          &.strip {
+            min-height: 100vh;
+          }
         }
       }
       .action-box {
@@ -541,6 +552,7 @@ export default {
                       font-size: 14px;
                       display: flex;
                       align-items: center;
+                      cursor: pointer;
                       .icon {
                         font-size: 16px;
                         margin-right: 4px;
@@ -566,6 +578,7 @@ export default {
                       background: #e9ebea; /*拖动块背景*/
                       border-radius: 50%; /*外观设置为圆形*/
                       border: solid 1px #ddd; /*设置边框*/
+                      cursor: pointer;
                     }
                   }
                 }

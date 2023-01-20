@@ -13,7 +13,7 @@ Vue.prototype.$ = $;
 import "./icons";
 
 // 自定义指令
-import "./utils/loadImg.js";
+import "./utils/v-lazy-img";
 
 // 按需加载element ui组件
 import "./plugins/element.js";

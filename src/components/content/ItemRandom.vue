@@ -213,6 +213,9 @@ export default {
 @media only screen and (max-width: 1044px) {
   .__item-random {
     .media-tab-module-wrap {
+      .top-wrp {
+        padding: 0 1.1666vw;
+      }
       .media-tab-module-title {
         font-size: 14px;
         height: 20px;
@@ -230,6 +233,7 @@ export default {
         &.hd {
           flex-wrap: nowrap;
           gap: 2.33vw;
+          padding: 0 1.1666vw;
           .slide-item {
             flex: 1;
             padding: 0;
