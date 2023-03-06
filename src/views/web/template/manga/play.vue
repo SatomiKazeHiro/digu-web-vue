@@ -110,7 +110,7 @@
                     <div class="content">
                       <input
                         class="slider"
-                        v-model:value="autoPlayIntervalTime"
+                        v-model:="autoPlayIntervalTime"
                         type="range"
                         min="1"
                         max="9"
@@ -566,9 +566,9 @@ export default {
                       margin-top: 10px; /*上部分的填充值*/
                       outline: none;
                       -webkit-appearance: none; /*清除系统默认样式*/
-                      background: -webkit-linear-gradient(#4fa0e7, #4fa0e7) no-repeat, #9ea3b7; /*背景颜色，俩个颜色分别对应上下，自己尝试下就知道了嗯*/
+                      background: -webkit-linear-gradient(#4fa0e7, #4fa0e7) no-repeat, #9ea3b7; /*背景颜色，俩个颜色分别对应上下*/
                       background-size: 33% 100%; /*设置左右宽度比例*/
-                      height: 2px; /*横条的高度，细的真的比较好看嗯*/
+                      height: 2px;
                     }
                     /*拖动块的样式*/
                     input[type="range"].slider::-webkit-slider-thumb {
@@ -596,6 +596,11 @@ export default {
   #manga-play {
     .manga-container {
       .view-wrap {
+        .view-cell {
+          img.strip {
+            min-height: unset;
+          }
+        }
         .action-box {
           .action.center {
             flex: 2;
