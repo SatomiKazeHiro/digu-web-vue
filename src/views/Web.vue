@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import { getItemRandom, getAreaAllName, getAreaRandom } from "network/getWebData";
+import WebAreaPanel from "components/content/WebAreaPanel";
 import MainHeader from "components/MainHeader";
 import WebRandomRecommend from "components/WebRandomRecommend";
-import WebAreaPanel from "components/content/WebAreaPanel";
+import { getAreaAllName, getAreaRandom, getItemRandom } from "network/getWebData";
 export default {
   name: "Web",
   components: {
@@ -65,7 +65,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #web {
   height: 100%;
   overflow-y: auto;

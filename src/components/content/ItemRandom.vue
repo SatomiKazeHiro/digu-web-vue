@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .__item-random {
   width: 100%;
   color: var(--item-randon-main-color);

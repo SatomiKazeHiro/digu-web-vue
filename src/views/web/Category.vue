@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import { getAreaNormal, getCategoryNormal } from "network/getWebData";
 import { checkArea, checkCategory } from "network/checkResource";
+import { getAreaNormal, getCategoryNormal } from "network/getWebData";
 import compress from "utils/compress.js";
 export default {
   name: "Category",
@@ -191,7 +191,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #category {
   padding: 32px 0;
   overflow-x: hidden;

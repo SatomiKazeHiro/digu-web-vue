@@ -1,4 +1,4 @@
-$spaceBgColorAlpha: var(--manage-global-transparency);
+@spaceBgColorAlpha: var(--manage-global-transparency);
 
 #space {
   width: 100%;
@@ -59,7 +59,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
     .warehouse-wrap {
       width: 320px;
       min-width: 320px;
-      background: rgba(69, 69, 69, $spaceBgColorAlpha);
+      background: rgba(69, 69, 69, @spaceBgColorAlpha);
       display: flex;
       flex-direction: column;
       transition: all 0.2s linear;
@@ -136,7 +136,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             align-items: center;
             justify-content: space-between;
             padding: 0 10px;
-            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            background-color: rgba(240, 240, 240, @spaceBgColorAlpha);
             .others-box {
               display: flex;
               align-items: center;
@@ -149,7 +149,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             flex-direction: column;
             .item-preview-box {
               height: calc(var(--manage-preview-height) * 1px);
-              background: rgba(12, 12, 12, $spaceBgColorAlpha);
+              background: rgba(12, 12, 12, @spaceBgColorAlpha);
             }
             .items-table-box {
               height: calc(100vh - var(--manage-preview-height) * 1px - 48px);
@@ -158,7 +158,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
               padding: 5px;
               display: flex;
               flex-direction: column;
-              background: rgba(240, 240, 240, $spaceBgColorAlpha);
+              background: rgba(240, 240, 240, @spaceBgColorAlpha);
               .items-nav {
                 height: 40px;
                 min-height: 40px;
@@ -226,7 +226,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             position: relative;
             align-items: center;
             padding: 0 10px;
-            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            background-color: rgba(240, 240, 240, @spaceBgColorAlpha);
             position: relative;
             justify-content: flex-end;
             .return-btn {
@@ -248,7 +248,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             flex: 1;
             padding: 15px 20px;
             color: #525252;
-            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            background-color: rgba(240, 240, 240, @spaceBgColorAlpha);
             .config-item-box {
               display: flex;
               flex-wrap: wrap;
@@ -302,7 +302,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             position: relative;
             align-items: center;
             padding: 0 10px;
-            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            background-color: rgba(240, 240, 240, @spaceBgColorAlpha);
             position: relative;
             justify-content: flex-end;
             .return-btn {
@@ -324,7 +324,7 @@ $spaceBgColorAlpha: var(--manage-global-transparency);
             flex: 1;
             padding: 15px 20px;
             color: #525252;
-            background-color: rgba(240, 240, 240, $spaceBgColorAlpha);
+            background-color: rgba(240, 240, 240, @spaceBgColorAlpha);
           }
         }
       }

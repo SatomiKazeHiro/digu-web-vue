@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .side-bar-item {
   position: relative;
   border-radius: 5px;

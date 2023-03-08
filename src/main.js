@@ -16,8 +16,11 @@ import "./icons";
 import "./utils/v-lazy-img";
 
 // 按需加载element ui组件
-import "./plugins/element.js";
 import "element-ui/lib/theme-chalk/index.css";
+import "./plugins/element.js";
+
+import less from "less";
+Vue.use(less);
 
 import linkTo from "./utils/link";
 Vue.prototype.$linkTo = linkTo;

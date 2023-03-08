@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .tags-nav-wrap {
   .tags-nav {
     width: 1280px;
@@ -90,7 +90,7 @@ export default {
               padding: 4px 8px;
               transition: background-color 0.25s linear;
               &:hover {
-                background-color: #00A1D6;
+                background-color: #00a1d6;
               }
             }
           }

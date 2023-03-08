@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 div#test {
   width: 100%;
   height: 100%;
@@ -30,7 +30,7 @@ div#test {
 }
 h1 {
   color: #fff;
-  &:not(:first-child){
+  &:not(:first-child) {
     margin-top: 25px;
   }
 }

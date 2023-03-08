@@ -9,11 +9,7 @@
         :url="item.url"
         slot="nav-item"
       >
-        <svg-icon
-          :icon-class="item.icon"
-          slot="nav-icon"
-          style="font-size: 28px"
-        ></svg-icon>
+        <svg-icon :icon-class="item.icon" slot="nav-icon" style="font-size: 28px"></svg-icon>
         <span slot="nav-label">{{ item.label }}</span>
         <span slot="tooltip" class="tooltip">{{ item.label }}</span>
       </side-bar-item>
@@ -44,7 +40,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #mian-side-bar {
   height: 100%;
   z-index: 10;

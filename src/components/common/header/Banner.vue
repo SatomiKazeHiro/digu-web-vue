@@ -10,7 +10,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .digu-banner {
   height: 200px;
   > img {
@@ -23,7 +23,8 @@ export default {
 
 // 平板 宽屏 1000~1280
 @media only screen and (max-width: 1300px) {
-  .digu-banner {}
+  .digu-banner {
+  }
 }
 
 // 手机 平板 <1024

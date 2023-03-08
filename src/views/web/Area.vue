@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import { getCategoryAllName, getAreaRandom } from "network/getWebData";
-import NormalHeader from "components/NormalHeader";
 import AreaBanner from "components/content/AreaBanner";
+import NormalHeader from "components/NormalHeader";
+import { getAreaRandom, getCategoryAllName } from "network/getWebData";
 import Category from "./Category";
 export default {
   name: "Area",
@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #area {
   width: 100%;
   height: 100%;

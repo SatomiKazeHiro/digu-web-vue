@@ -34,7 +34,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .manga-template {
   padding-bottom: 48px;
 }

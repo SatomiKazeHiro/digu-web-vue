@@ -29,8 +29,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@media only screen and ($pcMaxWidth) {
+<style lang="less" scoped>
+@media only screen and (max-width: 1920px) {
   .nav_search {
     position: relative;
     .nav_searchform {
@@ -91,7 +91,7 @@ export default {
   }
 }
 // 手机 平板 <1024
-@media only screen and ($padMaxWidth) {
+@media only screen and (max-width: 1044px) {
   .nav_search {
     .nav_searchform {
       height: 28px;

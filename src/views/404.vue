@@ -13,7 +13,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .error {
   width: 100%;
   height: 100%;
@@ -39,11 +39,7 @@ export default {
       color: #fff;
       white-space: nowrap;
       font-size: 3vw;
-      background-image: -webkit-linear-gradient(
-        225deg,
-        rgb(47, 47, 48),
-        rgb(143, 58, 92)
-      );
+      background-image: -webkit-linear-gradient(225deg, rgb(47, 47, 48), rgb(143, 58, 92));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }

@@ -40,9 +40,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "@/styles/base.scss";
-@import "@/styles/color.scss";
+<style lang="less">
+@import url("@/styles/base.less");
+@import url("@/styles/color.less");
+@import url("@/styles/variables.less");
 @import url("styles/myFont.css");
 
 #app {

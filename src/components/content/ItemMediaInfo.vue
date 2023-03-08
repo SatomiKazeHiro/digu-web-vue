@@ -3,10 +3,7 @@
     <div class="__info-content">
       <div class="__cover">
         <div class="__cover-img">
-          <img
-            :src="'/proxy' + mediaInfo.sources_url + mediaInfo.cover"
-            :alt="mediaInfo.cover"
-          />
+          <img :src="'/proxy' + mediaInfo.sources_url + mediaInfo.cover" :alt="mediaInfo.cover" />
         </div>
       </div>
       <div class="__info" :class="{ hd: isHd() }">
@@ -42,7 +39,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .__item-media-info {
   width: 100%;
   padding: 5px;

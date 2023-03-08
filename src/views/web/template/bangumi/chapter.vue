@@ -71,16 +71,16 @@
 </template>
 
 <script>
-import "mui-player/dist/mui-player.min.css";
 import MuiPlayer from "mui-player";
 import MuiPlayerDesktopPlugin from "mui-player-desktop-plugin";
+import "mui-player/dist/mui-player.min.css";
 
-import { getACPath } from "@/network/getWebData";
 import { VIDEO_FORMAT } from "@/config";
+import { getACPath } from "@/network/getWebData";
 
+import ItemMediaInfo from "components/content/ItemMediaInfo";
 import ItemPlayList from "components/content/ItemPlayList";
 import ItemRandom from "components/content/ItemRandom";
-import ItemMediaInfo from "components/content/ItemMediaInfo";
 export default {
   components: {
     ItemPlayList,
@@ -209,7 +209,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .bangumi-template {
   .play-wrap {
     padding: 15px 0 30px;

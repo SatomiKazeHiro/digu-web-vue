@@ -55,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .__item-play-list {
   width: 100%;
   .media-tab-detail-content {

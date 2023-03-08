@@ -98,7 +98,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .bangumi-template {
   .media-info-wrap {
     .info-bg-wrap {

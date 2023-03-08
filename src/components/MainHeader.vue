@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import BaseHeader from "./common/header/BaseHeader";
 import Banner from "./common/header/Banner";
-import TagsNav from "./common/header/TagsNav";
+import BaseHeader from "./common/header/BaseHeader";
 import NavSearch from "./common/header/NavSearch";
+import TagsNav from "./common/header/TagsNav";
 export default {
   name: "MainHeader",
   components: {
@@ -56,8 +56,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@media only screen and ($pcMaxWidth) {
+<style lang="less" scoped>
+@media only screen and (max-width: 1920px) {
   #main-header {
     position: relative;
     .m-header {
@@ -70,7 +70,7 @@ export default {
   }
 }
 // 手机 平板 <1044
-@media only screen and ($padMaxWidth) {
+@media only screen and (max-width: 1044px) {
   #main-header {
     border-bottom: 1px solid #dfdfdf;
     padding-top: 48px;

@@ -132,7 +132,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .manage-table {
   height: 100%;
   .grid-view-wrap {

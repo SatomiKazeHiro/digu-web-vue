@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import { IMAGE_FORMAT } from "config";
 import ItemRandom from "components/content/ItemRandom";
+import { IMAGE_FORMAT } from "config";
 
 export default {
   components: { ItemRandom },
@@ -88,7 +88,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .separate-wrap {
   display: flex;
   flex-direction: column;

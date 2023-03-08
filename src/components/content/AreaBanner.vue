@@ -38,7 +38,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .carousel-contaier {
   padding-top: 8px;
   background: #000;

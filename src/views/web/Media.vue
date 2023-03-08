@@ -49,18 +49,18 @@
 </template>
 
 <script>
+import NormalHeader from "components/NormalHeader";
 import { checkItem } from "network/checkResource";
 import { getItem } from "network/getWebData";
 import { sortObjNameAsWin } from "utils/sort";
-import NormalHeader from "components/NormalHeader";
-import NoTemplatePage from "./page/NoTemplatePage";
-import LoadingErrorPage from "./page/LoadingErrorPage";
-import BangumiMedia from "./template/bangumi/media";
-import BangumiChapter from "./template/bangumi/chapter";
-import MangaMedia from "./template/manga/media";
-import VideoPlay from "./template/video/play";
-import MangaPlay from "./template/manga/play";
 import LinkTo404 from "./page/LinkTo404";
+import LoadingErrorPage from "./page/LoadingErrorPage";
+import NoTemplatePage from "./page/NoTemplatePage";
+import BangumiChapter from "./template/bangumi/chapter";
+import BangumiMedia from "./template/bangumi/media";
+import MangaMedia from "./template/manga/media";
+import MangaPlay from "./template/manga/play";
+import VideoPlay from "./template/video/play";
 export default {
   name: "Media",
   components: {
@@ -161,7 +161,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #media {
   height: 100%;
   overflow-y: auto;

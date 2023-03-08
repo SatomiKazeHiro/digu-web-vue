@@ -1,6 +1,5 @@
 const path = require("path");
 
-
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -47,11 +46,13 @@ module.exports = {
       })
       .end();
   },
-  css: {
-    loaderOptions: {
-      sass: {
-        prependData: `@import "./src/styles/variables.scss";`,
-      },
+  pluginOptions: {
+    "style-resources-loader": {
+      preProcessor: "less",
+      patterns: [
+        // 全局变量路径
+        resolve("./src/styles/variables.less"),
+      ],
     },
   },
 };

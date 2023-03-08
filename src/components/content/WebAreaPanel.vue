@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .area-panel {
   background-color: #ffffff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);

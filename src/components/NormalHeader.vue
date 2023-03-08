@@ -55,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #normal-header {
   width: 100%;
   transition: opacity 0.25s linear;

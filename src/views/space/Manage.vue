@@ -352,15 +352,15 @@
 <script>
 import SpaceManageSearch from "components/common/header/SpaceManageSearch";
 import ManageLogTree from "components/content/ManageLogTree";
-import ManageTable from "components/content/ManageTable";
 import ManagePreview from "components/content/ManagePreview";
+import ManageTable from "components/content/ManageTable";
 import { getAreaNormal, getCategoryNormal } from "network/getWebData";
 import {
-  getLogTree,
   getAreaConfig,
   getCategoryConfig,
-  settAreaConfig,
+  getLogTree,
   setCategoryConfig,
+  settAreaConfig,
 } from "network/handleConfig";
 export default {
   components: {
@@ -672,7 +672,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 // 分隔符颜色
 ::v-deep .el-breadcrumb__separator {
   color: #606266;

@@ -85,6 +85,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "@/styles/space.scss";
+<style lang="less">
+@import url("@/styles/space.less");
 </style>

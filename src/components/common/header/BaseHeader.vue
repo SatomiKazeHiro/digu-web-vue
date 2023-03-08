@@ -40,12 +40,11 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
 };
 </script>
 
-<style lang="scss" scoped>
-@media only screen and ($pcMaxWidth) {
+<style lang="less" scoped>
+@media only screen and (max-width: 1920px) {
   .nav__base-header {
     width: 100%;
     height: 56px;
@@ -130,7 +129,7 @@ export default {
 }
 
 // 手机 平板 <= 1024
-@media only screen and ($padMaxWidth) {
+@media only screen and (max-width: 1044px) {
   .nav__base-header {
     height: 48px;
     transition: top 0.2s linear;

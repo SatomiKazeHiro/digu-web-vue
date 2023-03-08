@@ -85,7 +85,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 img.el-banner-img {
   width: 100%;
   height: 100%;
