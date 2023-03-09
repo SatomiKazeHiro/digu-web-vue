@@ -22,8 +22,13 @@ import "./plugins/element.js";
 import less from "less";
 Vue.use(less);
 
+import request from "./network/request";
+Vue.prototype.$http = request;
+
 import linkTo from "./utils/link";
 Vue.prototype.$linkTo = linkTo;
+
+Vue.prototype.$baseProxy = "/proxy";
 
 // 使用事件总线
 Vue.prototype.$EventBus = new Vue();
