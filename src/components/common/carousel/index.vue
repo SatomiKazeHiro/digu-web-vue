@@ -1,14 +1,14 @@
 <template>
   <div v-if="data.length" class="carousel-wrap" :style="wrapStyle">
     <div class="bg-wrap">
-      <div class="bg" :style="{ backgroundImage: `url('${curPlaying.cover}')` }"></div>
+      <div ref="bg" class="bg" :style="{ '--pre-cover': preCover, '--cur-cover': curCover }"></div>
     </div>
     <div class="content-wrap">
       <div class="info-box">
         <h1>{{ curPlaying.title }}</h1>
       </div>
       <div class="carousel-box">
-        <el-carousel height="360px" @change="handleChange">
+        <el-carousel height="400px" :interval="5000" @change="handleChange">
           <el-carousel-item v-for="item in data" :key="item.url">
             <div class="playing-item">
               <div
@@ -33,16 +33,31 @@ export default {
   data() {
     return {
       curPlaying: {},
+      curCover: null,
+      preCover: null,
+      switchTimer: null,
     };
   },
   watch: {
     data(newVal) {
       this.curPlaying = newVal[0];
+      this.preCover = `url('${this.curPlaying.cover}')`;
     },
   },
   methods: {
-    handleChange(newIndex) {
-      this.$set(this, "curPlaying", this.data[newIndex]);
+    handleChange(newIndex, oldIndex) {
+      this.curCover = `url('${this.data[newIndex].cover}')`;
+      this.preCover = `url('${this.data[oldIndex].cover}')`;
+      const bg = this.$refs.bg;
+      if (bg) {
+        bg.classList.add("switch");
+        if (this.switchTimer) clearTimeout(this.switchTimer);
+        this.switchTimer = setTimeout(() => {
+          this.$set(this, "curPlaying", this.data[newIndex]);
+          this.preCover = `url('${this.data[newIndex].cover}')`;
+          bg.classList.remove("switch");
+        }, 400);
+      }
     },
   },
 };
@@ -71,17 +86,44 @@ export default {
       z-index: 10;
     }
     .bg {
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: 50%;
-      position: absolute;
-      height: 110%;
-      width: 110%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 5;
-      filter: blur(16px);
+      &::before {
+        content: "";
+        position: absolute;
+        top: -5%;
+        left: -5%;
+        height: 110%;
+        width: 110%;
+        background-image: var(--pre-cover);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50%;
+        filter: blur(16px);
+        opacity: 1;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        top: -5%;
+        left: -5%;
+        height: 110%;
+        width: 110%;
+        background-image: var(--cur-cover);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50%;
+        filter: blur(16px);
+        opacity: 0;
+      }
+      &.switch {
+        &::before {
+          opacity: 0;
+          transition: opacity 0.2s linear;
+        }
+        &::after {
+          opacity: 1;
+          transition: opacity 0.2s linear;
+        }
+      }
     }
   }
   .content-wrap {
@@ -90,22 +132,23 @@ export default {
     left: 5%;
     width: 90%;
     height: 100%;
-    padding: 48px 0;
+    padding: 24px 0;
     z-index: 15;
     display: flex;
     .info-box {
       flex: 1;
       color: #fff;
+      padding: 24px 0;
     }
     .carousel-box {
-      width: 320px;
+      width: 340px;
       .playing-item {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 200px;
-        height: 278px;
+        width: 216px;
+        height: 300px;
         overflow: hidden;
         border-radius: 4px;
         .cover-card {

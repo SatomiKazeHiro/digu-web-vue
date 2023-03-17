@@ -7,6 +7,7 @@
       }"
     >
       <NormalHeader :selfStyle="{ background: '#000', color: '#eee' }" />
+      <!-- <main-carousel /> -->
       <div class="carousel-wrap">
         <AreaBanner :carouselList="carouselList" />
       </div>
@@ -33,15 +34,18 @@
 
 <script>
 import AreaBanner from "components/content/AreaBanner";
+import MainCarousel from "components/content/main-carousel";
 import NormalHeader from "components/NormalHeader";
 import { getAreaRandom, getCategoryAllName } from "network/getWebData";
 import Category from "./Category";
+
 export default {
   name: "Area",
   components: {
     NormalHeader,
     AreaBanner,
     Category,
+    MainCarousel,
   },
   data() {
     return {
