@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="{ width: appWidth, height: appHeight }" v-cloak>
+  <div id="app" v-cloak>
     <router-view />
   </div>
 </template>
@@ -8,10 +8,7 @@
 import platform from "utils/platform";
 export default {
   data() {
-    return {
-      appWidth: this.calculateW() + "px",
-      appHeight: this.calculateH() + "px",
-    };
+    return {};
   },
   created() {
     this.$store.commit("setBrowserInfo", platform.getPlatformInfo());
@@ -43,7 +40,6 @@ export default {
 <style lang="less">
 @import url("@/styles/base.less");
 @import url("@/styles/color.less");
-@import url("@/styles/variables.less");
 @import url("styles/myFont.css");
 
 #app {

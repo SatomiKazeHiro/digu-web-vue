@@ -1,6 +1,6 @@
 <template>
   <div id="web">
-    <MainHeader id="main-header" />
+    <MainHeader class="web-header" />
     <div class="index-content-wrap">
       <WebRandomRecommend v-if="randomItems.length" :RRItem="randomItems" />
       <div class="inner">
@@ -69,6 +69,7 @@ export default {
 #web {
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   // background: #f4f5f7;
   padding-bottom: 60px;
   .index-content-wrap {
@@ -90,7 +91,7 @@ export default {
 @media only screen and (max-width: 1044px) {
   #web {
     padding-bottom: 0;
-    #main-header {
+    .web-header {
       width: 100%;
       position: absolute;
       top: 0;

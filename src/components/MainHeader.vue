@@ -1,5 +1,5 @@
 <template>
-  <div id="main-header">
+  <div class="main-header">
     <BaseHeader class="m-header" type="gradient">
       <div slot="web-item" class="web-item" v-for="i in linkItems" :key="'web-' + i.label">
         <a :href="i.url">{{ i.label }}</a>
@@ -58,7 +58,7 @@ export default {
 
 <style lang="less" scoped>
 @media only screen and (max-width: 1920px) {
-  #main-header {
+  .main-header {
     position: relative;
     .m-header {
       width: 100%;
@@ -71,7 +71,7 @@ export default {
 }
 // 手机 平板 <1044
 @media only screen and (max-width: 1044px) {
-  #main-header {
+  .main-header {
     border-bottom: 1px solid #dfdfdf;
     padding-top: 48px;
     .m-banner {

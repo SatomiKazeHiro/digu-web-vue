@@ -1,5 +1,5 @@
 <template>
-  <div id="normal-header" :class="{ inTop, fixed }">
+  <div class="normal-header" :class="{ inTop, fixed }">
     <BaseHeader v-bind="$attrs">
       <div slot="web-item" class="web-item" v-for="i in webItems" :key="i.label">
         <a :href="i.url">{{ i.label }}</a>
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#normal-header {
+.normal-header {
   width: 100%;
   transition: opacity 0.25s linear;
   &.inTop {
