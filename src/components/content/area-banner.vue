@@ -19,11 +19,9 @@
 
 <script>
 export default {
+  name: "AreaBanner",
   props: {
-    carouselList: {
-      type: Array,
-      default: () => [],
-    },
+    carouselList: { type: Array, default: () => [] },
   },
   methods: {
     calculateWidth() {

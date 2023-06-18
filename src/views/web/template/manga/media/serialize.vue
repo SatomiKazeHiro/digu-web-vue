@@ -13,13 +13,17 @@
         <div class="media-tags">
           <svg-icon icon-class="manga-tag" class="icon"></svg-icon>
           <div class="tags" v-if="mediaInfo.tags && mediaInfo.tags.length">
-            <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{ i }}</span>
+            <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{
+              i
+            }}</span>
           </div>
           <span v-else>无标签</span>
         </div>
         <div class="media-info-status">
           <svg-icon icon-class="manga-planet" class="icon"></svg-icon>
-          <span class="status" v-if="mediaInfo.status">{{ mediaInfo.status }}</span>
+          <span class="status" v-if="mediaInfo.status">{{
+            mediaInfo.status
+          }}</span>
           <span class="status" v-else>作品状态未知</span>
         </div>
         <div class="media-info-intro">
@@ -34,7 +38,11 @@
       <div class="section-cell">
         <div class="section-title">章节列表</div>
         <div class="section-list">
-          <div class="list-item" v-for="(f, index) in mediaInfo.files_detail" :key="f.target">
+          <div
+            class="list-item"
+            v-for="(f, index) in mediaInfo.files_detail"
+            :key="f.target"
+          >
             <button :title="f.target" @click="sectionClick(index + 1)">
               {{ f.target }}
             </button>
@@ -55,15 +63,12 @@
 </template>
 
 <script>
-import ItemRandom from "components/content/ItemRandom";
+import ItemRandom from "components/content/item-random";
 
 export default {
   components: { ItemRandom },
   props: {
-    mediaInfo: {
-      type: Object,
-      default: () => ({}),
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
   },
   computed: {
     getCurrentLogLink() {

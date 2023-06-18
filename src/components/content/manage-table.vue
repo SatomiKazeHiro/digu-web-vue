@@ -64,19 +64,11 @@
 
 <script>
 export default {
+  name: "ManageTable",
   props: {
-    tableData: {
-      type: Array,
-      default: [],
-    },
-    showCover: {
-      type: Boolean,
-      default: true,
-    },
-    isGridView: {
-      type: Boolean,
-      default: true,
-    },
+    tableData: { type: Array, default: [] },
+    showCover: { type: Boolean, default: true },
+    isGridView: { type: Boolean, default: true },
   },
   data() {
     return {

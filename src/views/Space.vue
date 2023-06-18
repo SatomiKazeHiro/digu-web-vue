@@ -11,12 +11,10 @@
 </template>
 
 <script>
-import MainSideBar from "components/MainSideBar";
+import MainSideBar from "components/main-side-bar";
 export default {
   name: "Space",
-  components: {
-    MainSideBar,
-  },
+  components: { MainSideBar },
   data() {
     return {
       baseConfig: {

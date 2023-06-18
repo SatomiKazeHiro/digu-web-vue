@@ -49,11 +49,9 @@
 
 <script>
 export default {
+  name: "ManagePreview",
   props: {
-    itemObj: {
-      type: Object,
-      default: {},
-    },
+    itemObj: { type: Object, default: {} },
   },
   methods: {
     // 将时间戳格式化

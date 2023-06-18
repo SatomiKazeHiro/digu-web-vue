@@ -3,7 +3,11 @@
     <div class="rr-left fl">
       <el-carousel height="242px">
         <el-carousel-item v-for="item in RRItem" :key="item.id">
-          <img :ref="`rrl${item.id}`" class="el-banner-img" @load="showImg(`rrl${item.id}`)" />
+          <img
+            :ref="`rrl${item.id}`"
+            class="el-banner-img"
+            @load="showImg(`rrl${item.id}`)"
+          />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -11,7 +15,11 @@
       <div class="video-card-reco" v-for="item in RRItem" :key="item.id">
         <div class="info-box">
           <a href="#" target="_blank">
-            <img class="opacity-0" :ref="`rrr${item.id}`" @load="showImg(`rrr${item.id}`)" />
+            <img
+              class="opacity-0"
+              :ref="`rrr${item.id}`"
+              @load="showImg(`rrr${item.id}`)"
+            />
             <div class="info">
               <p class="info-title" :title="item.title">{{ item.title }}</p>
               <p class="info-content" v-if="item.intro" :title="item.intro"></p>
@@ -45,23 +53,26 @@
 <script>
 import compress from "utils/compress.js";
 export default {
-  name: "RandomRecommend",
+  name: "WebRecommend",
   props: {
-    RRItem: {
-      type: Array,
-      default: () => [],
-    },
+    RRItem: { type: Array, default: () => [] },
   },
   mounted() {
     this.renderImg();
     // 判断是否是横屏的
-    if (this.$store.state._browserStatus.appWidth >= this.$store.state._browserStatus.appHeight)
+    if (
+      this.$store.state._browserStatus.appWidth >=
+      this.$store.state._browserStatus.appHeight
+    )
       document.querySelector(".video-list").classList.add("hd");
   },
   methods: {
     renderImg() {
       this.RRItem.forEach((i) => {
-        this.compressImg([`rrl${i.id}`, `rrr${i.id}`, `mobile${i.id}`], i.cover);
+        this.compressImg(
+          [`rrl${i.id}`, `rrr${i.id}`, `mobile${i.id}`],
+          i.cover
+        );
       });
     },
     showImg(ref) {
@@ -78,7 +89,10 @@ export default {
     "$store.state._browserStatus.appWidth"(newValue, oldValue) {
       if (newValue && newValue >= this.$store.state._browserStatus.appHeight) {
         document.querySelector(".video-list").classList.add("hd");
-      } else if (newValue && document.querySelector(".video-list").classList.contains("hd"))
+      } else if (
+        newValue &&
+        document.querySelector(".video-list").classList.contains("hd")
+      )
         document.querySelector(".video-list").classList.remove("hd");
     },
   },
@@ -231,7 +245,8 @@ img.el-banner-img {
           border-radius: 1vw;
           overflow: hidden;
           // box-shadow: rgba(0, 0, 0, 0.05) 0px 0.5px 1px 0px;
-          box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 3px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+          box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 3px 0px,
+            rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
           .v-cover {
             width: 100%;
             padding-bottom: 68%;

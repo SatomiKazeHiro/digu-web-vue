@@ -12,13 +12,10 @@
 </template>
 
 <script>
-import MainHeader from "components/MainHeader";
-import NormalHeader from "components/NormalHeader";
+import MainHeader from "components/main-header";
+import NormalHeader from "components/normal-header";
 export default {
-  components: {
-    MainHeader,
-    NormalHeader,
-  },
+  components: { MainHeader, NormalHeader },
 };
 </script>
 

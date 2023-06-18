@@ -9,7 +9,12 @@
       >
         <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ data.web_name || node.label }}</span>
-          <button class="transparent" @click.stop="handleConfigClick(node, data)">配置</button>
+          <button
+            class="transparent"
+            @click.stop="handleConfigClick(node, data)"
+          >
+            配置
+          </button>
         </span>
       </el-tree>
     </div>
@@ -18,11 +23,9 @@
 
 <script>
 export default {
+  name: "ManageLogTree",
   props: {
-    treeData: {
-      type: Array,
-      default: () => [],
-    },
+    treeData: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -103,7 +106,9 @@ export default {
     border-radius: 4px;
     background-color: #66b1ff87;
   }
-  .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  .el-tree--highlight-current
+    .el-tree-node.is-current
+    > .el-tree-node__content {
     border-radius: 4px;
     background-color: #66b1ff87;
   }

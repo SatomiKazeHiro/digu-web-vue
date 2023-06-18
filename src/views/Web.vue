@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import WebAreaPanel from "components/content/WebAreaPanel";
-import MainHeader from "components/MainHeader";
-import WebRandomRecommend from "components/WebRandomRecommend";
+import WebAreaPanel from "components/content/web-area-panel";
+import MainHeader from "components/main-header";
+import WebRandomRecommend from "components/web-recommend";
 import { getAreaAllName, getAreaRandom, getItemRandom } from "network/getWebData";
 export default {
   name: "Web",

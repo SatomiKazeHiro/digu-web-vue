@@ -3,7 +3,10 @@
     <div class="__info-content">
       <div class="__cover">
         <div class="__cover-img">
-          <img :src="'/proxy' + mediaInfo.sources_url + mediaInfo.cover" :alt="mediaInfo.cover" />
+          <img
+            :src="'/proxy' + mediaInfo.sources_url + mediaInfo.cover"
+            :alt="mediaInfo.cover"
+          />
         </div>
       </div>
       <div class="__info" :class="{ hd: isHd() }">
@@ -17,13 +20,9 @@
 
 <script>
 export default {
+  name: "ItemMediaInfo",
   props: {
-    mediaInfo: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
     border: false,
   },
   methods: {

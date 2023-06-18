@@ -1,14 +1,24 @@
 <template>
   <div class="main-header">
     <BaseHeader class="m-header" type="gradient">
-      <div slot="web-item" class="web-item" v-for="i in linkItems" :key="'web-' + i.label">
+      <div
+        slot="web-item"
+        class="web-item"
+        v-for="i in linkItems"
+        :key="'web-' + i.label"
+      >
         <a :href="i.url">{{ i.label }}</a>
       </div>
       <NavSearch slot="search-item" />
       <div class="user-head" slot="user-head">
         <img :src="$store.state._user.header" slot="user-img" />
       </div>
-      <div slot="user-item" class="user-item" v-for="i in userItems" :key="'user-' + i.label">
+      <div
+        slot="user-item"
+        class="user-item"
+        v-for="i in userItems"
+        :key="'user-' + i.label"
+      >
         <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
@@ -21,10 +31,10 @@
 </template>
 
 <script>
-import Banner from "./common/header/Banner";
-import BaseHeader from "./common/header/BaseHeader";
-import NavSearch from "./common/header/NavSearch";
-import TagsNav from "./common/header/TagsNav";
+import Banner from "./common/header/banner";
+import BaseHeader from "./common/header/base-header";
+import NavSearch from "./common/header/nav-search";
+import TagsNav from "./common/header/tags-nav";
 export default {
   name: "MainHeader",
   components: {
@@ -57,6 +67,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.main-header {
+  position: relative;
+  .m-header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+}
+
 @media only screen and (max-width: 1920px) {
   .main-header {
     position: relative;

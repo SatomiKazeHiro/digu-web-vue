@@ -38,15 +38,12 @@ export default {
   name: "SideBar",
   data() {
     return {
-      // 默认折叠
-      isCollapse: true,
+      isCollapse: true, // 默认折叠
     };
   },
   mounted() {
-    // 点击事件
     let menuBtn = document.querySelector("#menu-btn");
     let sideBar = document.querySelector(".side-bar");
-    let logoutBtn = document.querySelector("#logout-btn");
     menuBtn.onclick = () => {
       if (this.isCollapse) {
         sideBar.classList.add("active");

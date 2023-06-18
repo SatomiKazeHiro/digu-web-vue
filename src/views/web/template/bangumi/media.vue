@@ -23,11 +23,15 @@
               <span class="media-info-title-t">{{ mediaInfo.title }}</span>
               <div class="media-tags" v-if="mediaInfo.tags">
                 <span v-if="mediaInfo.tags.length == 0">无标签</span>
-                <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{ i }}</span>
+                <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{
+                  i
+                }}</span>
               </div>
             </div>
             <div class="media-info-status">
-              <span class="status" v-if="mediaInfo.status">{{ mediaInfo.status }}</span>
+              <span class="status" v-if="mediaInfo.status">{{
+                mediaInfo.status
+              }}</span>
               <span class="status" v-else>状态未知</span>
             </div>
             <div class="media-info-intro">
@@ -67,18 +71,12 @@
 </template>
 
 <script>
-import ItemPlayList from "components/content/ItemPlayList";
-import ItemRandom from "components/content/ItemRandom";
+import ItemPlayList from "components/content/item-play-list";
+import ItemRandom from "components/content/item-random";
 export default {
-  components: {
-    ItemPlayList,
-    ItemRandom,
-  },
+  components: { ItemPlayList, ItemRandom },
   props: {
-    mediaInfo: {
-      type: Object,
-      default: () => ({}),
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
   },
   data() {
     return {

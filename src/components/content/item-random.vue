@@ -26,6 +26,7 @@
 import { getAreaRandom } from "network/getWebData";
 
 export default {
+  name: "ItemRandom",
   props: {
     color: { type: String, default: "#333" },
     showLine: { type: Boolean, default: true },

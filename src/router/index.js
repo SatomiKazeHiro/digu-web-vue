@@ -14,66 +14,78 @@ VueRouter.prototype.replace = function replace(location) {
 
 Vue.use(VueRouter);
 
-const Web = () => import("views/Web.vue");
-const Area = () => import("views/web/Area.vue");
-const Category = () => import("views/web/Category.vue");
-const Media = () => import("views/web/Media.vue");
-
-const Space = () => import("views/Space.vue");
-const User = () => import("views/space/User.vue");
-const History = () => import("views/space/History.vue");
-const Favlist = () => import("views/space/Favlist.vue");
-const Watchlater = () => import("views/space/Watchlater.vue");
-const Manage = () => import("views/space/Manage.vue");
-const Setting = () => import("views/space/Setting.vue");
-
-const ErrorPage = () => import("views/404.vue");
-
 const routes = [
   {
     path: "/",
     name: "Web",
-    component: Web,
+    meta: {
+      title: "嘀嘀咕咕",
+    },
+    component: () => import("views/Web.vue"),
   },
   {
     path: "/test",
     name: "Test",
+    meta: {
+      title: "测试页面",
+    },
     component: () => import("views/Test.vue"),
   },
   {
     path: "/space",
     name: "Space",
-    component: Space,
+    component: () => import("views/Space.vue"),
+    meta: {
+      title: "个人空间",
+    },
     children: [
       {
         path: "user",
         name: "User",
-        component: User,
+        meta: {
+          title: "用户空间",
+        },
+        component: () => import("views/space/User.vue"),
       },
       {
         path: "history",
         name: "History",
-        component: History,
+        meta: {
+          title: "历史记录",
+        },
+        component: () => import("views/space/History.vue"),
       },
       {
         path: "favlist",
         name: "Favlist",
-        component: Favlist,
+        meta: {
+          title: "我的收藏",
+        },
+        component: () => import("views/space/Favlist.vue"),
       },
       {
         path: "watchlater",
         name: "Watchlater",
-        component: Watchlater,
+        meta: {
+          title: "稍后再看",
+        },
+        component: () => import("views/space/Watchlater.vue"),
       },
       {
         path: "manage",
         name: "Manage",
-        component: Manage,
+        meta: {
+          title: "资源管理",
+        },
+        component: () => import("views/space/Manage.vue"),
       },
       {
         path: "setting",
         name: "Setting",
-        component: Setting,
+        meta: {
+          title: "设置",
+        },
+        component: () => import("views/space/Setting.vue"),
       },
       {
         path: "*",
@@ -84,17 +96,20 @@ const routes = [
   {
     path: "/404",
     name: "error",
-    component: ErrorPage,
+    meta: {
+      title: "404",
+    },
+    component: () => import("views/404.vue"),
   },
   {
     path: "/:area",
     name: "Area",
-    component: Area,
+    component: () => import("views/web/Area.vue"),
     children: [
       {
         path: ":category",
         name: "category",
-        component: Category,
+        component: () => import("views/web/Category.vue"),
       },
     ],
   },
@@ -104,7 +119,7 @@ const routes = [
     meta: {
       type: "media",
     },
-    component: Media,
+    component: () => import("views/web/Media.vue"),
   },
   {
     path: "/:area/:category/:item/play",
@@ -112,7 +127,7 @@ const routes = [
     meta: {
       type: "play",
     },
-    component: Media,
+    component: () => import("views/web/Media.vue"),
   },
   {
     path: "/:area/:category/:item/s/:chapter",
@@ -120,7 +135,7 @@ const routes = [
     meta: {
       type: "chapter",
     },
-    component: Media,
+    component: () => import("views/web/Media.vue"),
   },
   {
     path: "*",
@@ -136,14 +151,18 @@ const router = new VueRouter({
 
 // let area = ["manga", "anime"]
 
-// router.beforeEach((to, from, next) => {
-//   // 判断是否跳转至area
-//   if (to.params.area)
-//     if (area.includes(to.params.area))
-//       // 当area正确的时候继续，否则跳转至404
-//       next();
-//     else next({ name: "error" });
-//   else next();
-// })
+router.beforeEach((to, from, next) => {
+  //   // 判断是否跳转至area
+  //   if (to.params.area)
+  //     if (area.includes(to.params.area))
+  //       // 当area正确的时候继续，否则跳转至404
+  //       next();
+  //     else next({ name: "error" });
+  //   else next();
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  next();
+});
 
 export default router;

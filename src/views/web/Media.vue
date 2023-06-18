@@ -8,19 +8,29 @@
       <NormalHeader
         :type="getHeaderType()"
         v-if="showHeader"
-        :selfStyle="routerType === 'chapter' ? { background: '#181818', color: '#eee' } : {}"
+        :selfStyle="
+          routerType === 'chapter'
+            ? { background: '#181818', color: '#eee' }
+            : {}
+        "
       />
       <div class="media-content">
         <div v-if="routerType === 'media'">
           <!-- 可以配置的媒体详情的 -->
-          <BangumiMedia v-if="mediaInfo.template === 'bangumi'" :mediaInfo="mediaInfo" />
+          <BangumiMedia
+            v-if="mediaInfo.template === 'bangumi'"
+            :mediaInfo="mediaInfo"
+          />
           <MangaMedia
             v-else-if="mediaInfo.template === 'manga'"
             :mediaInfo="mediaInfo"
             padTop="20px"
           />
           <!-- 没有媒体详情页面的 -->
-          <VideoPlay v-else-if="mediaInfo.template === 'video'" :mediaInfo="mediaInfo" />
+          <VideoPlay
+            v-else-if="mediaInfo.template === 'video'"
+            :mediaInfo="mediaInfo"
+          />
           <link-to-404 v-else />
         </div>
         <div v-else-if="routerType === 'play'">
@@ -32,11 +42,15 @@
         </div>
         <div v-else-if="routerType === 'chapter'">
           <BangumiChapter
-            v-if="mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'"
+            v-if="
+              mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'
+            "
             :mediaInfo="mediaInfo"
           />
           <MangaPlay
-            v-else-if="mediaInfo.template === 'manga' && mediaInfo.type === 'serial'"
+            v-else-if="
+              mediaInfo.template === 'manga' && mediaInfo.type === 'serial'
+            "
             :mediaInfo="mediaInfo"
           />
           <link-to-404 v-else />
@@ -49,7 +63,7 @@
 </template>
 
 <script>
-import NormalHeader from "components/NormalHeader";
+import NormalHeader from "components/normal-header";
 import { checkItem } from "network/checkResource";
 import { getItem } from "network/getWebData";
 import { sortObjNameAsWin } from "utils/sort";
@@ -128,7 +142,11 @@ export default {
                             .sort(sortObjNameAsWin)
                         : [],
                   };
-                } else if (res.code && res.code === 400 && res.data.type === "no-Template") {
+                } else if (
+                  res.code &&
+                  res.code === 400 &&
+                  res.data.type === "no-Template"
+                ) {
                   this.noTemplate = true;
                 }
               })

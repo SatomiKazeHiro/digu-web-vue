@@ -9,7 +9,12 @@
       </div>
     </div>
     <div class="panel-content">
-      <div class="item-unity opacity-0" v-for="i in areaData.list" :key="i.title" :ref="i.id">
+      <div
+        class="item-unity opacity-0"
+        v-for="i in areaData.list"
+        :key="i.title"
+        :ref="i.id"
+      >
         <div class="item-type">
           <span>{{ i.type }}</span>
         </div>
@@ -28,10 +33,7 @@ import compress from "utils/compress.js";
 export default {
   name: "IndexAreaPanel",
   props: {
-    areaData: {
-      type: Object,
-      default: () => ({}),
-    },
+    areaData: { type: Object, default: () => ({}) },
   },
   mounted() {
     this.renderImg();
@@ -39,7 +41,10 @@ export default {
   methods: {
     renderImg() {
       this.areaData.list.forEach((i) => {
-        this.compressImg(`${this.areaData.area}${i.id}`, `/proxy${i.source_url}${i.cover}`);
+        this.compressImg(
+          `${this.areaData.area}${i.id}`,
+          `/proxy${i.source_url}${i.cover}`
+        );
       });
     },
     showImg(id) {
@@ -47,7 +52,8 @@ export default {
       if (this.$refs[id].length && this.$refs[id][0].children[1].firstChild) {
         // 如果高度大于宽度的，则使用竖直样式
         let img = this.$refs[id][0].children[1].firstChild;
-        if (img.naturalHeight > img.naturalWidth) img.classList.add("vertical-img");
+        if (img.naturalHeight > img.naturalWidth)
+          img.classList.add("vertical-img");
         // 资源项目渐变出现
         this.$refs[id][0].classList.remove("opacity-0");
       }

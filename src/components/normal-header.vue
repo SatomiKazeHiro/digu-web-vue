@@ -1,14 +1,24 @@
 <template>
   <div class="normal-header" :class="{ inTop, fixed }">
     <BaseHeader v-bind="$attrs">
-      <div slot="web-item" class="web-item" v-for="i in webItems" :key="i.label">
+      <div
+        slot="web-item"
+        class="web-item"
+        v-for="i in webItems"
+        :key="i.label"
+      >
         <a :href="i.url">{{ i.label }}</a>
       </div>
       <NavSearch slot="search-item" />
       <div class="user-head" slot="user-head">
         <img :src="$store.state._user.header" slot="user-img" />
       </div>
-      <div slot="user-item" class="user-item" v-for="i in userItems" :key="i.label">
+      <div
+        slot="user-item"
+        class="user-item"
+        v-for="i in userItems"
+        :key="i.label"
+      >
         <a :href="i.url" v-if="isPC()">{{ i.label }}</a>
         <button v-else>
           <svg-icon :icon-class="i.icon"></svg-icon>
@@ -19,14 +29,11 @@
 </template>
 
 <script>
-import BaseHeader from "./common/header/BaseHeader";
-import NavSearch from "./common/header/NavSearch";
+import BaseHeader from "./common/header/base-header";
+import NavSearch from "./common/header/nav-search";
 export default {
   name: "NormalHeader",
-  components: {
-    BaseHeader,
-    NavSearch,
-  },
+  components: { BaseHeader, NavSearch },
   inheritAttrs: false,
   props: {
     inTop: { type: Boolean, default: false },

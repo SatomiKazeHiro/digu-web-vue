@@ -5,7 +5,11 @@
         <div class="log-tree-box">
           <div class="_title-cell">
             <span>目录</span>
-            <button class="addFoler" v-if="isSelectRootOrAreaNode" @click="plusFolder">
+            <button
+              class="addFoler"
+              v-if="isSelectRootOrAreaNode"
+              @click="plusFolder"
+            >
               <svg-icon icon-class="space-manage-folder-plus"></svg-icon>
             </button>
           </div>
@@ -33,7 +37,10 @@
         >
           <div class="config-panel">
             <div class="header-nav">
-              <button class="transparent return-btn" @click="acConfigDrawer = false">
+              <button
+                class="transparent return-btn"
+                @click="acConfigDrawer = false"
+              >
                 <svg-icon icon-class="close"></svg-icon>
               </button>
               <span class="title">页面配置面板</span>
@@ -41,7 +48,10 @@
             <div class="config-content">
               <div class="config-item-box" v-if="editObj === 'area'">
                 <div class="c-item">
-                  <div class="c-label" :class="{ change: editArea.area !== editAreaCG.area }">
+                  <div
+                    class="c-label"
+                    :class="{ change: editArea.area !== editAreaCG.area }"
+                  >
                     域目录
                   </div>
                   <div class="c-cont">
@@ -80,17 +90,28 @@
                     域页面展示模板
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editArea.log_template" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editArea.log_template"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="默认模板" value="normal"></el-option>
                     </el-select>
                   </div>
                 </div>
                 <div class="c-item">
-                  <div class="c-label" :class="{ change: editArea.state !== editAreaCG.state }">
+                  <div
+                    class="c-label"
+                    :class="{ change: editArea.state !== editAreaCG.state }"
+                  >
                     状态
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editArea.state" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editArea.state"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="显示" value="show"></el-option>
                       <el-option label="隐藏" value="hide"></el-option>
                     </el-select>
@@ -155,7 +176,9 @@
                   <div
                     class="c-label"
                     :class="{
-                      change: editCategoty.log_template !== editCategotyCG.log_template,
+                      change:
+                        editCategoty.log_template !==
+                        editCategotyCG.log_template,
                     }"
                   >
                     分类页面展示模板
@@ -174,7 +197,9 @@
                   <div
                     class="c-label"
                     :class="{
-                      change: editCategoty.item_log_template !== editCategotyCG.item_log_template,
+                      change:
+                        editCategoty.item_log_template !==
+                        editCategotyCG.item_log_template,
                     }"
                   >
                     项目页面展示模板
@@ -187,9 +212,17 @@
                     >
                       <el-option label="番剧模板" value="bangumi"></el-option>
                       <el-option label="漫画模板" value="manga"></el-option>
-                      <el-option label="插画模板" value="illustration" :disabled="true"></el-option>
+                      <el-option
+                        label="插画模板"
+                        value="illustration"
+                        :disabled="true"
+                      ></el-option>
                       <el-option label="视频模板" value="video"></el-option>
-                      <el-option label="混合模板" value="hybrid" :disabled="true"></el-option>
+                      <el-option
+                        label="混合模板"
+                        value="hybrid"
+                        :disabled="true"
+                      ></el-option>
                     </el-select>
                   </div>
                 </div>
@@ -203,7 +236,11 @@
                     状态
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editCategoty.state" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editCategoty.state"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="显示" value="show"></el-option>
                       <el-option label="隐藏" value="hide"></el-option>
                     </el-select>
@@ -222,13 +259,19 @@
               <div class="item-path">
                 <el-breadcrumb separator-class="el-icon-arrow-right">
                   <el-breadcrumb-item>目录</el-breadcrumb-item>
-                  <el-breadcrumb-item v-if="currentAreaNode.web_name || currentAreaNode.label">
+                  <el-breadcrumb-item
+                    v-if="currentAreaNode.web_name || currentAreaNode.label"
+                  >
                     {{ currentAreaNode.web_name || currentAreaNode.label }}
                   </el-breadcrumb-item>
                   <el-breadcrumb-item
-                    v-if="currentCategoryNode.web_name || currentCategoryNode.label"
+                    v-if="
+                      currentCategoryNode.web_name || currentCategoryNode.label
+                    "
                   >
-                    {{ currentCategoryNode.web_name || currentCategoryNode.label }}
+                    {{
+                      currentCategoryNode.web_name || currentCategoryNode.label
+                    }}
                   </el-breadcrumb-item>
                 </el-breadcrumb>
               </div>
@@ -253,8 +296,15 @@
                     >
                       <svg-icon icon-class="space-manage-cover"></svg-icon>
                     </button>
-                    <el-divider direction="vertical" v-if="currentItem.id"></el-divider>
-                    <button class="item-btn" v-if="currentItem.id" title="稍后再看">
+                    <el-divider
+                      direction="vertical"
+                      v-if="currentItem.id"
+                    ></el-divider>
+                    <button
+                      class="item-btn"
+                      v-if="currentItem.id"
+                      title="稍后再看"
+                    >
                       <svg-icon icon-class="space-manage-laterTime"></svg-icon>
                     </button>
                     <button class="item-btn" v-if="currentItem.id" title="收藏">
@@ -266,7 +316,10 @@
                     <button class="item-btn" v-if="currentItem.id" title="删除">
                       <svg-icon icon-class="space-manage-delete"></svg-icon>
                     </button>
-                    <el-divider direction="vertical" v-if="currentItem.id"></el-divider>
+                    <el-divider
+                      direction="vertical"
+                      v-if="currentItem.id"
+                    ></el-divider>
                     <button
                       class="item-btn"
                       v-if="currentItem.id"
@@ -336,7 +389,10 @@
           </div>
           <div class="item-config-panel">
             <div class="header-nav">
-              <button class="transparent return-btn" @click="iConfigDrawer = false">
+              <button
+                class="transparent return-btn"
+                @click="iConfigDrawer = false"
+              >
                 <svg-icon icon-class="close"></svg-icon>
               </button>
               <span class="title">项目配置面板</span>
@@ -350,10 +406,10 @@
 </template>
 
 <script>
-import SpaceManageSearch from "components/common/header/SpaceManageSearch";
-import ManageLogTree from "components/content/ManageLogTree";
-import ManagePreview from "components/content/ManagePreview";
-import ManageTable from "components/content/ManageTable";
+import SpaceManageSearch from "components/common/header/space-manage-search";
+import ManageLogTree from "components/content/manage-log-tree";
+import ManagePreview from "components/content/manage-preview";
+import ManageTable from "components/content/manage-table";
 import { getAreaNormal, getCategoryNormal } from "network/getWebData";
 import {
   getAreaConfig,
@@ -451,8 +507,16 @@ export default {
     // 获取列表数据
     getData() {
       return new Promise((resolve, reject) => {
-        if (this.currentAreaNode.label !== "" && this.currentCategoryNode.label === "") {
-          getAreaNormal(this.currentAreaNode.label, this.limitPage, this.currentPage, "all").then(
+        if (
+          this.currentAreaNode.label !== "" &&
+          this.currentCategoryNode.label === ""
+        ) {
+          getAreaNormal(
+            this.currentAreaNode.label,
+            this.limitPage,
+            this.currentPage,
+            "all"
+          ).then(
             (res) => {
               console.log(res);
               if (res.code && res.code === 200) {
@@ -469,7 +533,10 @@ export default {
               reject();
             }
           );
-        } else if (this.currentAreaNode.label !== "" && this.currentCategoryNode.label !== "") {
+        } else if (
+          this.currentAreaNode.label !== "" &&
+          this.currentCategoryNode.label !== ""
+        ) {
           getCategoryNormal(
             this.currentAreaNode.label,
             this.currentCategoryNode.label,
@@ -651,7 +718,10 @@ export default {
                 message: "设置成功",
               });
               this.initLogTree();
-              this.getCConfig(this.editCategoty.area, this.editCategoty.category);
+              this.getCConfig(
+                this.editCategoty.area,
+                this.editCategoty.category
+              );
             } else
               this.$message({
                 type: "success",

@@ -9,7 +9,11 @@
         :url="item.url"
         slot="nav-item"
       >
-        <svg-icon :icon-class="item.icon" slot="nav-icon" style="font-size: 28px"></svg-icon>
+        <svg-icon
+          :icon-class="item.icon"
+          slot="nav-icon"
+          style="font-size: 28px"
+        ></svg-icon>
         <span slot="nav-label">{{ item.label }}</span>
         <span slot="tooltip" class="tooltip">{{ item.label }}</span>
       </side-bar-item>
@@ -21,21 +25,13 @@
 </template>
 
 <script>
-import SideBar from "./common/sidebar/SideBar";
-import SideBarItem from "./common/sidebar/SideBarItem.vue";
+import SideBar from "./common/sidebar/side-bar";
+import SideBarItem from "./common/sidebar/side-bar-item.vue";
 export default {
   name: "MainSideBar",
-  components: {
-    SideBar,
-    SideBarItem,
-  },
+  components: { SideBar, SideBarItem },
   props: {
-    config: {
-      type: Object,
-      default() {
-        return [];
-      },
-    },
+    config: { type: Object, default: () => ({}) },
   },
 };
 </script>

@@ -13,13 +13,17 @@
         <div class="media-tags">
           <svg-icon icon-class="manga-tag" class="icon"></svg-icon>
           <div class="tags" v-if="mediaInfo.tags && mediaInfo.tags.length">
-            <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{ i }}</span>
+            <span class="media-tag" v-for="i in mediaInfo.tags" :key="i">{{
+              i
+            }}</span>
           </div>
           <span v-else>无标签</span>
         </div>
         <div class="media-info-status">
           <svg-icon icon-class="manga-planet" class="icon"></svg-icon>
-          <span class="status" v-if="mediaInfo.status">{{ mediaInfo.status }}</span>
+          <span class="status" v-if="mediaInfo.status">{{
+            mediaInfo.status
+          }}</span>
           <span class="status" v-else>作品状态未知</span>
         </div>
         <div class="media-info-intro">
@@ -61,16 +65,13 @@
 </template>
 
 <script>
-import ItemRandom from "components/content/ItemRandom";
+import ItemRandom from "components/content/item-random";
 import { IMAGE_FORMAT } from "config";
 
 export default {
   components: { ItemRandom },
   props: {
-    mediaInfo: {
-      type: Object,
-      default: () => ({}),
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
   },
   data() {
     return { IMAGE_FORMAT };

@@ -7,6 +7,7 @@ import Carousel from "components/common/carousel";
 import { getAreaRandom } from "network/getWebData";
 
 export default {
+  name: "MainCarousel",
   components: { Carousel },
   data() {
     return {

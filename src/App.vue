@@ -7,10 +7,9 @@
 <script>
 import platform from "utils/platform";
 export default {
-  data() {
-    return {};
-  },
   created() {
+    this.appWidth = this.calculateW() + "px";
+    this.appHeight = this.calculateH() + "px";
     this.$store.commit("setBrowserInfo", platform.getPlatformInfo());
   },
   mounted() {

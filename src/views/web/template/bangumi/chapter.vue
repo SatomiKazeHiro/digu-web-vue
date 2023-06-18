@@ -9,16 +9,23 @@
               <el-breadcrumb-item @click.native="handleBreadcrumbOpen('/')"
                 >主站</el-breadcrumb-item
               >
-              <el-breadcrumb-item @click.native="handleBreadcrumbOpen(`/${path.area}`)">{{
-                path.area_web_name || path.area
-              }}</el-breadcrumb-item>
               <el-breadcrumb-item
-                @click.native="handleBreadcrumbOpen(`/${path.area}/${path.category}`)"
-                >{{ path.category_web_name || path.category }}</el-breadcrumb-item
+                @click.native="handleBreadcrumbOpen(`/${path.area}`)"
+                >{{ path.area_web_name || path.area }}</el-breadcrumb-item
               >
               <el-breadcrumb-item
                 @click.native="
-                  handleBreadcrumbOpen(`/${path.area}/${path.category}/${$route.params.item}`)
+                  handleBreadcrumbOpen(`/${path.area}/${path.category}`)
+                "
+                >{{
+                  path.category_web_name || path.category
+                }}</el-breadcrumb-item
+              >
+              <el-breadcrumb-item
+                @click.native="
+                  handleBreadcrumbOpen(
+                    `/${path.area}/${path.category}/${$route.params.item}`
+                  )
                 "
                 >{{ mediaInfo.title }}</el-breadcrumb-item
               >
@@ -58,7 +65,10 @@
       <div class="tab"></div>
       <div class="tab-inner">
         <div class="media-content">
-          <item-play-list :mediaInfo="mediaInfo" v-if="isScreenWidthLessThanX()"></item-play-list>
+          <item-play-list
+            :mediaInfo="mediaInfo"
+            v-if="isScreenWidthLessThanX()"
+          ></item-play-list>
           <item-media-info
             :mediaInfo="mediaInfo"
             :border="isScreenWidthLessThanX()"
@@ -78,9 +88,9 @@ import "mui-player/dist/mui-player.min.css";
 import { VIDEO_FORMAT } from "@/config";
 import { getACPath } from "@/network/getWebData";
 
-import ItemMediaInfo from "components/content/ItemMediaInfo";
-import ItemPlayList from "components/content/ItemPlayList";
-import ItemRandom from "components/content/ItemRandom";
+import ItemMediaInfo from "components/content/item-media-info";
+import ItemPlayList from "components/content/item-play-list";
+import ItemRandom from "components/content/item-random";
 export default {
   components: {
     ItemPlayList,
@@ -88,10 +98,7 @@ export default {
     ItemMediaInfo,
   },
   props: {
-    mediaInfo: {
-      type: Object,
-      default: () => ({}),
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
   },
   data() {
     return {
@@ -115,7 +122,8 @@ export default {
       }));
 
     // 如果没有播放内容则跳转至404
-    if (!this.playList[this.$route.params.chapter - 1]) this.$router.push("/404");
+    if (!this.playList[this.$route.params.chapter - 1])
+      this.$router.push("/404");
     else {
       this.currentPlay = this.playList[this.$route.params.chapter - 1];
       console.log(9999, this.currentPlay);
@@ -159,7 +167,8 @@ export default {
 
     // 判断是否是当前播放的集
     isCurrentPlaying(link_url) {
-      if (this.currentPlay && this.currentPlay.link_url === link_url) return true;
+      if (this.currentPlay && this.currentPlay.link_url === link_url)
+        return true;
       else return false;
     },
 
@@ -186,7 +195,9 @@ export default {
       // window.location.reload()
 
       if (this.player) {
-        let newPlayMedia = this.playList.filter((i) => i.link_url === newVal)[0];
+        let newPlayMedia = this.playList.filter(
+          (i) => i.link_url === newVal
+        )[0];
         // 路径正确则换源
         if (!newPlayMedia) this.$router.push("/404");
         else {

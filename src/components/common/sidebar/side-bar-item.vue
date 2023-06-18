@@ -16,18 +16,8 @@
 export default {
   name: "SideBarItem",
   props: {
-    color: {
-      type: String,
-      default() {
-        return "#11101d";
-      },
-    },
-    url: {
-      type: String,
-      default() {
-        return "";
-      },
-    },
+    color: { type: String, default: "#11101d" },
+    url: { type: String, default: "" },
   },
   mounted() {},
 };

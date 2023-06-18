@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import AreaBanner from "components/content/AreaBanner";
+import AreaBanner from "components/content/area-banner";
 import MainCarousel from "components/content/main-carousel";
-import NormalHeader from "components/NormalHeader";
+import NormalHeader from "components/normal-header";
 import { getAreaRandom, getCategoryAllName } from "network/getWebData";
 import Category from "./Category";
 

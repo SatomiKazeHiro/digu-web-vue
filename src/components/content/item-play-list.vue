@@ -25,11 +25,9 @@
 import { VIDEO_FORMAT } from "@/config";
 
 export default {
+  name: "ItemPlayList",
   props: {
-    mediaInfo: {
-      type: Object,
-      default: () => ({}),
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
   },
   data() {
     return {
