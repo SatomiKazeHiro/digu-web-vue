@@ -21,7 +21,7 @@ const routes = [
     meta: {
       title: "嘀嘀咕咕",
     },
-    component: () => import("views/Web.vue"),
+    component: () => import("views/web"),
   },
   {
     path: "/test",

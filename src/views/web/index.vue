@@ -4,7 +4,7 @@
     <div class="index-content-wrap">
       <WebRandomRecommend v-if="randomItems.length" :RRItem="randomItems" />
       <div class="inner">
-        <WebAreaPanel v-for="i in areaList" :key="i.area" :areaData="i" />
+        <WebAreaPanel v-for="i in areas" :key="i.area" :areaData="i" />
       </div>
     </div>
     <router-view />
@@ -15,7 +15,11 @@
 import WebAreaPanel from "components/content/web-area-panel";
 import MainHeader from "components/main-header";
 import WebRandomRecommend from "components/web-recommend";
-import { getAreaAllName, getAreaRandom, getItemRandom } from "network/getWebData";
+import {
+  getAreaAllName,
+  getAreaRandom,
+  getItemRandom,
+} from "network/getWebData";
 export default {
   name: "Web",
   components: {
@@ -25,43 +29,39 @@ export default {
   },
   data() {
     return {
-      areaList: [],
-      itemRandomLimit: 8,
+      areas: [],
+      itemLimit: 8,
       randomItems: [],
-      areaItemRandomLimit: 12,
+      areaItemLimit: 12,
     };
   },
   mounted() {
     // 获取所有资源项目中的随机8个
-    getItemRandom(this.itemRandomLimit).then((res) => {
-      if (res.code === 200) {
-        this.randomItems = res.data;
-        this.randomItems.forEach((i) => {
-          i.cover = `/proxy${i.source_url}${i.cover}`;
-        });
-      }
+    getItemRandom(this.itemLimit).then((res) => {
+      this.randomItems = res;
+      this.randomItems.forEach((i) => {
+        i.cover = `/proxy${i.source_url}${i.cover}`;
+      });
     });
+
     // 获取所有的域名
     getAreaAllName(false).then(async (res) => {
-      if (res.code === 200) {
-        // 通过 async/await 按顺序请求，使得页面排版固定
-        for (let i = 0; i < res.data.length; i++) {
-          const areaObj = res.data[i];
-          // 每个栏目获取随机12个
-          await getAreaRandom(areaObj.area, this.areaItemRandomLimit).then((res) => {
-            if (res.code === 200) {
-              this.areaList.push({
-                title: areaObj.web_name || areaObj.area,
-                area: areaObj.area,
-                list: res.data,
-              });
-            }
-          });
-        }
+      // 通过 async/await 按顺序请求，使得页面排版固定
+      for (let i = 0; i < res.length; i++) {
+        const areaObj = res[i];
+        // 每个栏目获取随机12个
+        await getAreaRandom(areaObj.area, this.areaItemLimit).then(
+          (res) => {
+            this.areas.push({
+              title: areaObj.web_name || areaObj.area,
+              area: areaObj.area,
+              list: res,
+            });
+          }
+        );
       }
     });
   },
-  methods: {},
 };
 </script>
 
