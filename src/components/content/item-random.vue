@@ -33,6 +33,7 @@ export default {
     moreLink: { type: String, default: "" },
     title: { type: String, default: "" },
     titleStyle: { type: Object, default: () => ({}) },
+    limit: { type: Number, default: 6 },
   },
   data() {
     return {
@@ -51,20 +52,16 @@ export default {
   methods: {
     // 获取推荐的随机内容
     getRecommendItem() {
-      getAreaRandom(this.$route.params.area, 6, this.$route.params.item)
+      let { area, item: resourceId } = this.$route.params;
+      getAreaRandom({ area, limit: this.limit, excludeId: resourceId })
         .then((res) => {
-          if (res.code === 200) {
-            res.data.forEach((i) => {
-              i.cover = `/proxy${i.source_url}${i.cover}`;
-            });
-            this.recommendItems = res.data;
-            this.recommendLoadErr = false;
-          } else return Promise.reject(new Error(`code: ${res.code}, msg: ${res.msg}`));
+          res.forEach((i) => {
+            i.cover = `/proxy${i.source_url}${i.cover}`;
+          });
+          this.recommendItems = res;
+          this.recommendLoadErr = false;
         })
-        .catch((err) => {
-          this.$message({ message: err, type: "error" });
-          this.recommendLoadErr = true;
-        });
+        .catch((err) => (this.recommendLoadErr = true));
     },
 
     // 随机资源项目的跳转事件

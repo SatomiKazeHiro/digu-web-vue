@@ -1,11 +1,6 @@
 <template>
-  <div
-    class="nav__base-header"
-    ref="base-nav"
-    v-show="show"
-    :class="[fixed ? 'fixed' : '']"
-  >
-    <div class="nav__content" :class="[type]" :style="{ ...selfStyle }">
+  <div class="nav-base-header" ref="base-nav" v-show="show" :class="[fixed ? 'fixed' : '']">
+    <div class="nav-content" :class="[type]" :style="{ ...selfStyle }">
       <div class="nav-web-box">
         <slot name="web-logo"></slot>
         <slot name="web-item"></slot>
@@ -40,7 +35,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.nav__base-header {
+.nav-base-header {
   width: 100%;
   height: 56px;
   z-index: 5;
@@ -48,7 +43,7 @@ export default {
     position: fixed;
     top: 0;
   }
-  .nav__content {
+  .nav-content {
     width: 100%;
     padding: 10px 24px;
     line-height: 30px;
@@ -121,13 +116,12 @@ export default {
   }
 }
 
-// 手机 平板 <= 1024
-@media only screen and (max-width: 1044px) {
-  .nav__base-header {
+@media only screen and (max-width: @digu-md) {
+  .nav-base-header {
     height: 48px;
     transition: top 0.2s linear;
     overflow: hidden;
-    .nav__content {
+    .nav-content {
       padding: 6px 12px;
       position: relative;
       width: 100%;

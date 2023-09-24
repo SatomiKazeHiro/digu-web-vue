@@ -1,188 +1,177 @@
 <template>
-  <div class="area-panel">
-    <div class="area-name">
-      <div class="title">
-        <span>{{ areaData.title }}</span>
-      </div>
-      <div class="btns">
-        <a :href="`/${areaData.area}`" class="more">查看更多</a>
-      </div>
+  <div class="web-area-panel-wrap">
+    <div class="title-wrap">
+      <div class="title">{{ area.title }}</div>
+      <a class="more" @click="$linkTo(area.area)">更多</a>
     </div>
-    <div class="panel-content">
-      <div
-        class="item-unity opacity-0"
-        v-for="i in areaData.list"
-        :key="i.title"
-        :ref="i.id"
-      >
-        <div class="item-type">
-          <span>{{ i.type }}</span>
-        </div>
-        <a :href="i.link_url">
-          <img :ref="`${areaData.area}${i.id}`" @load="showImg(i.id)" />
+    <div class="preview-wrap">
+      <div class="item" v-for="(item, index) in area.list" :key="index">
+        <a :href="item.link_url">
+          <img class="cover" v-lazy-img-compr="getImgCfg(item)" />
+          <p class="title" :title="item.title">
+            {{ item.title }}
+          </p>
         </a>
-        <span class="item-title" :title="i.title">{{ i.title }}</span>
-        <span class="item-status">{{ i.status }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import compress from "utils/compress.js";
 export default {
-  name: "IndexAreaPanel",
+  name: "WebAreaPanel",
   props: {
-    areaData: { type: Object, default: () => ({}) },
-  },
-  mounted() {
-    this.renderImg();
+    area: { type: Object, default: () => ({}) },
   },
   methods: {
-    renderImg() {
-      this.areaData.list.forEach((i) => {
-        this.compressImg(
-          `${this.areaData.area}${i.id}`,
-          `/proxy${i.source_url}${i.cover}`
-        );
-      });
-    },
-    showImg(id) {
-      // 当图片的高大于宽的时候，使用竖版图片模板
-      if (this.$refs[id].length && this.$refs[id][0].children[1].firstChild) {
-        // 如果高度大于宽度的，则使用竖直样式
-        let img = this.$refs[id][0].children[1].firstChild;
-        if (img.naturalHeight > img.naturalWidth)
-          img.classList.add("vertical-img");
-        // 资源项目渐变出现
-        this.$refs[id][0].classList.remove("opacity-0");
-      }
-    },
-    compressImg(ref, url) {
-      compress(url).then((base64) => {
-        this.$refs[ref][0].src = base64;
-      });
+    getImgCfg(item) {
+      return {
+        URL: `/proxy${item.source_url}/${item.cover}`,
+        MAX_WIDTH: 300,
+        QUALITY: 80,
+      };
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.area-panel {
-  background-color: #ffffff;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 20px;
-  padding: 5px 0;
-  .area-name {
-    height: 46px;
+.web-area-panel-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+  .title-wrap {
+    height: 32px;
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid #ff8a80;
+    justify-content: space-between;
     .title {
-      line-height: 40px;
-      span {
-        font-size: 23px;
-        border-left: 5px solid #ff8a80;
-        padding-left: 10px;
-      }
+      font-size: 28px;
+      line-height: 24px;
+      padding-left: 8px;
+      border-left: 4px solid @main-color;
     }
-    .btns {
-      flex: 1;
-      text-align: right;
-      .more {
-        float: right;
-        font-size: 12px;
-        padding: 2px 8px 2px 12px;
-        border-radius: 10px 0px 0px 10px;
-        color: #ffffff;
-        background: #ff8a80;
-        transition: background-color 0.25s;
-        &:hover {
-          background-color: #000;
-        }
+    .more {
+      color: @black-text-color;
+      padding: 8px;
+      font-size: 18px;
+      line-height: 18px;
+      cursor: pointer;
+      transition: color 0.2s ease-in-out;
+      &:hover {
+        color: @main-color;
       }
     }
   }
-  .panel-content {
-    padding: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: flex-start;
+  .preview-wrap {
+    padding-top: 16px;
     overflow: hidden;
-    .item-unity {
-      position: relative;
-      width: 191.66px;
-      border-radius: 4px;
-      margin-right: 20px;
-      margin-bottom: 10px;
-      opacity: 1;
-      &:nth-child(6n + 6) {
-        margin-right: 0px;
-      }
-      a {
-        width: 100%;
-        display: initial;
-        img {
-          display: block;
-          width: 100%;
-          height: auto;
-          object-fit: cover;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
-          transition: opacity 0.3s linear;
-          &.vertical-img {
-            height: 269.2px;
-          }
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    gap: 1.5%; // 13*7 + 1.5*6
+    margin-left: -0.75%;
+    padding-left: 0.75%;
+    margin-right: -0.75%;
+    padding-right: 0.75%;
+
+    .item {
+      max-width: 13%;
+      flex: 0 0 13%;
+      display: flex;
+      flex-direction: column;
+      &:hover {
+        p.title {
+          color: @main-color;
         }
       }
-      span.item-title {
-        font-size: 15px;
-        margin: 8px 0;
-        display: block;
+      p.title {
+        margin-top: 8px;
+        color: @black-text-color;
+        font-size: 18px;
+        // word-break: break-all;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        font-weight: bold;
+        transition: color 0.2s ease-in-out;
       }
     }
   }
 }
-// 平板 宽屏 1000~1280
-@media only screen and (max-width: 1300px) {
-  .area-panel {
-    .panel-content {
-      .item-unity {
-        width: 182.8px;
-        margin-right: 14px;
-        margin-bottom: 8px;
-        // 将原来的 6n 的样式改成普通的
-        &:nth-child(6n + 6) {
-          margin-right: 14px;
-        }
-        // 贴边的 5n 使用特殊样式
-        &:nth-child(5n + 5) {
-          margin-right: 0px;
-        }
-        // 隐藏掉多余的
-        &:nth-child(11),
-        &:nth-child(12) {
-          display: none;
-        }
-        a img {
-          &.vertical-img {
-            height: 269.2px;
-          }
+
+@media only screen and (min-width: @digu-lg) and (max-width: @digu-xl) {
+  .web-area-panel-wrap {
+    margin-bottom: 32px; // -8
+    .title-wrap {
+      height: 28px; // -4
+      .title {
+        font-size: 26px; // -2
+        line-height: 20px; // -4
+      }
+      .more {
+        font-size: 16px; // -2
+        line-height: 16px; // -2
+        padding: 6px; // -2
+      }
+    }
+    .preview-wrap {
+      padding-top: 12px; // -4
+      gap: 2%; // 15*6 + 2*5
+      margin-left: -1%;
+      padding-left: 1%;
+      margin-right: -1%;
+      padding-right: 1%;
+
+      .item {
+        max-width: 15%;
+        flex: 0 0 15%;
+        p.title {
+          font-size: 16px; // -2
         }
       }
     }
   }
+}
+
+@media only screen and (min-width: @digu-md) and (max-width: @digu-lg) {
+  .web-area-panel-wrap {
+    margin-bottom: 24px; // -8
+    .title-wrap {
+      height: 24px; // -4
+      .title {
+        font-size: 24px; // -2
+        line-height: 16px; // -4
+      }
+      .more {
+        font-size: 15px; // -1
+        line-height: 15px; // -1
+      }
+    }
+    .preview-wrap {
+      padding-top: 12px;
+      gap: 2.5%; // 18*5 + 2.5*4
+      margin-left: -1.25%;
+      padding-left: 1.25%;
+      margin-right: -1.25%;
+      padding-right: 1.25%;
+
+      .item {
+        max-width: 18%;
+        flex: 0 0 18%;
+        p.title {
+          font-size: 15px; // -1
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: @digu-sm) and (max-width: @digu-md) {
+}
+
+@media only screen and (min-width: 0) and (max-width: @digu-sm) {
 }
 </style>

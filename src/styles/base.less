@@ -125,19 +125,13 @@ li {
 }
 
 // -------------------------------新的通用样式-----------------------------
-button.base {
-  outline: none;
-  cursor: pointer;
+@font-face {
+  font-family: HarmonyOS_Medium;
+  src: url(../assets/font/HarmonyOS_Sans_SC_Regular.ttf);
 }
 
-button.normal {
-  @extend button.base;
-}
-
-button.transparent {
-  @extend button.base;
-  border: none;
-  background: transparent;
+* {
+  font-family: HarmonyOS_Medium;
 }
 
 // 遮罩之上的元素使用
@@ -157,16 +151,6 @@ button.transparent {
   text-overflow: ellipsis;
 }
 
-// 图片样式
-img.img-vertical {
-  max-height: 100% !important;
-}
-
-img.img-horizontal {
-  max-width: 100% !important;
-  height: unset !important;
-}
-
 // 禁止点击样式
 .disabled {
   cursor: not-allowed !important;
@@ -176,4 +160,31 @@ img.img-horizontal {
 // mui-player
 .m-player .mplayer-footer {
   background: linear-gradient(180deg, hsla(0, 0%, 100%, 0), rgba(0, 0, 0, 0.9)) !important;
+}
+
+// -------------------------------新样式 20230805------------------------
+
+img.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.74 / 1;
+  border-radius: 4px;
+  overflow: hidden;
+  object-fit: cover;
+  transition: opacity 0.2s ease-in-out;
+  // box-shadow: rgba(67, 71, 85, 0.33) 0px 0px 0.25em, rgba(90, 125, 188, 0.1) 0px 0.25em 1em;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
+  &.img-vertical {
+    max-height: 100%;
+  }
+  &.img-horizontal {
+    max-width: 100%;
+    height: unset;
+    aspect-ratio: unset;
+  }
+}
+
+img.cover[src=""],
+img.cover:not([src]) {
+  opacity: 0;
 }

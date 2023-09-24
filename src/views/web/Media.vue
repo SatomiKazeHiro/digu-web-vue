@@ -1,70 +1,36 @@
 <template>
   <div id="media" v-cloak>
-    <div
-      class="media-wrap"
-      :class="{ 'opacity-0': !isShow }"
-      v-if="isShow && !noTemplate && !loadingError"
-    >
-      <NormalHeader
-        :type="getHeaderType()"
-        v-if="showHeader"
-        :selfStyle="
-          routerType === 'chapter'
-            ? { background: '#181818', color: '#eee' }
-            : {}
-        "
-      />
+    <div v-if="!isShow">loading</div>
+    <div class="media-wrap" v-else-if="isShow && !noTemplate && !loadingError">
+      <NormalHeader :type="getHeaderType()" v-if="showHeader" :selfStyle="routerType === 'chapter' ? { background: '#181818', color: '#eee' } : {}" />
       <div class="media-content">
         <div v-if="routerType === 'media'">
           <!-- 可以配置的媒体详情的 -->
-          <BangumiMedia
-            v-if="mediaInfo.template === 'bangumi'"
-            :mediaInfo="mediaInfo"
-          />
-          <MangaMedia
-            v-else-if="mediaInfo.template === 'manga'"
-            :mediaInfo="mediaInfo"
-            padTop="20px"
-          />
+          <BangumiMedia v-if="mediaInfo.template === 'bangumi'" :mediaInfo="mediaInfo" />
+          <MangaMedia v-else-if="mediaInfo.template === 'manga'" :mediaInfo="mediaInfo" padTop="20px" />
           <!-- 没有媒体详情页面的 -->
-          <VideoPlay
-            v-else-if="mediaInfo.template === 'video'"
-            :mediaInfo="mediaInfo"
-          />
+          <VideoPlay v-else-if="mediaInfo.template === 'video'" :mediaInfo="mediaInfo" />
           <link-to-404 v-else />
         </div>
         <div v-else-if="routerType === 'play'">
-          <MangaPlay
-            v-if="mediaInfo.template === 'manga' && mediaInfo.type === 'normal'"
-            :mediaInfo="mediaInfo"
-          />
+          <MangaPlay v-if="mediaInfo.template === 'manga' && mediaInfo.type === 'normal'" :mediaInfo="mediaInfo" />
           <link-to-404 v-else />
         </div>
         <div v-else-if="routerType === 'chapter'">
-          <BangumiChapter
-            v-if="
-              mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'
-            "
-            :mediaInfo="mediaInfo"
-          />
-          <MangaPlay
-            v-else-if="
-              mediaInfo.template === 'manga' && mediaInfo.type === 'serial'
-            "
-            :mediaInfo="mediaInfo"
-          />
+          <BangumiChapter v-if="mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'" :mediaInfo="mediaInfo" />
+          <MangaPlay v-else-if="mediaInfo.template === 'manga' && mediaInfo.type === 'serial'" :mediaInfo="mediaInfo" />
           <link-to-404 v-else />
         </div>
       </div>
     </div>
-    <NoTemplatePage v-if="isShow && noTemplate" />
-    <LoadingErrorPage v-if="isShow && loadingError" />
+    <NoTemplatePage v-else-if="isShow && noTemplate" />
+    <LoadingErrorPage v-else-if="isShow && loadingError" />
   </div>
 </template>
 
 <script>
 import NormalHeader from "components/normal-header";
-import { checkItem } from "network/checkResource";
+import { getResourcesValidity } from "network/handleConfig";
 import { getItem } from "network/getWebData";
 import { sortObjNameAsWin } from "utils/sort";
 import LinkTo404 from "./page/LinkTo404";
@@ -75,6 +41,7 @@ import BangumiMedia from "./template/bangumi/media";
 import MangaMedia from "./template/manga/media";
 import MangaPlay from "./template/manga/play";
 import VideoPlay from "./template/video/play";
+
 export default {
   name: "Media",
   components: {
@@ -105,67 +72,12 @@ export default {
       let hides = {
         manga: ["play", "chapter"],
       };
-      if (
-        hides[this.mediaInfo.template] &&
-        hides[this.mediaInfo.template].includes(this.routerType)
-      )
-        return false;
+      if (hides[this.mediaInfo.template] && hides[this.mediaInfo.template].includes(this.routerType)) return false;
       else return true;
     },
   },
   mounted() {
-    let { area, category, item } = this.$route.params;
-    // 判断路由参数，域，分类，资源项目id，缺一不可
-    if (area && category && item) {
-      // 检查资源项目是否存在
-      checkItem(item)
-        .then((res) => {
-          if (res.code === 200 && res.data === true) {
-            // 获取资源项目的详细数据
-            getItem(area, category, item)
-              .then((res) => {
-                if (res.code && res.code === 200) {
-                  let coverPath = `/proxy${res.data.sources_url}${res.data.cover}`;
-                  let coverBgImgStyle = `background-image: url("${coverPath}");`;
-                  this.mediaInfo = {
-                    ...res.data,
-                    coverPath,
-                    coverBgImgStyle,
-                    files_detail:
-                      res.data.type === "serial"
-                        ? res.data.files_detail
-                            .filter((f) => f.type === "directory")
-                            .sort(sortObjNameAsWin)
-                        : res.data.type === "normal"
-                        ? res.data.files_detail
-                            .filter((f) => f.type !== "directory")
-                            .sort(sortObjNameAsWin)
-                        : [],
-                  };
-                } else if (
-                  res.code &&
-                  res.code === 400 &&
-                  res.data.type === "no-Template"
-                ) {
-                  this.noTemplate = true;
-                }
-              })
-              .catch((err) => (this.loadingError = true))
-              .finally(() => (this.isShow = true));
-          } else {
-            console.log("请求错误：", res);
-            this.$router.push("/404");
-          }
-        })
-        .catch((err) => {
-          // 数据获取失败
-          this.isShow = true;
-          this.loadingError = true;
-        });
-    } else {
-      console.log("area, category, item 数据缺失：", area, category, item);
-      this.$router.push("/404");
-    }
+    this.getResource();
   },
   methods: {
     getHeaderType() {
@@ -174,6 +86,46 @@ export default {
       let template = this.mediaInfo.template;
       if (isPc && template === "bangumi") return "gradient";
       else return "normal";
+    },
+
+    getResource() {
+      let { area, category, item: resourceId } = this.$route.params;
+      // 判断路由参数，域，分类，资源项目id，缺一不可
+      if (area && category && resourceId) {
+        // 检查资源项目是否存在
+        getResourcesValidity({ resourceId })
+          .then(() => {
+            // 获取资源详情
+            getItem({ area, category, resourceId })
+              .then((res) => {
+                if (res.type === "no-Template") this.noTemplate = true;
+                else {
+                  let coverPath = `/proxy${res.sources_url}${res.cover}`;
+                  let coverBgImgStyle = `background-image: url("${coverPath}");`;
+                  this.mediaInfo = {
+                    ...res,
+                    coverPath,
+                    coverBgImgStyle,
+                    files_detail:
+                      res.type === "serial"
+                        ? res.files_detail.filter((f) => f.type === "directory").sort(sortObjNameAsWin)
+                        : res.type === "normal"
+                        ? res.files_detail.filter((f) => f.type !== "directory").sort(sortObjNameAsWin)
+                        : [],
+                  };
+                }
+              })
+              .catch(() => (this.loadingError = true))
+              .finally(() => (this.isShow = true));
+          })
+          .catch((err) => {
+            // 数据获取失败
+            this.isShow = this.loadingError = true;
+          });
+      } else {
+        console.log("area, category, item 数据缺失：", area, category, item);
+        this.$router.push("/404");
+      }
     },
   },
 };

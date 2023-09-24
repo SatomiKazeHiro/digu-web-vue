@@ -2,17 +2,8 @@
   <div id="manga-play" v-if="type">
     <div class="manga-container">
       <div class="view-wrap" :class="{ single: mode === 'single' }">
-        <div
-          v-for="(i, index) in list"
-          :key="i"
-          class="view-cell"
-          :class="{ active: index + 1 == current }"
-        >
-          <img
-            v-lazy-img="i"
-            v-show="mode === 'strip' || index + 1 == current"
-            :class="{ strip: mode === 'strip' }"
-          />
+        <div v-for="(i, index) in list" :key="i" class="view-cell" :class="{ active: index + 1 == current }">
+          <img v-lazy-img="{ URL: i }" v-show="mode === 'strip' || index + 1 == current" :class="{ strip: mode === 'strip' }" />
         </div>
         <div class="action-box">
           <div class="action left" @click="handleActionClick('pre')"></div>
@@ -20,12 +11,7 @@
           <div class="action right" @click="handleActionClick('next')"></div>
         </div>
         <div class="operation-box">
-          <div
-            ref="nav"
-            class="sensing-zone nav"
-            @mouseover="onMouseover"
-            @mouseleave="omMouseleave"
-          >
+          <div ref="nav" class="sensing-zone nav" @mouseover="onMouseover" @mouseleave="omMouseleave">
             <div class="operation-nav" :class="{ active: isHover }">
               <div class="operation-container">
                 <span class="home" @click="$linkTo('/')">首页</span>
@@ -48,31 +34,14 @@
               </div>
             </div>
           </div>
-          <div
-            ref="tool"
-            class="sensing-zone tool"
-            @mouseover="onMouseover"
-            @mouseleave="omMouseleave"
-          >
+          <div ref="tool" class="sensing-zone tool" @mouseover="onMouseover" @mouseleave="omMouseleave">
             <div class="operation-nav" :class="{ active: isHover }">
               <div class="operation-container">
-                <span
-                  v-if="type !== 'separate'"
-                  @click="viewClick('pre')"
-                  :class="{ disabled: isFirst }"
-                  >上一话</span
-                >
+                <span v-if="type !== 'separate'" @click="viewClick('pre')" :class="{ disabled: isFirst }">上一话</span>
                 <span v-if="mode === 'single'" @click="picClick('pre')">上一页</span>
-                <span v-if="mode === 'single'" @click="autoPlay()" :class="{ active: isAutoPlay }">
-                  幻灯片
-                </span>
+                <span v-if="mode === 'single'" @click="autoPlay()" :class="{ active: isAutoPlay }"> 幻灯片 </span>
                 <span v-if="mode === 'single'" @click="picClick('next')">下一页</span>
-                <span
-                  v-if="type !== 'separate'"
-                  @click="viewClick('next')"
-                  :class="{ disabled: isLast }"
-                  >下一话</span
-                >
+                <span v-if="type !== 'separate'" @click="viewClick('next')" :class="{ disabled: isLast }">下一话</span>
               </div>
             </div>
           </div>
@@ -85,19 +54,11 @@
                   <div class="row">
                     <div class="label">阅读模式</div>
                     <div class="content">
-                      <div
-                        class="select-box"
-                        :class="{ active: mode === 'single' }"
-                        @click="setMode('single')"
-                      >
+                      <div class="select-box" :class="{ active: mode === 'single' }" @click="setMode('single')">
                         <span class="icon"><svg-icon icon-class="manga-single"></svg-icon></span>
                         <span>单页</span>
                       </div>
-                      <div
-                        class="select-box"
-                        :class="{ active: mode === 'strip' }"
-                        @click="setMode('strip')"
-                      >
+                      <div class="select-box" :class="{ active: mode === 'strip' }" @click="setMode('strip')">
                         <span class="icon"><svg-icon icon-class="manga-strip"></svg-icon></span>
                         <span>条漫</span>
                       </div>
@@ -131,14 +92,13 @@
 </template>
 
 <script>
+const { merge } = require("webpack-merge");
 import { IMAGE_FORMAT } from "config";
 import { getFolderFiles } from "network/getWebData";
+
 export default {
   props: {
-    mediaInfo: {
-      type: Object,
-      default: () => ({}),
-    },
+    mediaInfo: { type: Object, default: () => ({}) },
   },
   data() {
     return {
@@ -203,11 +163,7 @@ export default {
 
     // 漫画列表更新
     setList(fd, path) {
-      this.list.splice(
-        0,
-        this.list.length,
-        ...fd.filter((f) => IMAGE_FORMAT.includes(f.ext)).map((i) => `/proxy${path}${i.target}`)
-      );
+      this.list.splice(0, this.list.length, ...fd.filter((f) => IMAGE_FORMAT.includes(f.ext)).map((i) => `/proxy${path}${i.target}`));
     },
 
     // 工具栏感应
@@ -247,6 +203,8 @@ export default {
         if (this.current + 1 > this.list.length) this.current = this.list.length;
         else ++this.current;
       }
+      // 更新页脚
+      if (this.type == "separate") this.$router.push({ query: merge(this.$route.query, { p: this.current }) });
     },
 
     // 上/下一章点击

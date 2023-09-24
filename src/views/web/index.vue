@@ -1,113 +1,73 @@
 <template>
   <div id="web">
-    <MainHeader class="web-header" />
-    <div class="index-content-wrap">
-      <WebRandomRecommend v-if="randomItems.length" :RRItem="randomItems" />
-      <div class="inner">
-        <WebAreaPanel v-for="i in areas" :key="i.area" :areaData="i" />
+    <normal-header type="gradient" class="web-header" />
+    <div class="web-random-banner">
+      <main-carousel type="item" :wrapStyle="{ paddingTop: '64px' }" />
+    </div>
+    <div class="web-content-wrap">
+      <div class="inner-wrap">
+        <WebAreaPanel v-for="i in areas" :key="i.area" :area="i" />
       </div>
     </div>
-    <router-view />
+    <!-- <router-view /> -->
+    <div class="mobile-env-wrap">
+      <WebItemBanner :list="bannerItems" />
+      <WebItemRecommend :list="recommendItems" />
+    </div>
   </div>
 </template>
 
 <script>
 import WebAreaPanel from "components/content/web-area-panel";
-import MainHeader from "components/main-header";
-import WebRandomRecommend from "components/web-recommend";
-import {
-  getAreaAllName,
-  getAreaRandom,
-  getItemRandom,
-} from "network/getWebData";
+import NormalHeader from "components/normal-header";
+import MainCarousel from "components/content/main-carousel";
+import WebItemBanner from "components/content/web-item-banner";
+import { getAreaAllName, getAreaRandom, getItemRandom } from "network/getWebData";
+import WebItemRecommend from "components/content/web-item-recommend";
+
 export default {
   name: "Web",
-  components: {
-    MainHeader,
-    WebRandomRecommend,
-    WebAreaPanel,
-  },
+  components: { NormalHeader, MainCarousel, WebAreaPanel, WebItemBanner, WebItemRecommend },
   data() {
     return {
       areas: [],
-      itemLimit: 8,
-      randomItems: [],
-      areaItemLimit: 12,
+      itemLimit: 12, // 轮播图的随机资源
+      bannerItems: [],
+      areaItemLimit: 12, // 每个栏目获取随机12个
+      recommendItems: [], // 列表随机资源
     };
   },
   mounted() {
-    // 获取所有资源项目中的随机8个
-    getItemRandom(this.itemLimit).then((res) => {
-      this.randomItems = res;
-      this.randomItems.forEach((i) => {
-        i.cover = `/proxy${i.source_url}${i.cover}`;
-      });
-    });
+    this.getRandomSources().then((res) => (this.bannerItems = res));
+    this.getRandomSources().then((res) => (this.recommendItems = res));
 
     // 获取所有的域名
     getAreaAllName(false).then(async (res) => {
       // 通过 async/await 按顺序请求，使得页面排版固定
       for (let i = 0; i < res.length; i++) {
-        const areaObj = res[i];
-        // 每个栏目获取随机12个
-        await getAreaRandom(areaObj.area, this.areaItemLimit).then(
-          (res) => {
-            this.areas.push({
-              title: areaObj.web_name || areaObj.area,
-              area: areaObj.area,
-              list: res,
-            });
-          }
-        );
+        let areaObj = res[i];
+        let resArea = await getAreaRandom({ area: areaObj.area, limit: this.areaItemLimit });
+        this.areas.push({
+          title: areaObj.web_name || areaObj.area,
+          area: areaObj.area,
+          list: resArea,
+        });
       }
     });
+  },
+  methods: {
+    async getRandomSources() {
+      let res = (await getItemRandom({ limit: this.itemLimit })) || [];
+      res = res.map((i) => ({
+        ...i,
+        cover: `/proxy${i.source_url}${i.cover}`,
+      }));
+      return Promise.resolve(res);
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-#web {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  // background: #f4f5f7;
-  padding-bottom: 60px;
-  .index-content-wrap {
-    width: 1280px;
-    margin: 0 auto;
-  }
-}
-
-// PC x<=1280px（预留多20给滚动条占位置）
-@media only screen and (max-width: 1300px) {
-  #web {
-    .index-content-wrap {
-      width: 1000px;
-    }
-  }
-}
-
-// 手机、平板 x<=1024px（预留多20给滚动条占位置）
-@media only screen and (max-width: 1044px) {
-  #web {
-    padding-bottom: 0;
-    .web-header {
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .index-content-wrap {
-      width: 100%;
-      margin-top: 80px;
-      // nav + tag 高度
-      height: calc(100vh - 80px);
-      overflow: hidden;
-      overflow-y: auto;
-      .inner {
-        display: none;
-      }
-    }
-  }
-}
+@import "styles/page.web.less";
 </style>

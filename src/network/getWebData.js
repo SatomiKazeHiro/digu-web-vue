@@ -1,67 +1,71 @@
 import request from "./request";
 
 // 获取随机数量（limit）的资源项目
-export function getItemRandom(limit) {
+export function getItemRandom(params) {
   return request({
-    url: '/api/get/itemRandom',
-    params: { limit }
-  })
+    url: "/api/get/itemRandom",
+    params: params,
+  });
 }
 
 // 获取所有域（area）的名字
 export function getAreaAllName(isOnlyArea = true) {
   return request({
-    url: '/api/get/areaAllName',
-    params: { isOnlyArea }
-  })
+    url: "/api/get/areaAllName",
+    params: { isOnlyArea },
+  });
 }
 
 // 获取域下随机的资源项目
-export function getAreaRandom(area, limit, excludeID) {
+export function getAreaRandom(params) {
   return request({
-    url: '/api/get/areaRandom',
-    params: { area, limit, excludeID }
-  })
+    url: "/api/get/areaRandom",
+    method: "POST",
+    data: params,
+  });
 }
 
 // 获取域下的内容
-export function getAreaNormal(area, limit, page, msgType = "") {
+export function getAreaNormal(params) {
   return request({
     url: "/api/get/areaNormal",
-    params: { area, limit, page, msgType }
-  })
+    method: "POST",
+    data: params,
+  });
 }
 
 // 获取域下所有的类（category）
 export function getCategoryAllName(area) {
   return request({
     url: "/api/get/categoryAllName",
-    params: { area }
-  })
+    params: { area },
+  });
 }
 
 // 获取域下指定的类的所有资源项目（Iitem）
-export function getCategoryNormal(area, category, limit, page, msgType = "") {
+export function getCategoryNormal(params) {
   return request({
     url: "/api/get/categoryNormal",
-    params: { area, category, limit, page, msgType }
-  })
+    method: "POST",
+    data: params,
+  });
 }
 
 // 获取资源项目的信息
-export function getItem(area, category, id) {
+export function getItem(params) {
   return request({
     url: "/api/get/item",
-    params: { area, category, id }
-  })
+    method: "POST",
+    data: params,
+  });
 }
 
 // 获取资源项目所属的网页名（web_name）路径
 export function getACPath(area, category) {
   return request({
     url: "/api/get/acPath",
-    params: { area, category }
-  })
+    params: { area, category },
+  });
 }
 
 // 获取资源项目所属的网页名（web_name）路径
@@ -69,6 +73,6 @@ export function getFolderFiles(path) {
   return request({
     url: "/api/get/getFolderFiles",
     method: "POST",
-    data: { path }
-  })
+    data: { path },
+  });
 }

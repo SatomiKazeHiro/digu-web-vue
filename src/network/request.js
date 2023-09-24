@@ -11,7 +11,7 @@ export default function request(config) {
       return config;
     },
     (err) => {
-      console.log(err);
+      console.log("request.js: ", err);
       return Promise.reject(err);
     }
   );
@@ -19,10 +19,10 @@ export default function request(config) {
   instance.interceptors.response.use(
     (res) => {
       if (res && res.data.code == 200) return res.data.data;
-      else Promise.reject(res.data.msg);
+      else return Promise.reject(res.data.msg);
     },
     (err) => {
-      console.log(err);
+      console.log("request.js: ", err);
       return Promise.reject(err);
     }
   );

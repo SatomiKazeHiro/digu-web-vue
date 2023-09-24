@@ -1,13 +1,9 @@
 <template>
   <div id="category" ref="category" v-cloak>
-    <div class="items-wrap" ref="item-wrap">
-      <div class="item-cell opacity-0" v-for="i in data" :key="i.id" :ref="i.id">
+    <div class="items-wrap">
+      <div class="item-cell" v-for="i in data" :key="i.id">
         <a :href="i.link_url">
-          <img
-            :ref="`${area}${i.id}`"
-            :data-src="`/proxy${i.sources_url}/${i.cover}`"
-            @load="showImg(i.id)"
-          />
+          <img v-lazy-img-compr="{ URL: `/proxy${i.sources_url}/${i.cover}`, MAX_WIDTH: 300, QUALITY: 80, LOADED_CLASS: 'loaded-class' }" />
           <span class="title" :title="i.title">{{ i.title }}</span>
         </a>
       </div>
@@ -16,7 +12,7 @@
       <el-pagination
         background
         layout="prev, pager, next, jumper"
-        :total="itemTotal"
+        :total="total"
         :page-size="limit"
         :pager-count="5"
         :current-page="currentPage"
@@ -29,9 +25,9 @@
 </template>
 
 <script>
-import { checkArea, checkCategory } from "network/checkResource";
 import { getAreaNormal, getCategoryNormal } from "network/getWebData";
-import compress from "utils/compress.js";
+import { getResourcesValidity } from "network/handleConfig";
+
 export default {
   name: "Category",
   data() {
@@ -41,7 +37,7 @@ export default {
       currentPage: 1,
       limit: 30,
       data: [],
-      itemTotal: 0,
+      total: 0,
       // 收缩起来的时候当前展示内容到顶部的距离
       scrollToTop: 0,
     };
@@ -76,116 +72,50 @@ export default {
     },
     // 监听屏幕选择，当的平板类型的横屏的时候
     "$store.state._browserStatus.appWidth"(newValue, oldValue) {
-      if (newValue && newValue <= 1024 && newValue >= this.$store.state._browserStatus.appHeight)
-        this.$refs.category.classList.add("hd");
+      if (newValue && newValue <= 1024 && newValue >= this.$store.state._browserStatus.appHeight) this.$refs.category.classList.add("hd");
       else if (newValue && newValue <= 1024) this.$refs.category.classList.remove("hd");
     },
   },
   methods: {
-    // 判断是否有该域和类，获取对应的类页面加载数据
-    getInitData() {
-      checkArea(this.area).then((res) => {
-        console.log("checkArea", res);
-        if (res.data) {
-          if (!this.category) {
-            getAreaNormal(this.area, this.limit, this.currentPage).then((res) => {
-              console.log("getAreaNormal", res);
-              if (res.code === 200) {
-                this.itemTotal = res.data.total;
-                this.currentPage = res.data.page;
-                this.data = res.data.resArr;
-                this.renderImg();
-              }
-            });
-          } else {
-            checkCategory(this.area, this.category).then((res) => {
-              console.log("checkCategory", res);
-              if (res.data) {
-                getCategoryNormal(this.area, this.category, this.limit, this.currentPage).then(
-                  (res) => {
-                    console.log("getCategoryNormal", res);
-                    if (res.code === 200) {
-                      this.itemTotal = res.data.total;
-                      this.currentPage = res.data.page;
-                      this.data = res.data.resArr;
-                      this.renderImg();
-                    }
-                  }
-                );
-              } else this.$router.push("/404");
-            });
-          }
-        } else this.$router.push("/404");
-      });
+    fetchData() {
+      let { area, category, limit, currentPage: page } = this;
+      if (this.category)
+        return getCategoryNormal({ area, category, limit, page }).then((res) => {
+          this.total = res.total;
+          this.currentPage = res.page;
+          this.data = res.data;
+        });
+      else
+        return getAreaNormal({ area, limit, page }).then((res) => {
+          this.total = res.total;
+          this.currentPage = res.page;
+          this.data = res.data;
+        });
     },
 
-    // 渐变加载拓扑，防拉伸
-    showImg(ref) {
-      let coverDom = this.$refs[ref][0];
-      if (coverDom) {
-        // 判断图片的高度是否小于宽度
-        if (
-          coverDom.firstChild.firstChild.naturalHeight < coverDom.firstChild.firstChild.naturalWidth
-        )
-          coverDom.firstChild.firstChild.classList.add("horizontal");
-        else coverDom.firstChild.firstChild.classList.remove("horizontal");
-        // 渐变显示图片
-        coverDom.classList.remove("opacity-0");
-      }
+    // 判断是否有该域和类，获取对应的类页面加载数据
+    async getInitData() {
+      let isValidity = await getResourcesValidity({ area: this.area, category: this.category });
+      if (!isValidity) return this.$router.push("/404");
+
+      this.fetchData();
+    },
+
+    // 当前页码改变时发起请求
+    handleCurrentChange(page) {
+      this.currentPage = page;
+      this.fetchData().finally(() => this.$emit("scrollToTop"));
     },
 
     // 移动端根据上下滑生成控制顶部导航栏显示的数据
     handleCategoriesNavShow(e) {
       console.log(e);
       // 对比之前的高度，输出用户动作
-      if (
-        this.$refs.category.scrollTop > 48 &&
-        this.$refs.category.scrollTop - this.scrollToTop > 0
-      ) {
+      if (this.$refs.category.scrollTop > 48 && this.$refs.category.scrollTop - this.scrollToTop > 0) {
         this.$store.commit("setAreaScrollIsDrop", true);
       } else this.$store.commit("setAreaScrollIsDrop", false);
       // 存入新的高度
       this.scrollToTop = this.$refs.category.scrollTop;
-    },
-
-    // 当前页码改变时发起请求
-    handleCurrentChange(val) {
-      this.currentPage = val;
-      if (this.category)
-        getCategoryNormal(this.area, this.category, this.limit, this.currentPage).then((res) => {
-          console.log("getCategoryNormal", res);
-          if (res.code === 200) {
-            this.$emit("scrollToTop");
-            this.itemTotal = res.data.total;
-            this.currentPage = res.data.page;
-            this.data = res.data.resArr;
-            this.renderImg();
-          }
-        });
-      else
-        getAreaNormal(this.area, this.limit, this.currentPage).then((res) => {
-          console.log("getAreaNormal", res);
-          if (res.code === 200) {
-            this.$emit("scrollToTop");
-            // this.$refs.category.scrollTop = 0;
-            this.itemTotal = res.data.total;
-            this.currentPage = res.data.page;
-            this.data = res.data.resArr;
-            this.renderImg();
-          }
-        });
-    },
-
-    renderImg() {
-      this.data.forEach((i) => {
-        this.compressImg(`${this.area}${i.id}`, `/proxy${i.sources_url}/${i.cover}`);
-      });
-    },
-
-    compressImg(ref, url) {
-      compress(url, 300, 80).then((base64) => {
-        this.$refs[ref][0].src = base64;
-      });
     },
   },
 };
@@ -219,8 +149,13 @@ export default {
           width: 100%;
           height: 276.2px;
           object-fit: cover;
-          box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
           border-radius: 4px;
+          &:not([src]) {
+            opacity: 0;
+          }
+          &.loaded-class {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 5px;
+          }
           &.horizontal {
             height: unset;
           }

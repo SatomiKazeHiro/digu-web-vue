@@ -14,13 +14,19 @@ export default {
   },
   mounted() {
     const _this = this;
+
     window.addEventListener("resize", function () {
       _this.$nextTick(() => {
         return (() => {
           _this.appWidth = _this.calculateW() + "px";
           _this.appHeight = _this.calculateH() + "px";
+          _this.$EventBus.$emit("onWindowResize");
         })();
       });
+    });
+
+    window.addEventListener("orientationchange", function () {
+      _this.$EventBus.$emit("onWindowResize");
     });
   },
   methods: {
@@ -44,5 +50,7 @@ export default {
 #app {
   overflow: hidden;
   position: relative;
+  height: 100vh;
+  width: 100%;
 }
 </style>

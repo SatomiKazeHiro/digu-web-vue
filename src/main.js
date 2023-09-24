@@ -18,6 +18,7 @@ import "./utils/v-lazy-img";
 // 按需加载element ui组件
 import "element-ui/lib/theme-chalk/index.css";
 import "./plugins/element.js";
+import "./plugins/weknow.js";
 
 import less from "less";
 Vue.use(less);

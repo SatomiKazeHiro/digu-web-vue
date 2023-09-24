@@ -50,8 +50,8 @@ module.exports = {
     "style-resources-loader": {
       preProcessor: "less",
       patterns: [
-        // 全局变量路径
-        resolve("./src/styles/variables.less"),
+        // less 全局变量路径
+        resolve("./src/styles/config/global.less"),
       ],
     },
   },

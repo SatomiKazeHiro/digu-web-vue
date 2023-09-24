@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
 // 安装插件
 Vue.use(Vuex);
@@ -11,41 +11,32 @@ const moduleConfig = {
     padWidth: 1024,
     pcWidth: 1280,
   },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-}
+  mutations: {},
+  actions: {},
+  modules: {},
+};
 
 // 用户模块
 const moduleUser = {
   state: {
-    header: "https://img2.woyaogexing.com/2020/04/24/894dcb5acd504d43b725ae8bea725340!400x400.jpeg",
+    header: "https://pic1.zhimg.com/80/v2-7ca21042a498a7e3cb571f4e27846470_720w.webp",
   },
   mutations: {
     updateUsername(state, val) {
       state.username = val;
-    }
+    },
   },
-  actions: {
-  },
-  modules: {
-  }
-}
+  actions: {},
+  modules: {},
+};
 
 // 设置模块
 const moduleSetting = {
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-}
+  state: {},
+  mutations: {},
+  actions: {},
+  modules: {},
+};
 
 // 浏览器状态
 const moduleBrowserStatus = {
@@ -61,16 +52,16 @@ const moduleBrowserStatus = {
     isHd: (state) => {
       return state.appWidth > state.appHeight;
     },
-    isPc: (state)=>{
+    isPc: (state) => {
       return state.broswerInfo.platformType === "pc";
     },
-    isMobile:(state)=>{
+    isMobile: (state) => {
       return state.broswerInfo.platformType === "mobile";
-    }
+    },
   },
   mutations: {
     // 设置用户端信息
-    setBrowserInfo(state,info) {
+    setBrowserInfo(state, info) {
       state.broswerInfo = info;
     },
     // 获取应用宽度
@@ -84,26 +75,21 @@ const moduleBrowserStatus = {
     // 设置在移动端下用户是往上还是往下滑的状态
     setAreaScrollIsDrop(state, res) {
       state.areaMobileScrollIsDrop = res;
-    }
+    },
   },
-  actions: {
-  },
-  modules: {
-  }
-}
+  actions: {},
+  modules: {},
+};
 
 // 导出/创建实例对象
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+  state: {},
+  mutations: {},
+  actions: {},
   modules: {
     _config: moduleConfig,
     _user: moduleUser,
     _setting: moduleSetting,
-    _browserStatus: moduleBrowserStatus
-  }
-})
+    _browserStatus: moduleBrowserStatus,
+  },
+});

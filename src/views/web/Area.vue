@@ -3,7 +3,7 @@
     <div
       class="m-header"
       :class="{
-        hideHeaderNav: $store.state._browserStatus.areaMobileScrollIsDrop,
+        hideHeaderNav: getHideHeaderNav,
       }"
     >
       <NormalHeader :selfStyle="{ background: '#000', color: '#eee' }" />
@@ -15,12 +15,7 @@
         <div class="nav-content">
           <el-tabs v-model="activeTab" @tab-click="handleTabClick">
             <el-tab-pane label="所有" name="all"></el-tab-pane>
-            <el-tab-pane
-              v-for="i in categoryList"
-              :key="i.category"
-              :label="i.web_name || i.category"
-              :name="i.category"
-            />
+            <el-tab-pane v-for="i in categoryList" :key="i.category" :label="i.web_name || i.category" :name="i.category" />
           </el-tabs>
         </div>
       </div>
@@ -55,18 +50,16 @@ export default {
       carouselList: [],
     };
   },
+  computed: {
+    getHideHeaderNav() {
+      return this.$store.state._browserStatus.areaMobileScrollIsDrop;
+    },
+  },
   mounted() {
-    // 获取域下所有分类的随机内容
-    getAreaRandom(this.$route.params.area, 6).then((res) => {
-      console.log(res);
-      if (res.code === 200) {
-        this.carouselList = res.data;
-      }
-    });
-    // 获取域下所有分类的名字
-    getCategoryAllName(this.$route.params.area).then((res) => {
-      if (res.code === 200) this.categoryList = res.data;
-    });
+    let { area } = this.$route.params;
+
+    getAreaRandom({ area, limit: 6 }).then((res) => (this.carouselList = res));
+    getCategoryAllName(area).then((res) => (this.categoryList = res));
   },
   watch: {
     $route(to, from) {
@@ -76,17 +69,14 @@ export default {
   methods: {
     // tab 控制路由
     handleTabClick() {
-      let url = `/${this.$route.params.area}${
-        this.activeTab === "all" ? "" : "/" + this.activeTab
-      }`;
+      let url = `/${this.$route.params.area}${this.activeTab === "all" ? "" : "/" + this.activeTab}`;
       this.$router.push(url);
     },
 
     // 跳转到顶部
     scrollToTop() {
       document.getElementById("area").scrollTop =
-        document.getElementById("area").scrollTop +
-        document.getElementById("categories-nav").getBoundingClientRect().top;
+        document.getElementById("area").scrollTop + document.getElementById("categories-nav").getBoundingClientRect().top;
     },
   },
 };
