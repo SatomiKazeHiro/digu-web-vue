@@ -2,23 +2,54 @@
   <div id="media" v-cloak>
     <div v-if="!isShow">loading</div>
     <div class="media-wrap" v-else-if="isShow && !noTemplate && !loadingError">
-      <NormalHeader :type="getHeaderType()" v-if="showHeader" :selfStyle="routerType === 'chapter' ? { background: '#181818', color: '#eee' } : {}" />
+      <NormalHeader
+        :type="getHeaderType()"
+        v-if="showHeader"
+        :selfStyle="
+          routerType === 'chapter'
+            ? { background: '#181818', color: '#eee' }
+            : {}
+        "
+      />
       <div class="media-content">
         <div v-if="routerType === 'media'">
           <!-- 可以配置的媒体详情的 -->
-          <BangumiMedia v-if="mediaInfo.template === 'bangumi'" :mediaInfo="mediaInfo" />
-          <MangaMedia v-else-if="mediaInfo.template === 'manga'" :mediaInfo="mediaInfo" padTop="20px" />
+          <BangumiMedia
+            v-if="mediaInfo.template === 'bangumi'"
+            :mediaInfo="mediaInfo"
+          />
+          <MangaMedia
+            v-else-if="mediaInfo.template === 'manga'"
+            :mediaInfo="mediaInfo"
+            padTop="20px"
+          />
           <!-- 没有媒体详情页面的 -->
-          <VideoPlay v-else-if="mediaInfo.template === 'video'" :mediaInfo="mediaInfo" />
+          <VideoPlay
+            v-else-if="mediaInfo.template === 'video'"
+            :mediaInfo="mediaInfo"
+          />
           <link-to-404 v-else />
         </div>
         <div v-else-if="routerType === 'play'">
-          <MangaPlay v-if="mediaInfo.template === 'manga' && mediaInfo.type === 'normal'" :mediaInfo="mediaInfo" />
+          <MangaPlay
+            v-if="mediaInfo.template === 'manga' && mediaInfo.type === 'normal'"
+            :mediaInfo="mediaInfo"
+          />
           <link-to-404 v-else />
         </div>
         <div v-else-if="routerType === 'chapter'">
-          <BangumiChapter v-if="mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'" :mediaInfo="mediaInfo" />
-          <MangaPlay v-else-if="mediaInfo.template === 'manga' && mediaInfo.type === 'serial'" :mediaInfo="mediaInfo" />
+          <BangumiChapter
+            v-if="
+              mediaInfo.template === 'bangumi' && mediaInfo.type === 'normal'
+            "
+            :mediaInfo="mediaInfo"
+          />
+          <MangaPlay
+            v-else-if="
+              mediaInfo.template === 'manga' && mediaInfo.type === 'serial'
+            "
+            :mediaInfo="mediaInfo"
+          />
           <link-to-404 v-else />
         </div>
       </div>
@@ -72,7 +103,11 @@ export default {
       let hides = {
         manga: ["play", "chapter"],
       };
-      if (hides[this.mediaInfo.template] && hides[this.mediaInfo.template].includes(this.routerType)) return false;
+      if (
+        hides[this.mediaInfo.template] &&
+        hides[this.mediaInfo.template].includes(this.routerType)
+      )
+        return false;
       else return true;
     },
   },
@@ -98,24 +133,28 @@ export default {
             // 获取资源详情
             getItem({ area, category, resourceId })
               .then((res) => {
-                if (res.type === "no-Template") this.noTemplate = true;
-                else {
-                  let coverPath = `/proxy${res.sources_url}${res.cover}`;
-                  let coverBgImgStyle = `background-image: url("${coverPath}");`;
-                  this.mediaInfo = {
-                    ...res,
-                    coverPath,
-                    coverBgImgStyle,
-                    files_detail:
-                      res.type === "serial"
-                        ? res.files_detail.filter((f) => f.type === "directory").sort(sortObjNameAsWin)
-                        : res.type === "normal"
-                        ? res.files_detail.filter((f) => f.type !== "directory").sort(sortObjNameAsWin)
-                        : [],
-                  };
-                }
+                let coverPath = `/proxy${res.sources_url}${res.cover}`;
+                let coverBgImgStyle = `background-image: url("${coverPath}");`;
+                this.mediaInfo = {
+                  ...res,
+                  coverPath,
+                  coverBgImgStyle,
+                  files_detail:
+                    res.type === "serial"
+                      ? res.files_detail
+                          .filter((f) => f.type === "directory")
+                          .sort(sortObjNameAsWin)
+                      : res.type === "normal"
+                      ? res.files_detail
+                          .filter((f) => f.type !== "directory")
+                          .sort(sortObjNameAsWin)
+                      : [],
+                };
               })
-              .catch(() => (this.loadingError = true))
+              .catch((err) => {
+                if (err.data.type === "no-Template") this.noTemplate = true;
+                else this.loadingError = true;
+              })
               .finally(() => (this.isShow = true));
           })
           .catch((err) => {

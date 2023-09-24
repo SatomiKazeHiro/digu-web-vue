@@ -19,7 +19,7 @@ export default function request(config) {
   instance.interceptors.response.use(
     (res) => {
       if (res && res.data.code == 200) return res.data.data;
-      else return Promise.reject(res.data.msg);
+      else return Promise.reject(res.data);
     },
     (err) => {
       console.log("request.js: ", err);
