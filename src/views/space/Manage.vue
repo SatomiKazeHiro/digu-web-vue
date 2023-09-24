@@ -5,12 +5,20 @@
         <div class="log-tree-box">
           <div class="_title-cell">
             <span>目录</span>
-            <button class="addFoler" v-if="isSelectRootOrAreaNode" @click="plusFolder">
+            <button
+              class="addFoler"
+              v-if="isSelectRootOrAreaNode"
+              @click="plusFolder"
+            >
               <svg-icon icon-class="space-manage-folder-plus"></svg-icon>
             </button>
           </div>
           <div class="log-tree-container" @click="selectRootNode">
-            <manage-log-tree :treeData="treeData" @selectNode="setTreeNode" @openACConfigPanel="openACConfigPanel"></manage-log-tree>
+            <manage-log-tree
+              :treeData="treeData"
+              @selectNode="setTreeNode"
+              @openACConfigPanel="openACConfigPanel"
+            ></manage-log-tree>
           </div>
         </div>
         <div class="tags-box">
@@ -29,7 +37,10 @@
         >
           <div class="config-panel">
             <div class="header-nav">
-              <button class="transparent return-btn" @click="acConfigDrawer = false">
+              <button
+                class="transparent return-btn"
+                @click="acConfigDrawer = false"
+              >
                 <svg-icon icon-class="close"></svg-icon>
               </button>
               <span class="title">页面配置面板</span>
@@ -37,9 +48,19 @@
             <div class="config-content">
               <div class="config-item-box" v-if="editObj === 'area'">
                 <div class="c-item">
-                  <div class="c-label" :class="{ change: editArea.area !== editAreaCG.area }">域目录</div>
+                  <div
+                    class="c-label"
+                    :class="{ change: editArea.area !== editAreaCG.area }"
+                  >
+                    域目录
+                  </div>
                   <div class="c-cont">
-                    <el-input v-model="editArea.area" style="width: 100%" :disabled="true" size="medium"></el-input>
+                    <el-input
+                      v-model="editArea.area"
+                      style="width: 100%"
+                      :disabled="true"
+                      size="medium"
+                    ></el-input>
                   </div>
                 </div>
                 <div class="c-item">
@@ -52,7 +73,11 @@
                     域页面名称
                   </div>
                   <div class="c-cont">
-                    <el-input v-model="editArea.web_name" style="width: 100%" size="medium"></el-input>
+                    <el-input
+                      v-model="editArea.web_name"
+                      style="width: 100%"
+                      size="medium"
+                    ></el-input>
                   </div>
                 </div>
                 <div class="c-item">
@@ -65,15 +90,28 @@
                     域页面展示模板
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editArea.log_template" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editArea.log_template"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="默认模板" value="normal"></el-option>
                     </el-select>
                   </div>
                 </div>
                 <div class="c-item">
-                  <div class="c-label" :class="{ change: editArea.state !== editAreaCG.state }">状态</div>
+                  <div
+                    class="c-label"
+                    :class="{ change: editArea.state !== editAreaCG.state }"
+                  >
+                    状态
+                  </div>
                   <div class="c-cont">
-                    <el-select v-model="editArea.state" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editArea.state"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="显示" value="show"></el-option>
                       <el-option label="隐藏" value="hide"></el-option>
                     </el-select>
@@ -91,7 +129,12 @@
                     域目录
                   </div>
                   <div class="c-cont">
-                    <el-input v-model="editCategoty.area" style="width: 100%" :disabled="true" size="medium"></el-input>
+                    <el-input
+                      v-model="editCategoty.area"
+                      style="width: 100%"
+                      :disabled="true"
+                      size="medium"
+                    ></el-input>
                   </div>
                 </div>
                 <div class="c-item">
@@ -104,7 +147,12 @@
                     分类目录
                   </div>
                   <div class="c-cont">
-                    <el-input v-model="editCategoty.category" style="width: 100%" :disabled="true" size="medium"></el-input>
+                    <el-input
+                      v-model="editCategoty.category"
+                      style="width: 100%"
+                      :disabled="true"
+                      size="medium"
+                    ></el-input>
                   </div>
                 </div>
                 <div class="c-item">
@@ -117,20 +165,30 @@
                     分类网页名称
                   </div>
                   <div class="c-cont">
-                    <el-input v-model="editCategoty.web_name" style="width: 100%" size="medium"></el-input>
+                    <el-input
+                      v-model="editCategoty.web_name"
+                      style="width: 100%"
+                      size="medium"
+                    ></el-input>
                   </div>
                 </div>
                 <div class="c-item">
                   <div
                     class="c-label"
                     :class="{
-                      change: editCategoty.log_template !== editCategotyCG.log_template,
+                      change:
+                        editCategoty.log_template !==
+                        editCategotyCG.log_template,
                     }"
                   >
                     分类页面展示模板
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editCategoty.log_template" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editCategoty.log_template"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="默认模板" value="normal"></el-option>
                     </el-select>
                   </div>
@@ -139,18 +197,32 @@
                   <div
                     class="c-label"
                     :class="{
-                      change: editCategoty.item_log_template !== editCategotyCG.item_log_template,
+                      change:
+                        editCategoty.item_log_template !==
+                        editCategotyCG.item_log_template,
                     }"
                   >
                     项目页面展示模板
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editCategoty.item_log_template" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editCategoty.item_log_template"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="番剧模板" value="bangumi"></el-option>
                       <el-option label="漫画模板" value="manga"></el-option>
-                      <el-option label="插画模板" value="illustration" :disabled="true"></el-option>
+                      <el-option
+                        label="插画模板"
+                        value="illustration"
+                        :disabled="true"
+                      ></el-option>
                       <el-option label="视频模板" value="video"></el-option>
-                      <el-option label="混合模板" value="hybrid" :disabled="true"></el-option>
+                      <el-option
+                        label="混合模板"
+                        value="hybrid"
+                        :disabled="true"
+                      ></el-option>
                     </el-select>
                   </div>
                 </div>
@@ -164,7 +236,11 @@
                     状态
                   </div>
                   <div class="c-cont">
-                    <el-select v-model="editCategoty.state" style="width: 100%" size="medium">
+                    <el-select
+                      v-model="editCategoty.state"
+                      style="width: 100%"
+                      size="medium"
+                    >
                       <el-option label="显示" value="show"></el-option>
                       <el-option label="隐藏" value="hide"></el-option>
                     </el-select>
@@ -183,11 +259,19 @@
               <div class="item-path">
                 <el-breadcrumb separator-class="el-icon-arrow-right">
                   <el-breadcrumb-item>目录</el-breadcrumb-item>
-                  <el-breadcrumb-item v-if="currentAreaNode.web_name || currentAreaNode.label">
+                  <el-breadcrumb-item
+                    v-if="currentAreaNode.web_name || currentAreaNode.label"
+                  >
                     {{ currentAreaNode.web_name || currentAreaNode.label }}
                   </el-breadcrumb-item>
-                  <el-breadcrumb-item v-if="currentCategoryNode.web_name || currentCategoryNode.label">
-                    {{ currentCategoryNode.web_name || currentCategoryNode.label }}
+                  <el-breadcrumb-item
+                    v-if="
+                      currentCategoryNode.web_name || currentCategoryNode.label
+                    "
+                  >
+                    {{
+                      currentCategoryNode.web_name || currentCategoryNode.label
+                    }}
                   </el-breadcrumb-item>
                 </el-breadcrumb>
               </div>
@@ -204,11 +288,23 @@
               <div class="items-table-box">
                 <div class="items-nav">
                   <div class="item-single-operation">
-                    <button class="item-btn" :class="{ on: showCover }" @click="showCover = !showCover" title="显示封面">
+                    <button
+                      class="item-btn"
+                      :class="{ on: showCover }"
+                      @click="showCover = !showCover"
+                      title="显示封面"
+                    >
                       <svg-icon icon-class="space-manage-cover"></svg-icon>
                     </button>
-                    <el-divider direction="vertical" v-if="currentItem.id"></el-divider>
-                    <button class="item-btn" v-if="currentItem.id" title="稍后再看">
+                    <el-divider
+                      direction="vertical"
+                      v-if="currentItem.id"
+                    ></el-divider>
+                    <button
+                      class="item-btn"
+                      v-if="currentItem.id"
+                      title="稍后再看"
+                    >
                       <svg-icon icon-class="space-manage-laterTime"></svg-icon>
                     </button>
                     <button class="item-btn" v-if="currentItem.id" title="收藏">
@@ -220,20 +316,45 @@
                     <button class="item-btn" v-if="currentItem.id" title="删除">
                       <svg-icon icon-class="space-manage-delete"></svg-icon>
                     </button>
-                    <el-divider direction="vertical" v-if="currentItem.id"></el-divider>
-                    <button class="item-btn" v-if="currentItem.id" title="编辑" @click="openIConfigPanel">
+                    <el-divider
+                      direction="vertical"
+                      v-if="currentItem.id"
+                    ></el-divider>
+                    <button
+                      class="item-btn"
+                      v-if="currentItem.id"
+                      title="编辑"
+                      @click="openIConfigPanel"
+                    >
                       <svg-icon icon-class="space-manage-edit"></svg-icon>
                     </button>
-                    <button class="item-btn" v-if="currentItem.id" title="跳转到展示页面" @click="handleOpenPage">
+                    <button
+                      class="item-btn"
+                      v-if="currentItem.id"
+                      title="跳转到展示页面"
+                      @click="handleOpenPage"
+                    >
                       <svg-icon icon-class="space-manage-external"></svg-icon>
                     </button>
                   </div>
                   <div class="item-multi-operation">
-                    <button class="item-btn" v-if="currentAreaNode.label && currentCategoryNode.label" title="上传">
+                    <button
+                      class="item-btn"
+                      v-if="currentAreaNode.label && currentCategoryNode.label"
+                      title="上传"
+                    >
                       <svg-icon icon-class="space-manage-upload"></svg-icon>
                     </button>
-                    <el-divider direction="vertical" v-if="currentAreaNode.label && currentCategoryNode.label"></el-divider>
-                    <button class="item-btn" title="切换视图" :class="{ on: isGridView }" @click="isGridView = !isGridView">
+                    <el-divider
+                      direction="vertical"
+                      v-if="currentAreaNode.label && currentCategoryNode.label"
+                    ></el-divider>
+                    <button
+                      class="item-btn"
+                      title="切换视图"
+                      :class="{ on: isGridView }"
+                      @click="isGridView = !isGridView"
+                    >
                       <svg-icon icon-class="space-manage-grid"></svg-icon>
                     </button>
                   </div>
@@ -256,14 +377,22 @@
                     layout="total, ->, prev, pager, next"
                   >
                   </el-pagination>
-                  <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" layout="jumper"> </el-pagination>
+                  <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    layout="jumper"
+                  >
+                  </el-pagination>
                 </div>
               </div>
             </div>
           </div>
           <div class="item-config-panel">
             <div class="header-nav">
-              <button class="transparent return-btn" @click="iConfigDrawer = false">
+              <button
+                class="transparent return-btn"
+                @click="iConfigDrawer = false"
+              >
                 <svg-icon icon-class="close"></svg-icon>
               </button>
               <span class="title">项目配置面板</span>
@@ -282,7 +411,14 @@ import ManageLogTree from "components/content/manage-log-tree";
 import ManagePreview from "components/content/manage-preview";
 import ManageTable from "components/content/manage-table";
 import { getAreaNormal, getCategoryNormal } from "network/getWebData";
-import { getAreaConfig, getCategoryConfig, getLogTree, setCategoryConfig, settAreaConfig } from "network/handleConfig";
+import {
+  getAreaConfig,
+  getCategoryConfig,
+  getLogTree,
+  setCategoryConfig,
+  settAreaConfig,
+} from "network/handleConfig";
+
 export default {
   components: {
     ManageSearch,
@@ -355,12 +491,7 @@ export default {
     // 初始化节点树
     initLogTree() {
       getLogTree()
-        .then((res) => {
-          console.log(res);
-          if (res.code && res.code === 200) {
-            this.treeData = res.data;
-          }
-        })
+        .then((res) => (this.treeData = res))
         .catch((err) => {
           this.$message({
             message: "目录获取失败：" + err,
@@ -375,7 +506,7 @@ export default {
         let area = this.currentAreaNode.label;
         let category = this.currentCategoryNode.label;
         let { limit, currentPage: page } = this;
-        if (area && !cl) {
+        if (area && !category) {
           getAreaNormal({ aera, limit, page, msgType: "rich" }).then(
             (res) => {
               this.tableData = res.data.map((r) => ({
@@ -388,7 +519,13 @@ export default {
             (err) => reject(err)
           );
         } else if (area && category) {
-          getCategoryNormal({ area, category, limit, page, msgType: "rich" }).then(
+          getCategoryNormal({
+            area,
+            category,
+            limit,
+            page,
+            msgType: "rich",
+          }).then(
             (res) => {
               this.tableData = res.data.map((r) => ({
                 ...r,
@@ -444,7 +581,10 @@ export default {
       if (this.assumeRoot) {
         console.log("创建一级目录");
       } else {
-        console.log("创建二级目录 <- ", this.currentAreaNode.web_name || this.currentAreaNode.label);
+        console.log(
+          "创建二级目录 <- ",
+          this.currentAreaNode.web_name || this.currentAreaNode.label
+        );
       }
     },
 
@@ -466,14 +606,11 @@ export default {
     getAConfig(area) {
       getAreaConfig(area).then(
         (res) => {
-          console.log(res);
-          if (res.code && res.code === 200) {
-            this.editArea = res.data;
-            // 对照组
-            Object.keys(this.editArea).map((i) => {
-              this.editAreaCG[i] = this.editArea[i];
-            });
-          }
+          this.editArea = res.data;
+          // 对照组
+          Object.keys(this.editArea).map((i) => {
+            this.editAreaCG[i] = this.editArea[i];
+          });
         },
         (err) => {
           console.log(err);
@@ -483,14 +620,11 @@ export default {
     getCConfig(area, category) {
       getCategoryConfig(area, category).then(
         (res) => {
-          console.log(res);
-          if (res.code && res.code === 200) {
-            this.editCategoty = res.data;
-            // 对照组
-            Object.keys(this.editCategoty).map((i) => {
-              this.editCategotyCG[i] = this.editCategoty[i];
-            });
-          }
+          this.editCategoty = res || {};
+          // 对照组
+          Object.keys(this.editCategoty).map((i) => {
+            this.editCategotyCG[i] = this.editCategoty[i];
+          });
         },
         (err) => {
           console.log(err);
@@ -523,19 +657,13 @@ export default {
     handleSubmitConfig() {
       if (this.editObj === "area") {
         settAreaConfig(this.editArea).then(
-          (res) => {
-            if (res.code && res.code === 200) {
-              this.$message({
-                type: "success",
-                message: "设置成功",
-              });
-              this.initLogTree();
-              this.getAConfig(this.editArea.area);
-            } else
-              this.$message({
-                type: "success",
-                message: "设置失败" + res.msg ? "：" + res.msg : "",
-              });
+          () => {
+            this.$message({
+              type: "success",
+              message: "设置成功",
+            });
+            this.initLogTree();
+            this.getAConfig(this.editArea.area);
           },
           (err) => {
             console.log(err);
@@ -547,19 +675,13 @@ export default {
         );
       } else if (this.editObj === "category") {
         setCategoryConfig(this.editCategoty).then(
-          (res) => {
-            if (res.code && res.code === 200) {
-              this.$message({
-                type: "success",
-                message: "设置成功",
-              });
-              this.initLogTree();
-              this.getCConfig(this.editCategoty.area, this.editCategoty.category);
-            } else
-              this.$message({
-                type: "success",
-                message: "设置失败" + res.msg ? "：" + res.msg : "",
-              });
+          () => {
+            this.$message({
+              type: "success",
+              message: "设置成功",
+            });
+            this.initLogTree();
+            this.getCConfig(this.editCategoty.area, this.editCategoty.category);
           },
           (err) => {
             console.log(err);

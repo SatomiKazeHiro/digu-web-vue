@@ -48,7 +48,7 @@ export default {
             url: "/space/watchlater",
           },
           {
-            label: "项目管理",
+            label: "资源管理",
             icon: "space-manage",
             url: "/space/manage",
           },
