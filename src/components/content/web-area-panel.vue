@@ -6,7 +6,7 @@
     </div>
     <div class="preview-wrap">
       <div class="item" v-for="(item, index) in area.list" :key="index">
-        <a :href="item.link_url">
+        <a :href="item.link_url" :class="{ 'no-cover': !hasCover(item) }">
           <img class="cover" v-lazy-img-compr="getImgCfg(item)" />
           <p class="title" :title="item.title">
             {{ item.title }}
@@ -24,6 +24,9 @@ export default {
     area: { type: Object, default: () => ({}) },
   },
   methods: {
+    hasCover(item) {
+      return Boolean(item.cover);
+    },
     getImgCfg(item) {
       return {
         URL: `/proxy${item.source_url}/${item.cover}`,

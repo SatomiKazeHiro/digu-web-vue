@@ -187,4 +187,24 @@ img.cover {
 img.cover[src=""],
 img.cover:not([src]) {
   opacity: 0;
+  &:before{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+a.no-cover {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  > img.cover:not([src]) {
+    flex: 1;
+    opacity: 1;
+    aspect-ratio: initial;
+  }
+  > p.title {
+    height: calc(2 * (1em) / 0.75); // 0.75 = 1 / 1.333333
+  }
 }
