@@ -7,18 +7,6 @@
       }"
     >
       <NormalHeader :selfStyle="{ background: '#000', color: '#eee' }" />
-      <!-- <main-carousel /> -->
-      <div class="carousel-wrap">
-        <AreaBanner :carouselList="carouselList" />
-      </div>
-      <div class="categories-nav" id="categories-nav">
-        <div class="nav-content">
-          <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-            <el-tab-pane label="所有" name="all"></el-tab-pane>
-            <el-tab-pane v-for="i in categoryList" :key="i.category" :label="i.web_name || i.category" :name="i.category" />
-          </el-tabs>
-        </div>
-      </div>
     </div>
     <div class="category-wrap">
       <Category ref="category" @scrollToTop="scrollToTop" />
@@ -31,7 +19,7 @@
 import AreaBanner from "components/content/area-banner";
 import MainCarousel from "components/content/main-carousel";
 import NormalHeader from "components/normal-header";
-import { getAreaRandom, getCategoryAllName } from "network/getWebData";
+import { getCategoryAllName } from "network/getWebData";
 import Category from "./Category";
 
 export default {
@@ -47,7 +35,6 @@ export default {
       windowWidth: null,
       categoryList: [],
       activeTab: this.$route.params.category || "all",
-      carouselList: [],
     };
   },
   computed: {
@@ -57,8 +44,6 @@ export default {
   },
   mounted() {
     let { area } = this.$route.params;
-
-    getAreaRandom({ area, limit: 6 }).then((res) => (this.carouselList = res));
     getCategoryAllName(area).then((res) => (this.categoryList = res));
   },
   watch: {
@@ -69,14 +54,17 @@ export default {
   methods: {
     // tab 控制路由
     handleTabClick() {
-      let url = `/${this.$route.params.area}${this.activeTab === "all" ? "" : "/" + this.activeTab}`;
+      let url = `/${this.$route.params.area}${
+        this.activeTab === "all" ? "" : "/" + this.activeTab
+      }`;
       this.$router.push(url);
     },
 
     // 跳转到顶部
     scrollToTop() {
       document.getElementById("area").scrollTop =
-        document.getElementById("area").scrollTop + document.getElementById("categories-nav").getBoundingClientRect().top;
+        document.getElementById("area").scrollTop +
+        document.getElementById("categories-nav").getBoundingClientRect().top;
     },
   },
 };
@@ -87,45 +75,17 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  background: #f4f5f7;
   .m-header {
     background: #fff;
-    .categories-nav {
-      height: 56px;
-      background: #fff;
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      .nav-content {
-        width: 1280px;
-        padding: 0 15px;
-        height: 100%;
-        margin: 0 auto;
-        .el-tabs.el-tabs--top {
-          height: 100%;
-          line-height: 56px;
-          ::v-deep.el-tabs__header.is-top {
-            .el-tabs__nav-wrap::after {
-              height: 0;
-            }
-          }
-        }
-        ::v-deep .el-tabs__item {
-          height: 39px;
-        }
-      }
-    }
   }
   .category-wrap {
-    background: #f4f5f7;
   }
 }
 // 平板 宽屏 1000~1280
 @media only screen and (max-width: 1300px) {
   #area {
     .m-header {
-      .categories-nav {
-        .nav-content {
-          width: 1000px;
-        }
-      }
     }
   }
 }
@@ -146,23 +106,6 @@ export default {
         transform: translateY(-48px);
         .normal-header {
           opacity: 0;
-        }
-      }
-      .carousel-wrap {
-        display: none;
-      }
-      .categories-nav {
-        padding: 0 2vw;
-        height: 40px;
-        &.fiexd-nav {
-          position: fixed;
-        }
-        .nav-content {
-          padding: 0;
-          width: 100%;
-          .el-tabs.el-tabs--top {
-            line-height: 40px;
-          }
         }
       }
     }
