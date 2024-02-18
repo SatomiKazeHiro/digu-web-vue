@@ -24,14 +24,6 @@ const routes = [
     component: () => import("views/web"),
   },
   {
-    path: "/test",
-    name: "Test",
-    meta: {
-      title: "测试页面",
-    },
-    component: () => import("views/Test.vue"),
-  },
-  {
     path: "/space",
     name: "Space",
     component: () => import("views/Space.vue"),
